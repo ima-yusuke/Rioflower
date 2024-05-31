@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->bigInteger("question_id")->unsigned();
             $table->string("text");
-            $table->integer("order")->autoIncrement()->unsigned();
+            $table->integer("order")->unsigned();
         });
     }
 

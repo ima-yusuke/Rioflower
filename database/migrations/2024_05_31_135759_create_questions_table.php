@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string("text");
-            $table->integer("order")->autoIncrement()->unsigned();
+            $table->integer("order")->unsigned();
             $table->tinyInteger("is_enabled")->default(1);
         });
     }
