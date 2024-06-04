@@ -9,7 +9,7 @@
 <x-header>
 
 </x-header>
-<body class="overflow-hidden">
+<body class="overflow-hidden bg-main-bg pt-[90px]">
 {{ $slot }}
 </body>
 <x-footer>
