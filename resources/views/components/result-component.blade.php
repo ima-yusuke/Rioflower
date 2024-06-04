@@ -1,4 +1,4 @@
-<div id="result_container" class="result hide flex flex-col items-center gap-8 w-full min-h-screen">
+<div id="result_container" class="result-container hide gap-8 w-full min-h-screen">
     <div class="flex justify-between w-full">
         {{--左側詳細--}}
         <div class="absolute -bottom-48 -left-24 w-[800px] h-[800px] bg-main-brown rounded-full">
@@ -25,12 +25,12 @@
                 <aside></aside>
             </div>
             <aside class="flex gap-4">
-                <button class="btn-white">
+                <button class="back-start-btn">
                     <a href="{{route('index')}}">初めからやり直す</a>
                 </button>
 
                 {{--modal open button--}}
-                <button data-modal-target="default-modal" data-modal-toggle="default-modal" id="open-modal-btn" class="btn block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
+                <button data-modal-target="default-modal" data-modal-toggle="default-modal" id="open-modal-btn" class="pink-btn block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
                     購入する
                 </button>
             </aside>

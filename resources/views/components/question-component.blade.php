@@ -1,4 +1,4 @@
-<div id="question_container" class="quiz hide flex flex-col gap-4">
+<div id="question_container" class="question-container hide gap-4">
     {{--残質問数--}}
     <div id="question_num" class="flex justify-end text-main-brown ml-auto pr-2"></div>
 
@@ -11,7 +11,7 @@
 
         {{--戻るボタン--}}
         <div class="back-btn-container">
-            <button id="back_btn" class="text-main-brown font-bold text-6xl hide"><i class="fa-solid fa-arrow-left"></i></button>
+            <button id="back_btn" class="text-main-brown font-bold hide"><i class="fa-solid fa-arrow-left text-6xl"></i></button>
         </div>
 
         {{--右側コンテンツ（質問＆選択肢）--}}

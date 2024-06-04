@@ -108,7 +108,7 @@ function CreateAnswers(){
         const ARROW_TEXT = document.createElement('span')
 
         ANSWER_NUM.innerText = idx+1;
-        ANSWER_NUM.classList.add("rounded-circle")
+        ANSWER_NUM.classList.add("answer-num-white")
         ANSWER_TEXT.innerText = value;
 
         NUM_TEXT_CONTAINER.appendChild(ANSWER_NUM);
@@ -117,7 +117,7 @@ function CreateAnswers(){
         ARROW_TEXT.innerText = "▶";
         ANSWER_BTN.appendChild(NUM_TEXT_CONTAINER)
         ANSWER_BTN.appendChild(ARROW_TEXT);
-        ANSWER_BTN.classList.add("option-btn")
+        ANSWER_BTN.classList.add("answer-btn")
 
         QUESTION_ANSWERS_CONTAINER.appendChild(ANSWER_BTN)
 
@@ -140,7 +140,7 @@ function CreateMaxImg(){
     // 修正必要!!!!!!!(0固定でなくスコア最大のindex⇒上記maxIndex)
     let newImage = document.createElement("img");
     newImage.src = products[0]["img"];
-    newImage.classList.add("tmp-img")
+    newImage.classList.add("question-img")
     QUESTION_IMG_CONTAINER.appendChild(newImage)
 }
 
@@ -204,13 +204,13 @@ function CreateConfirmContainer(){
 
         // 質問文と番号
         CONFIRM_QUESTION_NUM.innerText = i+1+"問目";
-        CONFIRM_QUESTION_NUM.classList.add("confirm-span");
+        CONFIRM_QUESTION_NUM.classList.add("confirm-question-num");
         CONFIRM_QUESTION_TEXT.innerText = questions[i]["question"];
         CONFIRM_QUESTION_TEXT.insertBefore(CONFIRM_QUESTION_NUM,CONFIRM_QUESTION_TEXT.firstChild)
 
         // 回答
         CONFIRM_ANSWER_NUM.innerText = i+1;
-        CONFIRM_ANSWER_NUM.classList.add("rounded-circle2")
+        CONFIRM_ANSWER_NUM.classList.add("confirm-answer-num")
         CONFIRM_ANSWER_TEXT.innerText = questions[i]["answer"][selectedAnswersArray[i]];
         CONFIRM_ANSWER_TEXT.style.color = "rgb(191,158,116)"
         CONFIRM_NUM_TEXT_CONTAINER.appendChild(CONFIRM_ANSWER_NUM);

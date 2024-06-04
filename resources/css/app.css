@@ -3,15 +3,14 @@
 @tailwind utilities;
 
 * {
-    box-sizing: border-box;
     font-family: sans-serif;
     margin: 0;
     padding: 0;
 }
 
-/*-------------------------------------[診断パート]-------------------------------------------*/
-.quiz,
-.result,
+/*-------------------------------------[診断画面共通]-------------------------------------------*/
+.question-container,
+.result-container,
 .confirm-container{
     display: flex;
     flex-direction: column;
@@ -19,7 +18,24 @@
     justify-content: center;
 }
 
-.btn {
+
+.question-container button,
+.result-container button,
+.confirm-container button{
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    text-align: center;
+}
+
+
+.hide {
+    display: none;
+}
+
+/*診断結果を見るボタンと購入ボタンで使用*/
+.pink-btn {
     background-color: rgb(254,135,185);
     border: none;
     border-radius: 8px;
@@ -32,57 +48,9 @@
     text-decoration: none;
     width: 250px;
 }
-
-.btn-white {
-    background-color:white;
-    border: 1px solid black;
-    border-radius: 8px;
-    color: black;
-    cursor: pointer;
-    font-size: 1rem;
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    text-align: center;
-    text-decoration: none;
-    width: 250px;
-}
-button {
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    text-align: center;
-}
-
-.btn:hover {
-    background-color: #3e8e41;
-}
-
-.hide {
-    display: none;
-}
-
-.question {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-.tmp-img{
-    border-radius: 1.5rem; /* 16px */
-    width: 100%;
-    height: 100%;
-}
-
-/*戻るボタン*/
-.back-btn-container{
-    width: 90px;
-}
-
-/*------------------------------[質問回答]-------------------------------------------*/
-
-/*回答画面での各選択肢（button)*/
-.option-btn{
+/*-------------------------------------[質問画面]-------------------------------------------*/
+/*各選択肢（button)*/
+.answer-btn{
     width: 100%;
     background-color:rgb(191,158,116); /* 背景色を適宜指定 */
     color: white;
@@ -92,8 +60,8 @@ button {
     text-align: left;
 }
 
-/*回答画面での各回答番号(span)*/
-.rounded-circle {
+/*各回答番号(span)*/
+.answer-num-white {
     display: inline-flex; /* flexコンテナとして表示 */
     justify-content: center; /* 横方向に中央揃え */
     align-items: center; /* 縦方向に中央揃え */
@@ -106,18 +74,18 @@ button {
     color: rgb(191,158,116);
 }
 
-.rounded-circle2 {
-    display: inline-flex; /* flexコンテナとして表示 */
-    justify-content: center; /* 横方向に中央揃え */
-    align-items: center; /* 縦方向に中央揃え */
-    width: 25px; /* サイズを適宜調整 */
-    height: 25px; /* サイズを適宜調整 */
-    border-radius: 50%; /* 丸くする */
-    margin-right: 10px;
-    font-size: 14px;
-    background-color: rgb(191,158,116);
-    color: white;
+/*戻るボタンコンテイナー*/
+.back-btn-container{
+    width: 90px;
 }
+
+/*質問横のimg*/
+.question-img{
+    border-radius: 1.5rem; /* 16px */
+    width: 100%;
+    height: 100%;
+}
+/*-------------------------------------[確認画面]-------------------------------------------*/
 
 /*各質問・回答セット*/
 .confirm-answers-container{
@@ -133,7 +101,7 @@ button {
 }
 
 /*各質問番号*/
-.confirm-span{
+.confirm-question-num{
     background-color: white;
     color:rgb(191,158,116);
     margin-right: 5px;
@@ -141,7 +109,7 @@ button {
     border-radius: 5px;
 }
 
-/*確認画面での各回答（span)*/
+/*各回答（span)*/
 .confirm-answer{
     width: 450px;
     background-color:white; /* 背景色を適宜指定 */
@@ -154,17 +122,52 @@ button {
     border-radius: 20px;
 }
 
+/*各回答番号(span)*/
+.confirm-answer-num {
+    display: inline-flex; /* flexコンテナとして表示 */
+    justify-content: center; /* 横方向に中央揃え */
+    align-items: center; /* 縦方向に中央揃え */
+    width: 25px; /* サイズを適宜調整 */
+    height: 25px; /* サイズを適宜調整 */
+    border-radius: 50%; /* 丸くする */
+    margin-right: 10px;
+    font-size: 14px;
+    background-color: rgb(191,158,116);
+    color: white;
+}
+
 /*▶アイコン*/
 .confirm-answer p{
     color:rgb(191,158,116);
     font-size: 10px;
     margin-right: 5px;
 }
-
-.span-bg{
-    background-color: rgb(254,135,185);
-    color: white;
-    border-radius: 4px;
-    padding: 8px;
-    margin: 0 4px;
+/*-------------------------------------[結果画面]-------------------------------------------*/
+/*初めからやり直すボタン*/
+.back-start-btn {
+    background-color:white;
+    border: 1px solid black;
+    border-radius: 8px;
+    color: black;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    width: 250px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
