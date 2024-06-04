@@ -6,6 +6,8 @@ use App\Http\Controllers\MainController;
 
 Route::get('/', [MainController::class, 'index'])->name('index');
 
+Route::get('/question', [MainController::class, 'ShowQuestionPage'])->name('ShowQuestionPage');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
