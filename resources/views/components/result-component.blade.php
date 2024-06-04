@@ -1,4 +1,4 @@
-<div id="result" class="result hide flex flex-col items-center gap-8 w-full min-h-screen">
+<div id="result_container" class="result hide flex flex-col items-center gap-8 w-full min-h-screen">
     <div class="flex justify-between w-full">
         {{--左側詳細--}}
         <div class="absolute -bottom-48 -left-24 w-[800px] h-[800px] bg-main-brown rounded-full">
@@ -8,7 +8,7 @@
 
         {{--右側詳細--}}
         <div class="flex flex-col justify-center items-center gap-4 w-[50%] mx-10">
-            <div id="detail" class="flex flex-col gap-8">
+            <div class="flex flex-col gap-8">
                 {{--タイトル--}}
                 <div class="font-bold flex flex-col gap-2">
                     <p>あなたにおすすめなのは</p>
@@ -26,7 +26,7 @@
             </div>
             <aside class="flex gap-4">
                 <button class="btn-white">
-{{--                    <a href="{{route('show_home')}}">初めからやり直す</a>--}}
+                    <a href="{{route('index')}}">初めからやり直す</a>
                 </button>
 
                 {{--modal open button--}}

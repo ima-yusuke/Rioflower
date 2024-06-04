@@ -10,10 +10,9 @@
 }
 
 /*-------------------------------------[診断パート]-------------------------------------------*/
-.start,
 .quiz,
 .result,
-.confirm{
+.confirm-container{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -121,14 +120,14 @@ button {
 }
 
 /*各質問・回答セット*/
-.confirm-container{
+.confirm-answers-container{
     display: flex;
     flex-direction: column;
     row-gap: 15px;
 }
 
 /*各質問*/
-.confirm-container p{
+.confirm-answers-container p{
     color: white;
     font-size: 16px;
 }
