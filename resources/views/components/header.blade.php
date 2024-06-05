@@ -4,7 +4,7 @@
     </div>
     <div class="flex h-[60px] justify-center items-center">
         <div class="h-full flex justify-center items-center">
-            <a href="{{ route('index') }}" class="h-full flex items-center justify-center">
+            <a href="{{ route('Index') }}" class="h-full flex items-center justify-center">
                 <img src="{{ asset('/img/header-logo.jpg') }}" alt="Rio flower" class="w-[70%] h-auto md:h-full md:w-auto object-cover">
             </a>
         </div>
