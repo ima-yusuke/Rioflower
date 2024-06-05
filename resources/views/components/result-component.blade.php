@@ -1,20 +1,20 @@
 <div id="result_container" class="relative flex flex-col justify-center items-center hide gap-8 w-full min-h-screen">
 
     <!-- その他おすすめ画像の表示エリア -->
-{{--    <div class="z-30 w-full flex justify-center gap-10 md:gap-32 my-6 md:my-16">--}}
-{{--        <div>--}}
-{{--            <img src="{{asset('img/flower01.jpeg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
-{{--        </div>--}}
-{{--        <div>--}}
-{{--            <img src="{{asset('img/flower02.jpeg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
-{{--        </div>--}}
-{{--        <div>--}}
-{{--            <img src="{{asset('img/flower03.jpg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    <div class="z-30 w-full flex justify-center gap-10 md:gap-32 my-6 md:my-16">
+        <div>
+            <img src="{{asset('img/flower01.jpeg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+        </div>
+        <div>
+            <img src="{{asset('img/flower02.jpeg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+        </div>
+        <div>
+            <img src="{{asset('img/flower03.jpg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+        </div>
+    </div>
 
     {{--１位商品詳細--}}
-    <div class="flex flex-col md:flex-row justify-between items-center h-full md:w-full">
+    <div class="flex flex-col md:flex-row justify-between items-center h-full md:w-full w-full">
         {{--左側詳細--}}
         <div class="md:w-[50%]">
             <div id="big_ball" class="big-screen w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-main-brown rounded-full">
@@ -23,8 +23,8 @@
         </div>
 
         {{--右側詳細--}}
-        <div class="flex flex-col justify-center items-center gap-4 md:w-[50%] mx-10">
-            <div class="flex flex-col gap-8">
+        <div class="flex flex-col justify-center items-center gap-4 md:w-[50%] mx-10 w-full">
+            <div class="flex flex-col gap-8 w-full">
                 {{--タイトル--}}
                 <div class="font-bold flex flex-col gap-2">
                     <p>あなたにおすすめなのは</p>
