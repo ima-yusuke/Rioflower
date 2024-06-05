@@ -6,13 +6,16 @@
     @endif
     @vite(['resources/css/'.$css,'resources/js/question.js'])
 </x-head>
-<x-header>
+<div class="flex flex-col justify-between h-[100dvh]">
+    <x-header>
 
-</x-header>
-<body class="overflow-hidden bg-main-bg pt-[90px]">
-{{ $slot }}
-</body>
-<x-footer>
+    </x-header>
+    <body class="bg-main-bg">
+    {{ $slot }}
+    </body>
+    <x-footer>
 
-</x-footer>
+    </x-footer>
+</div>
+
 </html>
