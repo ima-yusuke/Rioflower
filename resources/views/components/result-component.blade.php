@@ -14,11 +14,11 @@
     </div>
 
     {{--１位商品詳細--}}
-    <div class="flex flex-col md:flex-row justify-between items-center h-full md:w-full w-full">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-80 md:gap-0 h-full md:w-full w-full">
         {{--左側詳細--}}
-        <div class="md:w-[50%]">
+        <div class="w-full md:w-[50%]">
             <div id="big_ball" class="big-screen w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-main-brown rounded-full">
-                <img id="result_img" class="object-cover absolute left-[30%] md:left-1/3 top-[90%] md:top-1/4 transform translate-x-20 -translate-y-56 z-10 rounded-full w-[250px] md:w-[450px] h-[250px] md:h-[450px]">
+                <img id="result_img" class="object-cover absolute left-[22%] md:left-1/3 top-[90%] md:top-1/4 transform translate-x-20 -translate-y-56 z-10 rounded-full w-[280px] md:w-[450px] h-[280px] md:h-[450px]">
             </div>
         </div>
 
@@ -26,16 +26,16 @@
         <div class="flex flex-col justify-center items-center gap-4 md:w-[50%] mx-10 w-full">
             <div class="flex flex-col gap-8 w-full">
                 {{--タイトル--}}
-                <div class="font-bold flex flex-col gap-2">
-                    <p>あなたにおすすめなのは</p>
-                    <aside class="flex items-end gap-2">
-                        <h2 class="text-4xl">商品名<span id="result_p_name"></span></h2>
+                <div class="font-bold flex flex-col  gap-2">
+                    <p class="text-center">あなたにおすすめなのは</p>
+                    <aside class="flex justify-center items-center md:items-end gap-2">
+                        <h2 class="text-2xl md:text-4xl">商品名:<span id="result_p_name"></span></h2>
                         <p>です！</p>
                     </aside>
                 </div>
 
                 {{--詳細--}}
-                <div class="flex flex-col gap-4 bg-detail-bg p-6 rounded-lg">
+                <div class="flex flex-col gap-4 bg-detail-bg p-6 mx-6 md:mx-0 rounded-lg">
                     <p>So I started to walk into the water. I won't lie to you boys, I was terrified. But I pressed on, and as I made my way past the breakers a strange calm came over me. I don't know if it was divine intervention or the kinship of all living things but I tell you Jerry at that moment, I was a marine biologist.</p>
                     <p>So I started to walk into the water. I won't lie to you boys, I was terrified. But I pressed on, and as I made my way past the breakers a strange calm came over me. I don't know if it was divine intervention or the kinship of all living things but I tell you Jerry at that moment, I was a marine biologist.</p>
                     <p>So I started to walk into the water. I won't lie to you boys, I was terrified. But I pressed on, and as I made my way past the breakers a strange calm came over me. I don't know if it was divine intervention or the kinship of all living things but I tell you Jerry at that moment, I was a marine biologist.</p>
@@ -44,7 +44,7 @@
                 </div>
 
                 {{--ボタン--}}
-                <aside class="flex justify-center gap-4">
+                <aside class="flex justify-center gap-4 mx-6 md:mx-0">
                     <button class="back-start-btn">
                         <a href="{{route('index')}}">初めからやり直す</a>
                     </button>
