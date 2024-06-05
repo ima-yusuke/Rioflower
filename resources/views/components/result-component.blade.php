@@ -1,17 +1,17 @@
 <div id="result_container" class="relative flex flex-col justify-center items-center hide gap-8 w-full min-h-screen">
 
     <!-- その他おすすめ画像の表示エリア -->
-{{--    <div class="z-30 w-full flex justify-center gap-10 md:gap-32 my-6 md:my-16">--}}
-{{--        <div>--}}
-{{--            <img src="{{asset('img/flower01.jpeg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
-{{--        </div>--}}
-{{--        <div>--}}
-{{--            <img src="{{asset('img/flower02.jpeg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
-{{--        </div>--}}
-{{--        <div>--}}
-{{--            <img src="{{asset('img/flower03.jpg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    <div class="z-30 w-full flex justify-center gap-10 md:gap-32 my-6 md:my-16">
+        <div>
+            <img src="{{asset('img/flower01.jpeg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+        </div>
+        <div>
+            <img src="{{asset('img/flower02.jpeg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+        </div>
+        <div>
+            <img src="{{asset('img/flower03.jpg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+        </div>
+    </div>
 
     {{--１位商品詳細--}}
     <div class="flex flex-col md:flex-row justify-between items-center h-full md:w-full">
