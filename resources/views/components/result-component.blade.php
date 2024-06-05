@@ -46,7 +46,7 @@
                 {{--ボタン--}}
                 <aside class="flex justify-center gap-4 mx-6 md:mx-0">
                     <button class="back-start-btn">
-                        <a href="{{route('index')}}">初めからやり直す</a>
+                        <a href="{{route('Index')}}">初めからやり直す</a>
                     </button>
 
                     {{--modal open button--}}
