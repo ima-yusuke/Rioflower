@@ -14,7 +14,7 @@
     </div>
 
     {{--１位商品詳細--}}
-    <div class="flex flex-col md:flex-row justify-between items-center h-full md:w-full">
+    <div class="flex flex-col md:flex-row justify-between items-center h-full md:w-full w-full">
         {{--左側詳細--}}
         <div class="md:w-[50%]">
             <div id="big_ball" class="big-screen w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-main-brown rounded-full">
@@ -23,8 +23,8 @@
         </div>
 
         {{--右側詳細--}}
-        <div class="flex flex-col justify-center items-center gap-4 md:w-[50%] mx-10">
-            <div class="flex flex-col gap-8">
+        <div class="flex flex-col justify-center items-center gap-4 md:w-[50%] mx-10 w-full">
+            <div class="flex flex-col gap-8 w-full">
                 {{--タイトル--}}
                 <div class="font-bold flex flex-col gap-2">
                     <p>あなたにおすすめなのは</p>
