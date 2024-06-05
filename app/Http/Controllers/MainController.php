@@ -16,7 +16,10 @@ class MainController extends Controller
     public $data = [
         ["id" => 1, "question" => "どんな雰囲気？", "answer" => ["シック", "モダン", "暗め", "明るめ", "エレガント","シンプル","華やか","その他"], "order" => 1],
         ["id" => 2, "question" => "誰に渡す？", "answer" => ["自分", "友人", "家族", "恋人", "その他"], "order" => 2],
-        ["id" => 3, "question" => "いつ渡す？", "answer" => ["誕生日", "クリスマス", "卒業式", "その他"], "order" => 3]
+        ["id" => 3, "question" => "いつ渡す？", "answer" => ["誕生日", "クリスマス", "卒業式", "その他"], "order" => 3],
+        ["id" => 4, "question" => "いつ渡す？", "answer" => ["誕生日", "クリスマス", "卒業式", "その他"], "order" => 4],
+        ["id" => 5, "question" => "いつ渡す？", "answer" => ["誕生日", "クリスマス", "卒業式", "その他"], "order" => 5],
+        ["id" => 6, "question" => "いつ渡す？", "answer" => ["誕生日", "クリスマス", "卒業式", "その他"], "order" => 6],
     ];
 
     public function ShowQuestionPage()
