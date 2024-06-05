@@ -20,7 +20,8 @@ export default {
                 "top-button-pink":"rgb(254,135,185)",
                 "main-bg":"rgb(237,230,215)",
                 "main-brown":"rgb(191,158,116)",
-                "answers-container-border":"rgb(217,217,217)"
+                "answers-container-border":"rgb(217,217,217)",
+                "detail-bg":"rgb(255,248,248)"
             }
         },
     },

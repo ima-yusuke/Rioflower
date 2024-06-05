@@ -1,4 +1,4 @@
-<header class="relative top-0 left-0 w-[calc(100%-2rem)] h-[80px] flex justify-center items-center bg-white mx-4 my-2 rounded-3xl">
+<header class="relative z-10 top-0 left-0 w-[calc(100%-2rem)] h-[80px] flex justify-center items-center bg-white mx-4 my-2 rounded-3xl">
     <div class="text-nowrap absolute left-0">
         <i class="bi bi-chevron-left px-4"></i><span class="hidden md:inline-block">販売ページに戻る</span>
     </div>

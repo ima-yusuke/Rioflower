@@ -10,13 +10,13 @@
 }
 
 /*-------------------------------------[診断画面共通]-------------------------------------------*/
-.question-container,
-.result-container,
+
 .confirm-container{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 
@@ -61,18 +61,38 @@
     text-align: left;
 }
 
+.answer-btn span{
+   font-size: 14px;
+}
+
+/** デスクトップサイズ以上 *!*/
+@media (min-width: 1024px) {
+    .answer-btn span {
+        font-size: 16px;
+    }
+}
+
 /*各回答番号(span)*/
 .answer-num-white {
     display: inline-flex; /* flexコンテナとして表示 */
     justify-content: center; /* 横方向に中央揃え */
     align-items: center; /* 縦方向に中央揃え */
-    width: 25px; /* サイズを適宜調整 */
-    height: 25px; /* サイズを適宜調整 */
+    width: 20px; /* サイズを適宜調整 */
+    height: 20px; /* サイズを適宜調整 */
     border-radius: 50%; /* 丸くする */
     margin-right: 10px;
     font-size: 14px;
     background-color: white;
     color: rgb(191,158,116);
+}
+
+/* デスクトップサイズ以上 */
+@media (min-width: 1024px) {
+    .answer-num-white {
+        width: 25px; /* サイズを適宜調整 */
+        height: 25px; /* サイズを適宜調整 */
+        font-size: 14px;
+    }
 }
 
 /*戻るボタンコンテイナー*/
@@ -85,7 +105,21 @@
     border-radius: 1.5rem; /* 16px */
     width: 100%;
     height: 100%;
+    object-fit: cover;
 }
+
+.position-absolute{
+    position: absolute;
+    top:80%;
+    left: 0;
+    transform: translateY(-80%);
+}
+
+#question_answers_container {
+    max-height: calc(100% - 100px); /* 質問文の高さやマージンに応じて調整 */
+}
+
+
 /*-------------------------------------[確認画面]-------------------------------------------*/
 
 /*各質問・回答セット*/
@@ -112,7 +146,7 @@
 
 /*各回答（span)*/
 .confirm-answer{
-    width: 450px;
+    width:300px;
     background-color:white; /* 背景色を適宜指定 */
     display: flex;
     justify-content:space-between;
@@ -122,6 +156,15 @@
     margin-top: 5px;
     border-radius: 20px;
 }
+
+
+/** デスクトップサイズ以上 *!*/
+@media (min-width: 1024px) {
+    .confirm-answer {
+        width: 450px;
+    }
+}
+
 
 /*各回答番号(span)*/
 .confirm-answer-num {
@@ -159,10 +202,16 @@
     width: 250px;
 }
 
+.big-screen{
+    position: relative;
+    transform: translateX(-10rem);
+}
 
-
-
-
+.small-screen{
+    position: absolute;
+    top: -10%;
+    left: -30%;
+}
 
 
 
