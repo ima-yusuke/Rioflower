@@ -6,7 +6,7 @@
                 <p class="text-white">Step by Step Bloom by Bloom</p>
                 <p class="text-[#DA9F9F] bg-white p-2">Find Your Perfect Dry Flower</p>
             </div>
-            <div class="absolute left-1/2 -translate-x-1/2 top-1/2 text-2xl md:left-32 md:-translate-x-0 md:top-64 md:text-5xl text-nowrap text-white font-bold">
+            <div class="absolute left-1/2 -translate-x-1/2 top-1/2 text-2xl md:left-32 md:-translate-x-0 md:top-64 lg:text-3xl xl:text-5xl text-nowrap text-white font-bold">
                 簡単な質問に答えて<br>
                 あなたにピッタリな花を<br>
                 見つけよう
