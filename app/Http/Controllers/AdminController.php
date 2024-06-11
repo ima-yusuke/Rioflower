@@ -15,8 +15,8 @@ class AdminController extends Controller
     {
         $products =Product::where('is_enabled', 1)->get();;
         $hiddenProducts = Product::where('is_enabled', 0)->get();
-        $data = Detail::all();
-        return view("dash-product",compact("products","hiddenProducts","data"));
+        $details = Detail::all();
+        return view("dash-product",compact("products","hiddenProducts","details"));
     }
 
     //[追加]商品
@@ -38,8 +38,7 @@ class AdminController extends Controller
         }else{
             $product->priority = $request->priority;
         }
-        $product->pickup_link = $request->pickup_link;
-        $product->delivery_link = $request->delivery_link;
+        $product->price = $request->price;
         $product->is_enabled =1;
         $product->save();
 
@@ -100,7 +99,33 @@ class AdminController extends Controller
             "priority"=>$request->priority
         ]);
 
-        return redirect()->route('ShowProduct');
+        //Quillの保存
+        DB::beginTransaction();
+        try {
+            $id = $product->id;
+
+            // レコードを削除
+            Detail::where("product_id",$id)->delete();
+
+            $quillData = json_decode($request->quill_data, true);
+            foreach ($quillData["ops"]  as $value){
+                $detail = new Detail();
+                $detail->product_id = $id;
+                $detail->insert = $value["insert"];
+                if (isset($value["attributes"])) {
+                    $detail->attributes = json_encode($value["attributes"]);
+                } else {
+                    $detail->attributes = null;
+                }
+                $detail->save();
+            };
+
+            DB::commit();
+            return redirect()->route('ShowProduct');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return ['msg' => $e->getMessage(), 'request' => $request->all()];
+        }
     }
 
     //[削除]商品
@@ -110,6 +135,10 @@ class AdminController extends Controller
         $product = Product::find($request->id);
         // レコードを削除
         $product->delete();
+
+        //Quill（detailテーブルのデータ）削除
+        Detail ::where('product_id', $request->id)->delete();
+
         // 削除したら一覧画面にリダイレクト
         return redirect()->route('ShowProduct');
     }

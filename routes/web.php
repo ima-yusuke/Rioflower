@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\AdminController;
 
-Route::get('/', [MainController::class, 'index'])->name('index');
+Route::get('/', [MainController::class, 'index'])->name('Index');
 Route::get('/question', [MainController::class, 'ShowQuestionPage'])->name('ShowQuestionPage');
 
 Route::get('/dashboard', function () {

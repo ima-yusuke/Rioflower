@@ -1,7 +1,6 @@
 import Quill from "quill";
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
-import Axios from "axios";
 
 const EDIT_BUTTONS = document.querySelectorAll('.editBtn');//編集ボタン
 const EDITOR_CONTAINERS = document.getElementsByClassName("editor");//Quill挿入箇所
@@ -9,10 +8,13 @@ const SUBMIT_BUTTONS = document.getElementsByClassName('submit-btn');//登録/�
 let quill = null; // Quillインスタンスを保持する変数
 let newImgString64 = null;//画像データを文字にして保存
 let flag = false;
-let currentQuillData = null;//現在のQuill内のデータを保存
+let newImgQuillData = null;//現在のQuill内のデータを保存
+let currentIndex = null;//更新時に何番目のQuillかindexを保存
 
 EDIT_BUTTONS.forEach((btn,idx) => {
     btn.addEventListener('click', function() {
+
+        currentIndex = idx;
 
         let selectedAccordion = btn.parentNode.parentNode.nextElementSibling;//アコーディオン中身
 
@@ -36,7 +38,7 @@ EDIT_BUTTONS.forEach((btn,idx) => {
 
             // Quill実装
             DeleteQuill(idx)
-            CreateQuill(idx,btn)
+            CreateQuill(idx)
 
             // DBに保存されてるデータの表示
             if(this.getAttribute('data-product-id')!=null){
@@ -46,26 +48,8 @@ EDIT_BUTTONS.forEach((btn,idx) => {
     });
 });
 
-// Quill削除
-function DeleteQuill(idx){
-    let quillContainer = EDITOR_CONTAINERS[idx];
-    while(quillContainer.firstChild){
-        quillContainer.removeChild(quillContainer.firstChild)
-    }
-
-    if (quill) {
-        quill.off(); // イベントリスナーを解除
-        let quillContainer = document.querySelector('.ql-container');
-        if (quillContainer) {
-            quillContainer.parentNode.removeChild(quillContainer);
-        }
-        quill = null;
-    }
-    flag = true;
-}
-
-// Quill作成
-function CreateQuill(idx,btn){
+// [Quill作成]
+function CreateQuill(idx){
 
     // 編集用Quill(リッチテキスト)作成
     let quillDiv = document.createElement("div");
@@ -74,11 +58,7 @@ function CreateQuill(idx,btn){
     // タイトル作成
     let title = document.createElement("p");
     title.classList.add("quillTitle")
-    if(btn.classList.contains("addProductBtn")){
-        title.innerHTML = "6.商品詳細";
-    }else{
-        title.innerHTML = "4.商品詳細";
-    }
+    title.innerHTML = "5.商品詳細";
 
     // 選択されたアコーディオンにappend
     EDITOR_CONTAINERS[idx].appendChild(title);
@@ -118,9 +98,63 @@ function CreateQuill(idx,btn){
     flag = false;
 }
 
+// [Quill表示]
+function ShowData(id) {
 
-//====================================[imgボタンをクリックしたときの処理]============================================
+    let currentData = [];
+    if(flag === false) {
+        // 編集をクリックしアコーディオンを開いたときDBに既にデータがあればcurrentDataに追加
+        let detailsAllData =Laravel.data;
+        detailsAllData.forEach((value)=>{
+            if(value["product_id"]==id){
+                currentData.push(value);
+            }
+        })
+    }else{
+        // 画像をQuillにアップロードした場合
+        currentData = newImgQuillData;
+    }
 
+    let setData = []
+    if(currentData.length>0){
+        currentData.forEach((value) => {
+            if(flag===false) {
+                // DBから取得したので文字列からJSON形式に戻す
+                setData.push({"insert": JSON.parse(value["insert"]), "attributes": JSON.parse(value["attributes"])})
+            }else{
+                // そのまま追加
+                setData.push({"insert": value["insert"], "attributes": value["attributes"]})
+            }
+        })
+    }
+
+    //Quillデータをエディター内に表示
+    quill.setContents(setData);
+
+    newImgString64 = null;
+    flag = true;
+}
+
+// [Quill削除]
+function DeleteQuill(idx){
+    let quillContainer = EDITOR_CONTAINERS[idx];
+    while(quillContainer.firstChild){
+        quillContainer.removeChild(quillContainer.firstChild)
+    }
+
+    if (quill) {
+        quill.off(); // イベントリスナーを解除
+        let quillContainer = document.querySelector('.ql-container');
+        if (quillContainer) {
+            quillContainer.parentNode.removeChild(quillContainer);
+        }
+        quill = null;
+    }
+    flag = true;
+}
+
+
+// [Quillのimgアイコンクリック時の処理]
 function SelectLocalImage() {
 
     const IMG_INPUT = document.createElement('input');
@@ -151,7 +185,8 @@ function SelectLocalImage() {
                 // 画像を挿入する
                 quill.insertEmbed(index, 'image', newImgString64);
             }
-            currentQuillData = quill.getContents().ops;
+            newImgQuillData = quill.getContents().ops;
+            flag = true;
             ShowData()
         };
 
@@ -160,7 +195,7 @@ function SelectLocalImage() {
     };
 }
 
-// ======================================[現在のカーソル位置取得]================================================================
+//[現在のカーソル位置取得]
 function GetCurrentIndex() {
     // 現在のカーソル位置を取得
     let selection = quill.getSelection();
@@ -171,8 +206,7 @@ function GetCurrentIndex() {
     }
 }
 
-// ======================================[データ受け渡しfunction]================================================================
-
+// [データ受け渡しfunction]
 function SendData(){
     const OPS = quill.getContents().ops;
     const DATAS = [];
@@ -185,54 +219,20 @@ function SendData(){
         "ops": DATAS
     };
 
-    // !!!!!!!ここがidだとだめ（既存商品のquill修正でも必要だし、現在新規商品のみしかできない！！！！！！！
-    const QUILL_DATA_INPUT = document.getElementById('quillData');
-    QUILL_DATA_INPUT.value = JSON.stringify(NEW_QUILL_DATA);
+    if(flag ===false){
+        // 新規登録
+        const NEW_QUILL_INPUT = document.getElementById('quillData');
+        NEW_QUILL_INPUT.value = JSON.stringify(NEW_QUILL_DATA);
+    }else{
+        // 更新
+        const UPDATE_QUILL_INPUT = document.getElementsByClassName("quillData")[currentIndex];
+        UPDATE_QUILL_INPUT.value =JSON.stringify(NEW_QUILL_DATA);
+    }
 }
-
-// ======================================[データをlaravelへ受け渡し]================================================================
 
 for(let  i =0;i<SUBMIT_BUTTONS.length;i++){
     SUBMIT_BUTTONS[i].addEventListener("click",function (){
         SendData(SUBMIT_BUTTONS[i]);
     })
 }
-
-// ====================[エディター内にデータを表示する]==========================
-function ShowData(id) {
-
-    // json_data:すでにデータべースに保存されてるデータ
-    let json_data = [];
-    if(flag === false) {
-        let detailsAllData =Laravel.data;
-        detailsAllData.forEach((value)=>{
-            if(value["product_id"]==id){
-                json_data.push(value);
-            }
-        })
-    }else{
-        json_data = currentQuillData;
-    }
-
-    let setdata = []
-    if(json_data.length>0){
-        json_data.forEach((value, idx) => {
-            if(flag===false) {
-                setdata.push({"insert": JSON.parse(value["insert"]), "attributes": JSON.parse(value["attributes"])})
-            }else{
-                setdata.push({"insert": value["insert"], "attributes": value["attributes"]})
-            }
-        })
-    }
-
-    //データを表示
-    quill.setContents(setdata);
-    newImgString64 = null;
-    flag = true;
-}
-
-
-
-
-
 
