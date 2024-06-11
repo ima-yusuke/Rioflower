@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             ProductsTableSeeder::class,
             QuestionsTableSeeder::class,
             ChoicesTableSeeder::class,
+            LinksTableSeeder::class,
         ]);
     }
 }

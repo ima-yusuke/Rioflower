@@ -26,9 +26,8 @@ class ProductFactory extends Factory
         return [
             'name' => $faker->realText(10),
             'img' => $faker->imageUrl,
-            'pickup_link' => $faker->url,
-            'delivery_link' => $faker->url,
-            'priority' => $faker->unique()->numberBetween(1, 30),
+            'price' => $faker->numberBetween(1, 5),
+            'priority' => $faker->numberBetween(1, 5),
             'is_enabled' => $faker->boolean,
         ];
     }
