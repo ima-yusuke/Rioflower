@@ -26,6 +26,7 @@ export default defineConfig({
                 appStyles: 'resources/css/app.css',
                 index: 'resources/js/index.js',
                 question: 'resources/js/question.js',
+                dashLink: 'resources/js/admin/dash-link.js',
             }
         }
     }
