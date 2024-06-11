@@ -8,6 +8,6 @@ class AdminController extends Controller
 {
     public function ShowLink()
     {
-        return view('link');
+        return view('dash-link');
     }
 }
