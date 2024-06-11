@@ -17,8 +17,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'img',
-        'pickup_link',
-        'delivery_link',
+        'price',
         'priority',
         'is_enabled',
     ];
