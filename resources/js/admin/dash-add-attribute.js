@@ -47,7 +47,7 @@ CAT_ADD_BTN.addEventListener('click', function() {
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         },
         body: JSON.stringify({
-            category: CATEGORY,
+            name: CATEGORY,
         })
     })
         .then(response => {
@@ -92,7 +92,6 @@ CAT_DELETE_BTN.forEach((btn) => {
             })
             .then(data => {
                 if (data.redirect) {
-                    window.alert('カテゴリーを削除しました');
                     window.location.href = data.redirect;
                 } else if (data.message) {
                     window.alert(data.message);
@@ -132,7 +131,6 @@ ATT_ADD_BTN.forEach((btn) => {
             .then(data => {
                 if (data.message) {
                     window.alert(data.message);
-                    window.alert('属性を追加しました');
                     window.location.reload(); // 成功したらページをリロード
                 }
             })
@@ -166,7 +164,6 @@ ATT_DELETE_BTN.forEach((btn) => {
             .then(data => {
                 if (data.redirect) {
                     window.alert(data.message);
-                    window.alert('属性を削除しました');
                     window.location.href = data.redirect;
                 } else if (data.message) {
                     window.alert(data.message);
