@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::post("/dashboard/category",[AdminController::class,"AddCategory"])->name("AddCategory");
     Route::post("/dashboard/attribute",[AdminController::class,"AddAttribute"])->name("AddAttribute");
     Route::delete("/dashboard/category/{id}",[AdminController::class,"DeleteCategory"])->name("DeleteCategory");
-    Route::delete("/dashboard/attribute",[AdminController::class,"DeleteAttribute"])->name("DeleteAttribute");
+    Route::delete("/dashboard/attribute/{id}",[AdminController::class,"DeleteAttribute"])->name("DeleteAttribute");
 });
 
 require __DIR__.'/auth.php';

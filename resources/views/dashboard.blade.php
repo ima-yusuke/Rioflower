@@ -25,7 +25,7 @@
             </a>
         </div>
         <div class="flex flex-col justify-center items-center shadow-xl text-center border-4 border-solid border-black bg-white w-[30%]">
-            <a href="" class="w-full h-full hover:bg-black hover:text-white p-3">
+            <a href="{{ route('ShowAddAttribute') }}" class="w-full h-full hover:bg-black hover:text-white p-3">
                 <div class="flex flex-col gap-2">
                     <p><i class="fa-solid fa-palette text-4xl"></i></p>
                     <p class="font-bold">属性追加</p>
