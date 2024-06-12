@@ -179,6 +179,8 @@ class AdminController extends Controller
         $request->validate([
             'course' => ['required'],
             'price' => ['required'],
+            'pickup_link' => ['url', 'nullable'],
+            'delivery_link' => ['url', 'nullable'],
         ]);
 
         // トランザクションを開始
