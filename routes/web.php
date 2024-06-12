@@ -19,9 +19,9 @@ Route::middleware('auth')->group(function () {
 
     //商品
     Route::get("/dashboard/product",[AdminController::class,"ShowProduct"])->name("ShowProduct");
-    Route::post("/dashboard/add-product",[AdminController::class,"AddProduct"])->name("AddProduct");
-    Route::patch('/dashboard/update-product/{product}', [AdminController::class,"UpdateProduct"])->name('UpdateProduct');
-    Route::post("/dashboard/delete-product/",[AdminController::class,"DeleteProduct"])->name("DeleteProduct");
+    Route::post("/dashboard/product",[AdminController::class,"AddProduct"])->name("AddProduct");
+    Route::patch('/dashboard/product/{product}', [AdminController::class,"UpdateProduct"])->name('UpdateProduct');
+    Route::delete("/dashboard/product",[AdminController::class,"DeleteProduct"])->name("DeleteProduct");
     Route::post("/dashboard/toggle-product/",[AdminController::class,"ToggleProduct"])->name("ToggleProduct");
 
     //リンク
@@ -29,6 +29,10 @@ Route::middleware('auth')->group(function () {
     Route::post("/dashboard/add-link",[AdminController::class,"AddLink"])->name("AddLink");
     Route::patch('/dashboard/update-link/{id}', [AdminController::class,"UpdateLink"])->name('UpdateLink');
     Route::post('/dashboard/delete-link/', [AdminController::class,"DeleteLink"])->name('DeleteLink');
+
+    //質問
+    Route::get("/dashboard/question",[AdminController::class,"ShowQuestion"])->name("ShowQuestion");
+    Route::post("/dashboard/toggle-question/",[AdminController::class,"ToggleQuestion"])->name("ToggleQuestion");
 });
 
 require __DIR__.'/auth.php';

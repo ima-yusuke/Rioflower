@@ -7,10 +7,10 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
-                'resources/js/question.js',
                 'resources/js/index.js',
-                'resources/js/accordion.js',
+                'resources/js/admin/dash-product.js',
                 'resources/js/admin/dash-link.js',
+                'resources/js/admin/dash-question.js',
             ],
             refresh: true,
         }),
@@ -27,7 +27,7 @@ export default defineConfig({
                 app: 'resources/js/app.js',
                 appStyles: 'resources/css/app.css',
                 index: 'resources/js/index.js',
-                question: 'resources/js/question.js',
+                question: 'resources/js/dash-question.js',
                 dashLink: 'resources/js/admin/dash-link.js',
             }
         }

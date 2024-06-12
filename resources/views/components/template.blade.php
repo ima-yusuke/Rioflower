@@ -4,7 +4,7 @@
     @if(isset($description))
         <meta name="description" content="{{ $description }}"/>
     @endif
-    @vite(['resources/css/'.$css,'resources/js/question.js','resources/js/accordion.js'])
+    @vite(['resources/css/'.$css,'resources/js/dash-question.js','resources/js/dash-product.js'])
 </x-head>
 <div class="flex flex-col justify-between h-[100dvh]">
     <x-header>

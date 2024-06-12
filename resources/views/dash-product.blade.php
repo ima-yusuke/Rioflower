@@ -1,5 +1,4 @@
-<x-template title="管理画面" css="app.css">
-
+<x-app-layout>
     {{--表示商品一覧--}}
     <div class="flex flex-col items-center w-full pt-12">
         <div class="flex justify-start w-[80%]">
@@ -180,34 +179,41 @@
             </div>
         @endforeach
     </div>
-</x-template>
+    @vite(['resources/js/admin/dash-product.js'])
+</x-app-layout>
+
 <script>
 
     // 削除
     function DeleteProduct(id) {
-
-        // Ajaxリクエストを送信して削除処理を行う
-        fetch('{{route('DeleteProduct')}}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ id: id })
-        })
-            .then(response => {
-                if (response.ok) {
-                    // 削除が成功したらページをリロードするなどの処理を行う
-                    location.reload();
-                    console.log("削除完了")
-                } else {
-                    // エラーメッセージを表示するなどの処理を行う
-                    console.error('削除に失敗しました');
-                }
+        // 確認ダイアログを表示し、ユーザーがOKを押した場合のみ削除処理を実行
+        if (confirm('本当に削除しますか？')) {
+            // Ajaxリクエストを送信して削除処理を行う
+            fetch('{{ route('DeleteProduct') }}', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ id: id })
             })
-            .catch(error => {
-                console.error('削除に失敗しました:', error);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        return response.json(); // JSONレスポンスをパースする
+                    } else {
+                        throw new Error('削除に失敗しました');
+                    }
+                })
+                .then(data => {
+                    console.log(data.message); // 成功メッセージをコンソールに表示
+                    location.reload(); // ページをリロードして削除を反映
+                })
+                .catch(error => {
+                    console.error('削除に失敗しました:', error);
+                });
+        } else {
+            console.log('削除がキャンセルされました');
+        }
     }
 
     // 表示設定
@@ -237,6 +243,7 @@
             });
     }
 
+    // Quillデータの受け渡し
     window.Laravel = {};
     window.Laravel.data = @json($details);
 

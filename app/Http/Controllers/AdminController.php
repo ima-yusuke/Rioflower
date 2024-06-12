@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Choice;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Detail;
@@ -142,7 +144,7 @@ class AdminController extends Controller
         Detail ::where('product_id', $request->id)->delete();
 
         // 削除したら一覧画面にリダイレクト
-        return redirect()->route('ShowProduct');
+        return response()->json(['message' => 'Product deleted successfully']);
     }
 
     //[表示設定]商品
@@ -166,7 +168,66 @@ class AdminController extends Controller
         return redirect()->route('ShowProduct');
     }
 
-    //[ページ遷移]リンク
+    //[ページ遷移]質問
+    public function ShowQuestion()
+    {
+        //表示の質問をorder順に取得
+        $questions = Question::where('is_enabled', 1)->orderBy('order')->get();
+
+        // 非表示の質問をorder順に取得
+        $hiddenQuestions = Question::where('is_enabled', 0)->orderBy('order')->get();
+
+        // 全ての選択肢をorder順に取得
+        $choices = Choice::orderBy('order')->get();
+
+        // 質問と選択肢を格納する配列
+        $data = [];
+
+        foreach ($questions as $question) {
+            // 有効な質問の配列
+            $enabledQuestion = [
+                'id'=>$question["id"],
+                'question' => $question["text"],
+                'choices' => []
+            ];
+
+            foreach ($choices as $choice) {
+                if ($choice->question_id == $question->id) {
+                    // 質問に紐づく選択肢を追加
+                    $enabledQuestion['choices'][] = $choice["text"];
+                }
+            }
+
+            // 有効な質問とその選択肢を配列に追加
+            $data[] = $enabledQuestion;
+        }
+
+        return view("dash-question",compact("data","hiddenQuestions"));
+    }
+
+    //[表示設定]商品
+    public function ToggleQuestion(Request $request)
+    {
+        // 質問テーブルから指定のIDのレコード1件を取得
+        $question = Question::find($request->id);
+
+        $num = null;
+
+        if($question->is_enabled==0){
+            $num =1;
+        }else{
+            $num =0;
+        }
+        // レコードを更新
+        $question->update([
+            "is_enabled"=>$num
+        ]);
+        // 更新したら一覧画面にリダイレクト
+        return redirect()->route('ShowQuestion');
+    }
+
+
+//[ページ遷移]リンク
     public function ShowLink()
     {
         $data = Link::all();
