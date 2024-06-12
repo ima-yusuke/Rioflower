@@ -188,6 +188,8 @@ class AdminController extends Controller
             $link = new Link();
             $link->course = $request->course;
             $link->price = $request->price;
+            $link->pickup_link = $request->pickup_link;
+            $link->delivery_link = $request->delivery_link;
             $link->save();
 
             // トランザクションをコミット
