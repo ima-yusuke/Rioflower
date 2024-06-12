@@ -17,6 +17,11 @@ return new class extends Migration
             $table->bigInteger("category_id")->unsigned();
             $table->string("name");
             $table->tinyInteger("is_enabled")->default(1);
+
+            $table->foreign('category_id')
+                ->references('id')
+                ->on('categories')
+                ->onDelete('cascade'); // カスケード削除を設定
         });
     }
 

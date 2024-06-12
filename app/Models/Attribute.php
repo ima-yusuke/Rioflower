@@ -13,4 +13,9 @@ class Attribute extends Model
         'name',
         'is_enable',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
