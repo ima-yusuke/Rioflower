@@ -34,9 +34,11 @@ ADD_BTN.addEventListener('click', function() {
     // 新しいコースと価格帯を取得
     const COURSE = document.getElementById('course').value;
     const PRICE = document.getElementById('price').value;
+    const PICKUP = document.getElementById('pickup').value;
+    const DELIVERY = document.getElementById('delivery').value;
 
     if (!COURSE || !PRICE) {
-        window.alert('コースと価格帯を入力してください');
+        window.alert('コースと価格帯は必須です');
         return;
     }
 
@@ -49,8 +51,8 @@ ADD_BTN.addEventListener('click', function() {
         body: JSON.stringify({
             course: COURSE,
             price: PRICE,
-            pickup_link: null,
-            delivery_link: null
+            pickup_link: PICKUP,
+            delivery_link: DELIVERY
         })
     })
         .then(response => {
@@ -61,7 +63,7 @@ ADD_BTN.addEventListener('click', function() {
         })
         .then(data => {
             if (data.redirect) {
-                window.alert('コースを追加しました')
+                window.alert('リンクを追加しました')
                 window.location.href = data.redirect;
             } else if (data.message) {
                 alert(data.message);

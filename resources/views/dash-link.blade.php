@@ -19,11 +19,11 @@
                         <div class="flex flex-col md:ps-2">
                             <div class="flex justify-center items-center py-2">
                                 <label for="category" class="pe-2 font-medium text-gray-900 text-nowrap">受取リンク：</label>
-                                <input type="text" name="course" id="course" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="受取リンク"/>
+                                <input type="text" name="pickup" id="pickup" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="受取リンク"/>
                             </div>
                             <div class="flex justify-center items-center py-2">
                                 <label for="category" class="pe-2 font-medium text-gray-900 text-nowrap">郵送リンク：</label>
-                                <input type="text" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="郵送リンク"/>
+                                <input type="text" name="delivery" id="delivery" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="郵送リンク"/>
                             </div>
                         </div>
                     </div>
