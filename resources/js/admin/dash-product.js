@@ -2,17 +2,21 @@ import Quill from "quill";
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 
+const ADD_BUTTON = document.getElementById("add-product-btn");//新規登録ボタン
 const EDIT_BUTTONS = document.querySelectorAll('.editBtn');//編集ボタン
 const DELETE_BUTTONS = document.querySelectorAll('.deleteBtn');//削除ボタン
-const TOGGLE_INPUT = document.querySelectorAll('.toggleBtn');//toggleボタン
-const EDITOR_CONTAINERS = document.getElementsByClassName("editor");//Quill挿入箇所
 const SUBMIT_BUTTONS = document.getElementsByClassName('submit-btn');//登録/更新ボタン
+const TOGGLE_INPUT = document.querySelectorAll('.toggleBtn');//toggle input
+const FORM_ELEMENT = document.getElementById('productForm');//新規登録form
+
+const EDITOR_CONTAINERS = document.getElementsByClassName("editor");//Quill挿入箇所
 let quill = null; // Quillインスタンスを保持する変数
-let newImgString64 = null;//画像データを文字にして保存
-let imgFlag = false;
-let addUpdateFlag = false;
 let newImgQuillData = null;//現在のQuill内のデータを保存
 let currentIndex = null;//更新時に何番目のQuillかindexを保存
+let newImgString64 = null;//画像データを文字にして保存
+
+let imgFlag = false;
+let addUpdateFlag = false;
 
 EDIT_BUTTONS.forEach((btn,idx) => {
     btn.addEventListener('click', function() {
@@ -159,7 +163,6 @@ function DeleteQuill(idx){
     }
 }
 
-
 // [Quillのimgアイコンクリック時の処理]
 function SelectLocalImage() {
 
@@ -245,6 +248,8 @@ for(let  i =0;i<SUBMIT_BUTTONS.length;i++){
     })
 }
 
+// ---------------------------------------------------
+
 // 【表示設定】
 for (let i = 0; i < TOGGLE_INPUT.length; i++) {
     TOGGLE_INPUT[i].addEventListener('change', function () {
@@ -310,7 +315,6 @@ function DeleteProduct(btn) {
                 }
             })
             .then(data => {
-                console.log(data.message); // 成功メッセージをコンソールに表示
                 location.reload(); // ページをリロードして削除を反映
             })
             .catch(error => {
@@ -322,4 +326,70 @@ function DeleteProduct(btn) {
 }
 
 
+// 商品追加
+ADD_BUTTON.addEventListener('click', function() {
+    const formData = new FormData(FORM_ELEMENT);
+
+    fetch('/dashboard/product', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: formData
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.redirect) {
+                alert(data.message);
+                window.location.href = data.redirect;
+            } else if (data.message) {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('商品追加に失敗しました');
+        });
+});
+
+
+// 商品更新
+for (let i = 0; i < SUBMIT_BUTTONS.length; i++) {
+    SUBMIT_BUTTONS[i].addEventListener('click', function () {
+        const FORM_ELEMENTS = document.getElementsByClassName('productForm');
+        const formData = new FormData(FORM_ELEMENTS[i]);
+        const id = SUBMIT_BUTTONS[i].getAttribute('data-product-id');
+
+        fetch(`/dashboard/link/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // CSRFトークン
+            },
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.redirect) {
+                    alert(data.message);
+                    window.location.href = data.redirect;
+                } else if (data.message) {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('商品更新に失敗しました');
+            });
+    });
+}
 

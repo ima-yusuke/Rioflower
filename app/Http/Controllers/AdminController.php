@@ -28,7 +28,6 @@ class AdminController extends Controller
     //[追加]商品
     public function AddProduct(Request $request)
     {
-
         // アップロードされたファイル名を取得
         $fileName = $request->file('img')->getClientOriginalName();
 
@@ -71,50 +70,57 @@ class AdminController extends Controller
             };
 
             DB::commit();
-            return redirect()->route('ShowProduct');
+            return response()->json([
+                'message' => '商品が正常に追加されました',
+                'redirect' => route('ShowProduct')
+            ], 200);
+
         } catch (\Exception $e) {
             DB::rollback();
-            return ['msg' => $e->getMessage(), 'request' => $request->all()];
+            return response()->json([
+                'message' => '商品追加に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
     //[更新]商品
-    public function UpdateProduct(Request $request, Product $product)
+    public function UpdateProduct(Request $request, $id)
     {
-        $fileName =null;
+        $product = Product::find($id);
+        $fileName = null;
 
-        if($request->img!=null){
+
+        if($request->hasFile('img')){
             $fileName = $request->file('img')->getClientOriginalName();
-            $request->file('img')->storeAs('public/img', $fileName);
+            $filePath = $request->file('img')->storeAs('public/img', $fileName);
             $fileName = 'storage/img/'.$fileName;
 
-            //以前に保存された画像ファイルのパスを取得
-            $str = $product->img;
-            //パスの不要な部分（storage/img/）を取り除き、実際のファイル名だけを残す
-            $str = str_replace('storage/img/', '', $str);
-            //disk('public') でpublic ディスク（ディレクトリ）を対象に操作し削除
-            Storage::disk('public')->delete('img/' . $str);
+            // 以前に保存された画像ファイルのパスを取得
+            $previousImgPath = str_replace('storage/img/', '', $product->img);
 
-        }else{
+            // 以前の画像ファイルを削除
+            Storage::disk('public')->delete('img/' . $previousImgPath);
+        } else {
             $fileName = $product->img;
         }
 
         $product->update([
             "name" => $request->name,
             "img" => $fileName,
-            "priority"=>$request->priority
+            "priority" => $request->priority
         ]);
 
-        //Quillの保存
+        // Quillの保存
         DB::beginTransaction();
         try {
             $id = $product->id;
 
             // レコードを削除
-            Detail::where("product_id",$id)->delete();
+            Detail::where("product_id", $id)->delete();
 
             $quillData = json_decode($request->quill_data, true);
-            foreach ($quillData["ops"]  as $value){
+            foreach ($quillData["ops"] as $value){
                 $detail = new Detail();
                 $detail->product_id = $id;
                 $detail->insert = $value["insert"];
@@ -124,15 +130,23 @@ class AdminController extends Controller
                     $detail->attributes = null;
                 }
                 $detail->save();
-            };
+            }
 
             DB::commit();
-            return redirect()->route('ShowProduct');
+            return response()->json([
+                'message' => '商品が正常に更新されました',
+                'redirect' => route('ShowProduct')
+            ], 200);
+
         } catch (\Exception $e) {
             DB::rollback();
-            return ['msg' => $e->getMessage(), 'request' => $request->all()];
+            return response()->json([
+                'message' => '商品更新に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
+
 
     //[削除]商品
     public function DeleteProduct(Request $request)
@@ -143,9 +157,6 @@ class AdminController extends Controller
         if ($product) {
             // レコードを削除
             $product->delete();
-
-            // Quill（detailテーブルのデータ）削除
-            Detail::where('product_id', $request->id)->delete();
 
             // JSONレスポンスを返す
             return response()->json(['message' => '削除が完了しました']);

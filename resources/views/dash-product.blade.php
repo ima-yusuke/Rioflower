@@ -27,9 +27,8 @@
 
                     {{--既存商品詳細（最初非表示）--}}
                     <div class="qa__body">
-                        <form class="h-[400px] overflow-y-scroll flex flex-col" method="post" action="{{route('UpdateProduct',$value)}}" enctype="multipart/form-data">
+                        <form class="productForm h-[400px] overflow-y-scroll flex flex-col" method="post" enctype="multipart/form-data">
                             @csrf
-                            @method("patch")
                             <div class="flex items-center border-y border-solid border-gray-200 py-4">
                                 <p class="w-[250px]">1.商品画像の設定</p>
                                 <div class="flex gap-16">
@@ -69,15 +68,17 @@
                                     </select>
                                 </div>
                             </div>
-                            {{--テキスト箇所--}}
                             <div class="editor flex flex-col py-4 border-b border-solid border-gray-200">
-
+                                <!-- Quillエディターの内容が入る -->
                             </div>
-                            <!-- Hidden input to store Quill data -->
-                            <input type="hidden" name="quill_data" class="quillData" data-product-id="{{$value["id"]}}">
-
-                            <x-register-btn></x-register-btn>
+                            <input type="hidden" name="quill_data" class="quillData" required>
+                            <div class="flex justify-center mt-4">
+                                <button type="button" data-product-id="{{$value["id"]}}" class="submit-btn btn-border shadow-xl text-sm px-10 py-3 text-center">
+                                    更新
+                                </button>
+                            </div>
                         </form>
+
                     </div>
                 </div>
             @endforeach
@@ -97,7 +98,7 @@
 
                 {{--新規商品詳細登録フォーム（最初非表示）--}}
                 <div class="qa__body flex flex-col">
-                    <form class="h-[400px] overflow-y-scroll flex flex-col" id="productForm" method="post" action="{{route("AddProduct")}}" enctype="multipart/form-data">
+                    <form class="h-[400px] overflow-y-scroll flex flex-col" id="productForm" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="flex items-center border-y border-solid border-gray-200 py-4">
                             <div class="flex flex-col gap-2">
@@ -148,7 +149,7 @@
                         <!-- Hidden input to store Quill data -->
                         <input type="hidden" name="quill_data" id="quillData">
                         <div class="flex justify-center mt-4">
-                            <button type="submit" data-route="{{ route('AddProduct') }}" class="submit-btn btn-border shadow-xl text-sm px-10 py-3 text-center">
+                            <button type="button" data-route="{{ route('AddProduct') }}" id="add-product-btn" class="submit-btn btn-border shadow-xl text-sm px-10 py-3 text-center">
                                 登録
                             </button>
                         </div>
