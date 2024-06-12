@@ -230,8 +230,7 @@ class AdminController extends Controller
 
 
 //[ページ遷移]リンク
-    public function ShowLink()
-    {
+    public function ShowLink() {
         $data = Link::all();
         return view("dash-link", compact("data"));
     }
@@ -326,24 +325,65 @@ class AdminController extends Controller
         return view("dash-add-attribute", compact("attributes", "categories"));
     }
 
-    //[追加]属性カテゴリー
-    public function AddCategory()
-    {
-
-    }
-
-    //[追加]属性
-    public function AddAttribute() {
-
-    }
-
-    //[削除]属性カテゴリー
-    public function DeleteCategory() {
-
-    }
-
-    //[削除]属性
-    public function DeleteAttribute() {
-
-    }
+//    //[追加]属性カテゴリー
+//    public function AddCategory(Request $request) {
+//        // バリデーションルールを定義
+//        $request->validate([
+//            'name' => ['required'],
+//        ]);
+//
+//        // トランザクションを開始
+//        DB::beginTransaction();
+//        try {
+//            // リンクモデルを使ってデータを作成し、保存
+//            $category = new Category();
+//            $category->name = $request->name;
+//            $category->save();
+//
+//            // トランザクションをコミット
+//            DB::commit();
+//
+//            // 成功した場合はリダイレクト
+//            return response()->json([
+//                'message' => 'カテゴリーが正常に追加されました',
+//                'redirect' => route('ShowAddAttribute')
+//            ], 200);
+//        } catch (\Exception $e) {
+//            DB::rollback();
+//            Log::error('カテゴリーの追加に失敗しました: ' . $e->getMessage());
+//
+//            return response()->json([
+//                'message' => 'カテゴリーの追加に失敗しました'
+//            ], 500);
+//        }
+//    }
+//
+//    //[追加]属性
+//    public function AddAttribute() {
+//
+//    }
+//
+//    //[削除]属性カテゴリー
+//    public function DeleteCategory($id) {
+//        DB::beginTransaction();
+//        try {
+//            $category = Category::find($id);
+//            if ($category) {
+//                $category->delete();
+//                DB::commit();
+//                return response()->json(['message' => 'カテゴリーが削除されました', 'redirect' => route('ShowAddAttribute')]);
+//            } else {
+//                DB::rollBack();
+//                return response()->json(['message' => 'カテゴリーが見つかりませんでした'], 404);
+//            }
+//        } catch (\Exception $e) {
+//            DB::rollBack();
+//            return response()->json(['message' => 'カテゴリーの削除中にエラーが発生しました'], 500);
+//        }
+//    }
+//
+//    //[削除]属性
+//    public function DeleteAttribute() {
+//
+//    }
 }

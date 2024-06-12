@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             QuestionsTableSeeder::class,
             ChoicesTableSeeder::class,
             LinksTableSeeder::class,
+            CategoriesTableSeeder::class,
+            AttributesTableSeeder::class,
         ]);
     }
 }

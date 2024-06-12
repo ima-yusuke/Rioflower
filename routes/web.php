@@ -35,10 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::post("/dashboard/toggle-question/",[AdminController::class,"ToggleQuestion"])->name("ToggleQuestion");
 
     //属性追加
-    Route::get("/dashboard/attribute",[AdminController::class,"ShowAttribute"])->name("ShowAttribute");
+    Route::get("/dashboard/attribute",[AdminController::class,"ShowAddAttribute"])->name("ShowAddAttribute");
     Route::post("/dashboard/category",[AdminController::class,"AddCategory"])->name("AddCategory");
     Route::post("/dashboard/attribute",[AdminController::class,"AddAttribute"])->name("AddAttribute");
-    Route::delete("/dashboard/category",[AdminController::class,"DeleteCategory"])->name("DeleteCategory");
+    Route::delete("/dashboard/category/{id}",[AdminController::class,"DeleteCategory"])->name("DeleteCategory");
     Route::delete("/dashboard/attribute",[AdminController::class,"DeleteAttribute"])->name("DeleteAttribute");
 });
 
