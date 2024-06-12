@@ -26,9 +26,9 @@ Route::middleware('auth')->group(function () {
 
     //リンク
     Route::get("/dashboard/link",[AdminController::class,"ShowLink"])->name("ShowLink");
-    Route::post("/dashboard/add-link",[AdminController::class,"AddLink"])->name("AddLink");
-    Route::patch('/dashboard/update-link/{id}', [AdminController::class,"UpdateLink"])->name('UpdateLink');
-    Route::post('/dashboard/delete-link/', [AdminController::class,"DeleteLink"])->name('DeleteLink');
+    Route::post("/dashboard/link",[AdminController::class,"AddLink"])->name("AddLink");
+    Route::patch('/dashboard/link/{id}', [AdminController::class,"UpdateLink"])->name('UpdateLink');
+    Route::delete('/dashboard/link/{id}', [AdminController::class,"DeleteLink"])->name('DeleteLink');
 
     //質問
     Route::get("/dashboard/question",[AdminController::class,"ShowQuestion"])->name("ShowQuestion");

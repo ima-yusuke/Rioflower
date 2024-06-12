@@ -42,7 +42,7 @@ ADD_BTN.addEventListener('click', function() {
         return;
     }
 
-    fetch('/dashboard/add-link', {
+    fetch('/dashboard/link', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ document.querySelectorAll('.updateBtn').forEach((btn) => {
         const PICKUP_LINK = btn.closest('.link-area').querySelector('.pickup-link').value;
         const DELIVERY_LINK = btn.closest('.link-area').querySelector('.delivery-link').value;
 
-        fetch(`/dashboard/update-link/${ID}`, {
+        fetch(`/dashboard/link/${ID}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -122,15 +122,12 @@ DELETE_BTN.forEach((btn) => {
         if (!confirm('リンクを削除しますか？')) {
             return;
         }
-        fetch('/dashboard/delete-link', {
-            method: 'POST',
+        fetch(`/dashboard/link/${ID}`, {
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // CSRFトークン
-            },
-            body: JSON.stringify({
-                id: ID
-            })
+            }
         })
             .then(response => {
                 if (!response.ok) {

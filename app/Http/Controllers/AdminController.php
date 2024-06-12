@@ -298,10 +298,10 @@ class AdminController extends Controller
     }
 
     //[削除]リンク
-    public function DeleteLink(Request $request) {
+    public function DeleteLink($id) {
         DB::beginTransaction();
         try {
-            $link = Link::find($request->id);
+            $link = Link::find($id);
             if ($link) {
                 $link->delete();
                 DB::commit();
