@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Choice;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Detail;
 use App\Models\Link;
+use App\Models\Attribute;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -314,5 +316,34 @@ class AdminController extends Controller
             DB::rollBack();
             return response()->json(['message' => 'リンクの削除中にエラーが発生しました'], 500);
         }
+    }
+
+    //[ページ遷移]属性追加
+    public function ShowAddAttribute()
+    {
+        $attributes = Attribute::all();
+        $categories = Category::all();
+        return view("dash-add-attribute", compact("attributes", "categories"));
+    }
+
+    //[追加]属性カテゴリー
+    public function AddCategory()
+    {
+
+    }
+
+    //[追加]属性
+    public function AddAttribute() {
+
+    }
+
+    //[削除]属性カテゴリー
+    public function DeleteCategory() {
+
+    }
+
+    //[削除]属性
+    public function DeleteAttribute() {
+
     }
 }

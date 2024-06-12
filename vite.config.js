@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/js/admin/dash-product.js',
                 'resources/js/admin/dash-link.js',
                 'resources/js/admin/dash-question.js',
+                'resources/js/admin/dash-add-attribute.js',
             ],
             refresh: true,
         }),
@@ -27,8 +28,10 @@ export default defineConfig({
                 app: 'resources/js/app.js',
                 appStyles: 'resources/css/app.css',
                 index: 'resources/js/index.js',
-                question: 'resources/js/dash-question.js',
+                dashProduct: 'resources/js/admin/dash-product.js',
                 dashLink: 'resources/js/admin/dash-link.js',
+                question: 'resources/js/dash-question.js',
+                dashAddAttribute: 'resources/js/admin/dash-add-attribute.js',
             }
         }
     }
