@@ -11,7 +11,7 @@ class Attribute extends Model
     protected $fillable = [
         'category_id',
         'name',
-        'is_enable',
+        'is_enabled',
     ];
 
     public function category()
