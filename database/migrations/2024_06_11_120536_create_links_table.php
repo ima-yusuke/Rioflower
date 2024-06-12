@@ -16,8 +16,8 @@ return new class extends Migration
             $table->timestamps();
             $table->string('course');
             $table->integer('price');
-            $table->text('pickup_link');
-            $table->text('delivery_link');
+            $table->text('pickup_link')->nullable();
+            $table->text('delivery_link')->nullable();
         });
     }
 

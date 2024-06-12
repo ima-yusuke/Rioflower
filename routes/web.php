@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\AdminController;
 
-Route::get('/', [MainController::class, 'index'])->name('Index');
+Route::get('/', [MainController::class, 'Index'])->name('Index');
 Route::get('/question', [MainController::class, 'ShowQuestionPage'])->name('ShowQuestionPage');
 
 Route::get('/dashboard', function () {
@@ -24,6 +24,11 @@ Route::middleware('auth')->group(function () {
     Route::post("/dashboard/delete-product/",[AdminController::class,"DeleteProduct"])->name("DeleteProduct");
     Route::post("/dashboard/toggle-product/",[AdminController::class,"ToggleProduct"])->name("ToggleProduct");
 
+    //リンク
+    Route::get("/dashboard/link",[AdminController::class,"ShowLink"])->name("ShowLink");
+    Route::post("/dashboard/add-link",[AdminController::class,"AddLink"])->name("AddLink");
+    Route::patch('/dashboard/update-link/{id}', [AdminController::class,"UpdateLink"])->name('UpdateLink');
+    Route::post('/dashboard/delete-link/', [AdminController::class,"DeleteLink"])->name('DeleteLink');
 });
 
 require __DIR__.'/auth.php';

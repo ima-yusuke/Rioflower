@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Detail;
+use App\Models\Link;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -162,5 +164,90 @@ class AdminController extends Controller
         ]);
         // 更新したら一覧画面にリダイレクト
         return redirect()->route('ShowProduct');
+    }
+
+    //[ページ遷移]リンク
+    public function ShowLink()
+    {
+        $data = Link::all();
+        return view("dash-link", compact("data"));
+    }
+
+    //[追加]リンク
+    public function AddLink(Request $request) {
+        // バリデーションルールを定義
+        $request->validate([
+            'course' => ['required'],
+            'price' => ['required'],
+        ]);
+
+        // トランザクションを開始
+        DB::beginTransaction();
+        try {
+            // リンクモデルを使ってデータを作成し、保存
+            $link = new Link();
+            $link->course = $request->course;
+            $link->price = $request->price;
+            $link->save();
+
+            // トランザクションをコミット
+            DB::commit();
+
+            // 成功した場合はリダイレクト
+            return response()->json([
+                'message' => 'リンクが正常に追加されました',
+                'redirect' => route('ShowLink')
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('リンクの追加に失敗しました: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => 'リンクの追加に失敗しました'
+            ], 500);
+        }
+    }
+
+    //[更新]リンク
+    public function UpdateLink(Request $request, $id) {
+        $request->validate([
+            'pickup_link' => ['required'],
+            'delivery_link' => ['required'],
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $link = Link::find($id);
+            $link->pickup_link = $request->pickup_link;
+            $link->delivery_link = $request->delivery_link;
+            $link->save();
+
+            DB::commit();
+
+            return response()->json(['redirect' => route('ShowLink')]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('リンク情報の更新に失敗しました' . $e->getMessage());
+            return response()->json(['message' => 'リンクの更新に失敗しました'], 500);
+        }
+    }
+
+    //[削除]リンク
+    public function DeleteLink(Request $request) {
+        DB::beginTransaction();
+        try {
+            $link = Link::find($request->id);
+            if ($link) {
+                $link->delete();
+                DB::commit();
+                return response()->json(['message' => 'リンクが削除されました', 'redirect' => route('ShowLink')]);
+            } else {
+                DB::rollBack();
+                return response()->json(['message' => 'リンクが見つかりませんでした'], 404);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'リンクの削除中にエラーが発生しました'], 500);
+        }
     }
 }

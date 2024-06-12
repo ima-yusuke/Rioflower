@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/js/question.js',
                 'resources/js/index.js',
                 'resources/js/accordion.js',
+                'resources/js/admin/dash-link.js',
             ],
             refresh: true,
         }),
