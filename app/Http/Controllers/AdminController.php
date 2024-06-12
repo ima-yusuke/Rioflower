@@ -139,15 +139,21 @@ class AdminController extends Controller
     {
         // 商品テーブルから指定のIDのレコード1件を取得
         $product = Product::find($request->id);
-        // レコードを削除
-        $product->delete();
 
-        //Quill（detailテーブルのデータ）削除
-        Detail ::where('product_id', $request->id)->delete();
+        if ($product) {
+            // レコードを削除
+            $product->delete();
 
-        // 削除したら一覧画面にリダイレクト
-        return response()->json(['message' => 'Product deleted successfully']);
+            // Quill（detailテーブルのデータ）削除
+            Detail::where('product_id', $request->id)->delete();
+
+            // JSONレスポンスを返す
+            return response()->json(['message' => '削除が完了しました']);
+        } else {
+            return response()->json(['message' => '商品が見つかりませんでした'], 404);
+        }
     }
+
 
     //[表示設定]商品
     public function ToggleProduct(Request $request)
@@ -155,19 +161,17 @@ class AdminController extends Controller
         // 商品テーブルから指定のIDのレコード1件を取得
         $product = Product::find($request->id);
 
-        $num = null;
+        if ($product) {
+            // レコードを更新
+            $product->update([
+                "is_enabled" => $request->is_enabled
+            ]);
 
-        if($product->is_enabled==0){
-            $num =1;
-        }else{
-            $num =0;
+            // JSONレスポンスを返す
+            return response()->json(['message' => '表示設定が完了しました']);
+        } else {
+            return response()->json(['message' => '商品が見つかりませんでした'], 404);
         }
-        // レコードを更新
-        $product->update([
-            "is_enabled"=>$num
-        ]);
-        // 更新したら一覧画面にリダイレクト
-        return redirect()->route('ShowProduct');
     }
 
     //[ページ遷移]質問
@@ -213,23 +217,29 @@ class AdminController extends Controller
         // 質問テーブルから指定のIDのレコード1件を取得
         $question = Question::find($request->id);
 
-        $num = null;
+        if($question){
 
-        if($question->is_enabled==0){
-            $num =1;
-        }else{
-            $num =0;
+            $num = null;
+
+            if($question->is_enabled==0){
+                $num =1;
+            }else{
+                $num =0;
+            }
+            // レコードを更新
+            $question->update([
+                "is_enabled"=>$num
+            ]);
+
+            return response()->json(['message' => '削除が完了しました']);
+        } else {
+            return response()->json(['message' => '商品が見つかりませんでした'], 404);
         }
-        // レコードを更新
-        $question->update([
-            "is_enabled"=>$num
-        ]);
-        // 更新したら一覧画面にリダイレクト
-        return redirect()->route('ShowQuestion');
+
     }
 
 
-//[ページ遷移]リンク
+    //[ページ遷移]リンク
     public function ShowLink() {
         $data = Link::all();
         return view("dash-link", compact("data"));

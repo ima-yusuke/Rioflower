@@ -22,6 +22,11 @@ class Product extends Model
         'is_enabled',
     ];
 
+    public function details()
+    {
+        return $this->hasMany(Detail::class);
+    }
+
     /**
      * The attributes that should be cast to native types.
      *

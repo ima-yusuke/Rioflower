@@ -15,8 +15,13 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->bigInteger("product_id")->unsigned();
-            $table->text("insert")->default(null)->nullable();
+            $table->longText("insert")->default(null)->nullable();
             $table->text("attributes")->default(null)->nullable();
+
+            $table->foreign('product_id')
+                ->references('id')
+                ->on('products')
+                ->onDelete('cascade'); // カスケード削除を設定
         });
     }
 

@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::post("/dashboard/product",[AdminController::class,"AddProduct"])->name("AddProduct");
     Route::patch('/dashboard/product/{product}', [AdminController::class,"UpdateProduct"])->name('UpdateProduct');
     Route::delete("/dashboard/product",[AdminController::class,"DeleteProduct"])->name("DeleteProduct");
-    Route::post("/dashboard/toggle-product/",[AdminController::class,"ToggleProduct"])->name("ToggleProduct");
+    Route::post("/dashboard/toggle-product",[AdminController::class,"ToggleProduct"])->name("ToggleProduct");
 
     //リンク
     Route::get("/dashboard/link",[AdminController::class,"ShowLink"])->name("ShowLink");

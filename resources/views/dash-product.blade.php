@@ -16,12 +16,12 @@
                         <aside>
                             <label class="inline-flex items-center cursor-pointer mr-4">
                                 <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">非表示</span>
-                                <input onclick="ToggleProduct({{$value['id']}})" type="checkbox" value="" class="sr-only peer" checked>
+                                <input type="checkbox" value="{{$value['id']}}" class="toggleBtn sr-only peer" checked>
                                 <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">表示</span>
                             </label>
                             <a data-product-id="{{$value["id"]}}"  class="editBtn font-medium text-blue-600 hover:underline mr-4">編集</a>
-                            <a onclick="DeleteProduct({{$value['id']}})" class="deleteBtn font-medium text-blue-600 hover:underline">削除</a>
+                            <a data-product-id="{{$value["id"]}}"  class="deleteBtn font-medium text-blue-600 hover:underline">削除</a>
                         </aside>
                     </div>
 
@@ -147,8 +147,14 @@
 
                         <!-- Hidden input to store Quill data -->
                         <input type="hidden" name="quill_data" id="quillData">
-                        <x-register-btn></x-register-btn>
+                        <div class="flex justify-center mt-4">
+                            <button type="submit" data-route="{{ route('AddProduct') }}" class="submit-btn btn-border shadow-xl text-sm px-10 py-3 text-center">
+                                登録
+                            </button>
+                        </div>
+
                     </form>
+
                 </div>
             </div>
         </div>
@@ -169,11 +175,11 @@
                     <aside>
                         <label class="inline-flex items-center cursor-pointer mr-4">
                             <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">非表示</span>
-                            <input onclick="ToggleProduct({{$value['id']}})" type="checkbox" value="" class="sr-only peer">
+                            <input type="checkbox" value="{{$value['id']}}" class="toggleBtn sr-only peer">
                             <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                             <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">表示</span>
                         </label>
-                        <a onclick="DeleteProduct({{$value['id']}})" class="deleteBtn font-medium text-blue-600 hover:underline">削除</a>
+                        <a data-product-id="{{$value["id"]}}" class="deleteBtn font-medium text-blue-600 hover:underline">削除</a>
                     </aside>
                 </div>
             </div>
@@ -184,64 +190,6 @@
 
 <script>
 
-    // 削除
-    function DeleteProduct(id) {
-        // 確認ダイアログを表示し、ユーザーがOKを押した場合のみ削除処理を実行
-        if (confirm('本当に削除しますか？')) {
-            // Ajaxリクエストを送信して削除処理を行う
-            fetch('{{ route('DeleteProduct') }}', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ id: id })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json(); // JSONレスポンスをパースする
-                    } else {
-                        throw new Error('削除に失敗しました');
-                    }
-                })
-                .then(data => {
-                    console.log(data.message); // 成功メッセージをコンソールに表示
-                    location.reload(); // ページをリロードして削除を反映
-                })
-                .catch(error => {
-                    console.error('削除に失敗しました:', error);
-                });
-        } else {
-            console.log('削除がキャンセルされました');
-        }
-    }
-
-    // 表示設定
-    function ToggleProduct(id) {
-
-        // Ajaxリクエストを送信して更新処理を行う
-        fetch('{{route('ToggleProduct')}}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ id: id })
-        })
-            .then(response => {
-                if (response.ok) {
-                    // 更新が成功したらページをリロードするなどの処理を行う
-                    location.reload();
-                    console.log("更新完了")
-                } else {
-                    // エラーメッセージを表示するなどの処理を行う
-                    console.error('更新に失敗しました');
-                }
-            })
-            .catch(error => {
-                console.error('更新に失敗しました:', error);
-            });
-    }
 
     // Quillデータの受け渡し
     window.Laravel = {};

@@ -3,11 +3,14 @@ import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 
 const EDIT_BUTTONS = document.querySelectorAll('.editBtn');//編集ボタン
+const DELETE_BUTTONS = document.querySelectorAll('.deleteBtn');//削除ボタン
+const TOGGLE_INPUT = document.querySelectorAll('.toggleBtn');//toggleボタン
 const EDITOR_CONTAINERS = document.getElementsByClassName("editor");//Quill挿入箇所
 const SUBMIT_BUTTONS = document.getElementsByClassName('submit-btn');//登録/更新ボタン
 let quill = null; // Quillインスタンスを保持する変数
 let newImgString64 = null;//画像データを文字にして保存
-let flag = false;
+let imgFlag = false;
+let addUpdateFlag = false;
 let newImgQuillData = null;//現在のQuill内のデータを保存
 let currentIndex = null;//更新時に何番目のQuillかindexを保存
 
@@ -39,6 +42,11 @@ EDIT_BUTTONS.forEach((btn,idx) => {
             // Quill実装
             DeleteQuill(idx)
             CreateQuill(idx)
+
+            // 新規登録のみflag=trueになる
+            if(this.classList.contains("addProductBtn")){
+                addUpdateFlag = true;
+            }
 
             // DBに保存されてるデータの表示
             if(this.getAttribute('data-product-id')!=null){
@@ -94,15 +102,14 @@ function CreateQuill(idx){
     quill.getModule('toolbar').addHandler('image', () => {
         SelectLocalImage();
     });
-
-    flag = false;
 }
 
 // [Quill表示]
 function ShowData(id) {
 
     let currentData = [];
-    if(flag === false) {
+
+    if(imgFlag === false) {
         // 編集をクリックしアコーディオンを開いたときDBに既にデータがあればcurrentDataに追加
         let detailsAllData =Laravel.data;
         detailsAllData.forEach((value)=>{
@@ -115,10 +122,11 @@ function ShowData(id) {
         currentData = newImgQuillData;
     }
 
-    let setData = []
+    let setData = [];
+
     if(currentData.length>0){
         currentData.forEach((value) => {
-            if(flag===false) {
+            if(imgFlag===false) {
                 // DBから取得したので文字列からJSON形式に戻す
                 setData.push({"insert": JSON.parse(value["insert"]), "attributes": JSON.parse(value["attributes"])})
             }else{
@@ -132,7 +140,6 @@ function ShowData(id) {
     quill.setContents(setData);
 
     newImgString64 = null;
-    flag = true;
 }
 
 // [Quill削除]
@@ -150,7 +157,6 @@ function DeleteQuill(idx){
         }
         quill = null;
     }
-    flag = true;
 }
 
 
@@ -186,7 +192,8 @@ function SelectLocalImage() {
                 quill.insertEmbed(index, 'image', newImgString64);
             }
             newImgQuillData = quill.getContents().ops;
-            flag = true;
+
+            imgFlag = true;
             ShowData()
         };
 
@@ -210,6 +217,7 @@ function GetCurrentIndex() {
 function SendData(){
     const OPS = quill.getContents().ops;
     const DATAS = [];
+
     OPS.forEach((value) => {
         if(value.attributes !== "undefined") {
             DATAS.push({"insert": JSON.stringify(value.insert), "attributes": value.attributes});
@@ -219,10 +227,11 @@ function SendData(){
         "ops": DATAS
     };
 
-    if(flag ===false){
+    if(addUpdateFlag===true){
         // 新規登録
         const NEW_QUILL_INPUT = document.getElementById('quillData');
         NEW_QUILL_INPUT.value = JSON.stringify(NEW_QUILL_DATA);
+
     }else{
         // 更新
         const UPDATE_QUILL_INPUT = document.getElementsByClassName("quillData")[currentIndex];
@@ -232,7 +241,85 @@ function SendData(){
 
 for(let  i =0;i<SUBMIT_BUTTONS.length;i++){
     SUBMIT_BUTTONS[i].addEventListener("click",function (){
-        SendData(SUBMIT_BUTTONS[i]);
+        SendData();
     })
 }
+
+// 【表示設定】
+for (let i = 0; i < TOGGLE_INPUT.length; i++) {
+    TOGGLE_INPUT[i].addEventListener('change', function () {
+        ToggleProduct(TOGGLE_INPUT[i]);
+    });
+}
+function ToggleProduct(btn) {
+
+    let id = btn.value;
+    let is_enabled = btn.checked ? 1 : 0; // チェックボックスがチェックされているかどうかでis_enabledを設定
+
+    // Ajaxリクエストを送信して更新処理を行う
+    fetch('/dashboard/toggle-product', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // トークンをメタタグから取得
+        },
+        body: JSON.stringify({ id: id, is_enabled: is_enabled })
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json(); // JSONレスポンスをパースする
+            } else {
+                throw new Error('削除に失敗しました');
+            }
+        })
+        .then(data => {
+            console.log(data.message); // 成功メッセージをコンソールに表示
+            location.reload(); // ページをリロードして削除を反映
+        })
+        .catch(error => {
+            console.error('削除に失敗しました:', error);
+        });
+}
+
+//【商品削除】
+for (let i = 0; i < DELETE_BUTTONS.length; i++) {
+    DELETE_BUTTONS[i].addEventListener('click', function () {
+        DeleteProduct(DELETE_BUTTONS[i]);
+    });
+}
+
+function DeleteProduct(btn) {
+    let id = btn.getAttribute('data-product-id');
+
+    // 確認ダイアログを表示し、ユーザーがOKを押した場合のみ削除処理を実行
+    if (confirm('本当に削除しますか？')) {
+        // Ajaxリクエストを送信して削除処理を行う
+        fetch('/dashboard/product', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // トークンをメタタグから取得
+            },
+            body: JSON.stringify({ id: id })
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // JSONレスポンスをパースする
+                } else {
+                    throw new Error('削除に失敗しました');
+                }
+            })
+            .then(data => {
+                console.log(data.message); // 成功メッセージをコンソールに表示
+                location.reload(); // ページをリロードして削除を反映
+            })
+            .catch(error => {
+                console.error('削除に失敗しました:', error);
+            });
+    } else {
+        console.log('削除がキャンセルされました');
+    }
+}
+
+
 
