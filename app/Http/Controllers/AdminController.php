@@ -19,15 +19,16 @@ class AdminController extends Controller
     //[ページ遷移]商品
     public function ShowProduct()
     {
-        $products =Product::where('is_enabled', 1)->get();;
+        $products = Product::where('is_enabled', 1)->get();;
         $hiddenProducts = Product::where('is_enabled', 0)->get();
         $details = Detail::all();
-        return view("dash-product",compact("products","hiddenProducts","details"));
+        return view("dash-product", compact("products", "hiddenProducts", "details"));
     }
 
     //[追加]商品
     public function AddProduct(Request $request)
     {
+
         // アップロードされたファイル名を取得
         $fileName = $request->file('img')->getClientOriginalName();
 
@@ -37,14 +38,14 @@ class AdminController extends Controller
         //商品情報の保存
         $product = new Product();
         $product->name = $request->name;
-        $product->img = 'storage/img/'.$fileName;
-        if($request->priority==null){
+        $product->img = 'storage/img/' . $fileName;
+        if ($request->priority == null) {
             $product->priority = 0;
-        }else{
+        } else {
             $product->priority = $request->priority;
         }
         $product->price = $request->price;
-        $product->is_enabled =1;
+        $product->is_enabled = 1;
         $product->save();
 
 
@@ -54,10 +55,10 @@ class AdminController extends Controller
             $id = $product->id;
 
             // レコードを削除
-            Detail::where("product_id",$id)->delete();
+            Detail::where("product_id", $id)->delete();
 
             $quillData = json_decode($request->quill_data, true);
-            foreach ($quillData["ops"]  as $value){
+            foreach ($quillData["ops"] as $value) {
                 $detail = new Detail();
                 $detail->product_id = $id;
                 $detail->insert = $value["insert"];
@@ -85,16 +86,15 @@ class AdminController extends Controller
     }
 
     //[更新]商品
-    public function UpdateProduct(Request $request, $id)
+    public function UpdateProduct(Request $request, Product $product)
     {
-        $product = Product::find($id);
+
         $fileName = null;
 
-
-        if($request->hasFile('img')){
+        if ($request->hasFile('img')) {
             $fileName = $request->file('img')->getClientOriginalName();
             $filePath = $request->file('img')->storeAs('public/img', $fileName);
-            $fileName = 'storage/img/'.$fileName;
+            $fileName = 'storage/img/' . $fileName;
 
             // 以前に保存された画像ファイルのパスを取得
             $previousImgPath = str_replace('storage/img/', '', $product->img);
@@ -120,7 +120,7 @@ class AdminController extends Controller
             Detail::where("product_id", $id)->delete();
 
             $quillData = json_decode($request->quill_data, true);
-            foreach ($quillData["ops"] as $value){
+            foreach ($quillData["ops"] as $value) {
                 $detail = new Detail();
                 $detail->product_id = $id;
                 $detail->insert = $value["insert"];
@@ -131,12 +131,8 @@ class AdminController extends Controller
                 }
                 $detail->save();
             }
-
             DB::commit();
-            return response()->json([
-                'message' => '商品が正常に更新されました',
-                'redirect' => route('ShowProduct')
-            ], 200);
+            return redirect()->route('ShowProduct')->with('success_alert', '商品が更新されました。');
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -188,14 +184,16 @@ class AdminController extends Controller
     //[ページ遷移]質問
     public function ShowQuestion()
     {
-        //表示の質問をorder順に取得
-        $questions = Question::where('is_enabled', 1)->orderBy('order')->get();
+        // 表示の質問をorder順に取得し、関連する選択肢も取得
+        $questions = Question::where('is_enabled', 1)
+            ->orderBy('order')
+            ->with('choices')
+            ->get();
 
         // 非表示の質問をorder順に取得
-        $hiddenQuestions = Question::where('is_enabled', 0)->orderBy('order')->get();
-
-        // 全ての選択肢をorder順に取得
-        $choices = Choice::orderBy('order')->get();
+        $hiddenQuestions = Question::where('is_enabled', 0)
+            ->orderBy('order')
+            ->get();
 
         // 質問と選択肢を格納する配列
         $data = [];
@@ -203,17 +201,15 @@ class AdminController extends Controller
         foreach ($questions as $question) {
             // 有効な質問の配列
             $enabledQuestion = [
-                'id'=>$question["id"],
-                'question' => $question["text"],
-                'choices' => []
+                'id' => $question->id,
+                'question' => $question->text,
+                'choices' => $question->choices->map(function ($choice) {
+                    return [
+                        'id' => $choice->id,
+                        'text' => $choice->text
+                    ];
+                })->toArray() // 選択肢のIDとテキストを取得
             ];
-
-            foreach ($choices as $choice) {
-                if ($choice->question_id == $question->id) {
-                    // 質問に紐づく選択肢を追加
-                    $enabledQuestion['choices'][] = $choice["text"];
-                }
-            }
 
             // 有効な質問とその選択肢を配列に追加
             $data[] = $enabledQuestion;
@@ -222,7 +218,120 @@ class AdminController extends Controller
         return view("dash-question",compact("data","hiddenQuestions"));
     }
 
-    //[表示設定]商品
+    //【追加】質問
+    public function AddQuestion(Request $request)
+    {
+        // Start a database transaction
+        DB::beginTransaction();
+        try {
+
+            //orderを計算
+            $maxOrder = Question::max('order');
+            $newOrder = $maxOrder !== null ? $maxOrder + 1 : 1;
+
+            // Save the question
+            $question = new Question();
+            $question->text = $request->question;
+            $question->order = $newOrder;
+            $question->is_enabled = 1;
+            $question->save();
+
+            // Save the answers
+            foreach ($request->answers as $idx=>$answerText) {
+                $answer = new Choice();
+                $answer->question_id = $question->id;
+                $answer->text = $answerText;
+                $answer->order =$idx+1;
+                $answer->save();
+            }
+
+            // Commit the transaction
+            DB::commit();
+
+            // Return a successful response with a redirect URL
+            return response()->json([
+                'message' => '質問が正常に追加されました',
+                'redirect' => route('ShowQuestion')
+            ], 200);
+        } catch (\Exception $e) {
+            // Rollback the transaction on error
+            DB::rollback();
+            Log::error('質問の追加に失敗しました: ' . $e->getMessage());
+
+            // Return an error response
+            return response()->json([
+                'message' => '質問の追加に失敗しました'
+            ], 500);
+        }
+    }
+
+    //【追加】回答
+    public function AddChoice(Request $request) {
+        DB::beginTransaction();
+        try {
+            //order計算
+            $maxOrder = Choice::where('question_id', $request->id)->max('order');
+            $newOrder = $maxOrder !== null ? $maxOrder + 1 : 1;
+
+            $choice = new Choice();
+            $choice->text = $request->choice;
+            $choice->question_id = $request->id;
+            $choice->order = $newOrder;
+            $choice->save();
+
+            DB::commit();
+            return response()->json([
+                'message' => '回答が正常に追加されました',
+                'redirect' => route('ShowQuestion')
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => '回答の追加に失敗しました'], 500);
+        }
+    }
+
+    //【削除】質問
+    public function DeleteQuestion(Request $request)
+    {
+        try {
+            // 質問を取得し削除
+            $question = Question::findOrFail($request->id);
+            $question->delete();
+
+            return response()->json([
+                'message' => '質問とそれに対応する回答が正常に削除されました'
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('質問の削除に失敗しました: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => '質問の削除に失敗しました'
+            ], 500);
+        }
+    }
+
+    //【削除】回答
+    public function DeleteChoice(Request $request)
+    {
+        try {
+            // 回答を取得し削除
+            $choice = Choice::findOrFail($request->id);
+            $choice->delete();
+
+            return response()->json([
+                'message' => ' 回答とそれに対応する回答が正常に削除されました'
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('回答の削除に失敗しました: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => '回答の削除に失敗しました'
+            ], 500);
+        }
+    }
+
+
+    //[表示設定]質問
     public function ToggleQuestion(Request $request)
     {
         // 質問テーブルから指定のIDのレコード1件を取得
@@ -242,9 +351,9 @@ class AdminController extends Controller
                 "is_enabled"=>$num
             ]);
 
-            return response()->json(['message' => '削除が完了しました']);
+            return response()->json(['message' => '質問の表示設定の変更が完了しました']);
         } else {
-            return response()->json(['message' => '商品が見つかりませんでした'], 404);
+            return response()->json(['message' => '質問が見つかりませんでした'], 404);
         }
 
     }

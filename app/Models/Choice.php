@@ -19,4 +19,9 @@ class Choice extends Model
         'text',
         'order',
     ];
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
+    }
 }

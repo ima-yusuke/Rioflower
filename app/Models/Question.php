@@ -19,4 +19,9 @@ class Question extends Model
         'order',
         'is_enabled',
     ];
+
+    public function choices()
+    {
+        return $this->hasMany(Choice::class);
+    }
 }

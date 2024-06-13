@@ -272,8 +272,8 @@
     line-height: 1.5;
 }
 
-/*[管理画面 商品登録・新規回答入力用input]*/
-.newAnswer{
+/*[管理画面 質問登録・新規回答入力用input]*/
+.new-answer{
     width: 100%;
     border-width: 1px;
     border-style: solid;

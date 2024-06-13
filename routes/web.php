@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
     //商品
     Route::get("/dashboard/product",[AdminController::class,"ShowProduct"])->name("ShowProduct");
     Route::post("/dashboard/product",[AdminController::class,"AddProduct"])->name("AddProduct");
-    Route::patch('/dashboard/product/{id}', [AdminController::class,"UpdateProduct"])->name('UpdateProduct');
+    Route::patch('/dashboard/product/{product}', [AdminController::class,"UpdateProduct"])->name('UpdateProduct');
     Route::delete("/dashboard/product",[AdminController::class,"DeleteProduct"])->name("DeleteProduct");
     Route::post("/dashboard/toggle-product",[AdminController::class,"ToggleProduct"])->name("ToggleProduct");
 
@@ -32,6 +32,10 @@ Route::middleware('auth')->group(function () {
 
     //質問
     Route::get("/dashboard/question",[AdminController::class,"ShowQuestion"])->name("ShowQuestion");
+    Route::post("/dashboard/question",[AdminController::class,"AddQuestion"])->name("AddQuestion");
+    Route::post("/dashboard/choice",[AdminController::class,"AddChoice"])->name("AddChoice");
+    Route::delete("/dashboard/question",[AdminController::class,"DeleteQuestion"])->name("DeleteQuestion");
+    Route::delete("/dashboard/choice",[AdminController::class,"DeleteChoice"])->name("DeleteChoice");
     Route::post("/dashboard/toggle-question/",[AdminController::class,"ToggleQuestion"])->name("ToggleQuestion");
 
     //属性追加

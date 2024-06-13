@@ -17,6 +17,10 @@ return new class extends Migration
             $table->bigInteger("question_id")->unsigned();
             $table->string("text");
             $table->integer("order")->unsigned();
+
+            $table->foreign('question_id')
+                ->references('id')->on('questions')
+                ->onDelete('cascade');
         });
     }
 

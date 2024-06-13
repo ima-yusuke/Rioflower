@@ -1,4 +1,8 @@
 const EDIT_BTN = document.querySelectorAll('.editBtn');
+const ADD_QUESTION_BTN  =document.getElementById("add_btn");
+const DELETE_QUESTION_BUTTONS = document.querySelectorAll('.deleteBtn');//削除ボタン
+const ADD_ANSWER_BUTTONS = document.querySelectorAll('.add-answer-btn');//回答追加ボタン
+const DELETE_ANSWER_BUTTONS = document.querySelectorAll('.delete-answer');//回答削除ボタン
 
 //アコーディオンの開閉
 EDIT_BTN.forEach((btn,idx) => {
@@ -24,6 +28,187 @@ EDIT_BTN.forEach((btn,idx) => {
         }
     });
 });
+
+// 【追加】質問
+ADD_QUESTION_BTN.addEventListener("click",function (){
+    let questionText = document.getElementById("question_text").value;
+    let answerInput = document.getElementsByClassName("new-answer");
+    let answerArray =[];
+
+    for(let i=0;i<answerInput.length;i++){
+        answerArray.push(answerInput[i].value);
+    }
+
+    fetch('/dashboard/question', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            question: questionText,
+            answers: answerArray,
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.redirect) {
+                window.alert('質問を追加しました')
+                window.location.href = data.redirect;
+            } else if (data.message) {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            window.alert('質問の追加に失敗しました');
+        });
+
+})
+
+//【商品削除】
+for (let i = 0; i < DELETE_QUESTION_BUTTONS.length; i++) {
+    DELETE_QUESTION_BUTTONS[i].addEventListener('click', function () {
+        DeleteQuestion(DELETE_QUESTION_BUTTONS[i]);
+    });
+}
+
+function DeleteQuestion(btn) {
+
+    let id = btn.getAttribute('data-product-id');
+
+    // 確認ダイアログを表示し、ユーザーがOKを押した場合のみ削除処理を実行
+    if (confirm('本当に削除しますか？')) {
+        // Ajaxリクエストを送信して削除処理を行う
+        fetch('/dashboard/question', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // トークンをメタタグから取得
+            },
+            body: JSON.stringify({ id: id })
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // JSONレスポンスをパースする
+                } else {
+                    throw new Error('削除に失敗しました');
+                }
+            })
+            .then(data => {
+                location.reload(); // ページをリロードして削除を反映
+            })
+            .catch(error => {
+                console.error('削除に失敗しました:', error);
+            });
+    } else {
+        console.log('削除がキャンセルされました');
+    }
+}
+
+//【回答追加】
+for (let i = 0; i <ADD_ANSWER_BUTTONS.length; i++) {
+    ADD_ANSWER_BUTTONS[i].addEventListener('click', function () {
+        AddAnswer(ADD_ANSWER_BUTTONS[i],i);
+    });
+}
+
+function AddAnswer(btn,idx) {
+    let newAnswer = document.getElementsByClassName("add-answer")[idx].value;
+    let id = btn.getAttribute('data-product-id');
+
+    fetch('/dashboard/choice', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            id: id,
+            choice:newAnswer ,
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.redirect) {
+                window.alert('回答を追加しました')
+                window.location.href = data.redirect;
+            } else if (data.message) {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            window.alert('回答の追加に失敗しました');
+        });
+
+}
+
+//【回答削除】
+for (let i = 0; i <DELETE_ANSWER_BUTTONS.length; i++) {
+    DELETE_ANSWER_BUTTONS[i].addEventListener('click', function () {
+        DeleteAnswer(DELETE_ANSWER_BUTTONS[i]);
+    });
+}
+
+function DeleteAnswer(btn) {
+
+    let id = btn.getAttribute('data-product-id');
+
+    console.log(id);
+
+    // 確認ダイアログを表示し、ユーザーがOKを押した場合のみ削除処理を実行
+    if (confirm('本当に削除しますか？')) {
+        // Ajaxリクエストを送信して削除処理を行う
+        fetch('/dashboard/choice', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // トークンをメタタグから取得
+            },
+            body: JSON.stringify({ id: id })
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // JSONレスポンスをパースする
+                } else {
+                    throw new Error('削除に失敗しました');
+                }
+            })
+            .then(data => {
+                location.reload(); // ページをリロードして削除を反映
+            })
+            .catch(error => {
+                console.error('削除に失敗しました:', error);
+            });
+    } else {
+        console.log('削除がキャンセルされました');
+    }
+}
+
+
+// 新規回答input作成
+let inpContainer = document.getElementById("answerInp");
+let createInpBtn = document.getElementById("createInpBtn");
+
+createInpBtn.addEventListener("click",function (){
+    let newInp = document.createElement("input");
+    newInp.name = 'text';
+    newInp.classList.add("new-answer")
+    inpContainer.appendChild(newInp);
+})
+
+
 
 // --------------------------------[質問並び替え]-------------------------------------------------
 
