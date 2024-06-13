@@ -357,20 +357,24 @@ ADD_BUTTON.addEventListener('click', function() {
         });
 });
 
+//商品更新テスト用
+document.querySelectorAll('.update-btn').forEach((btn) => {
+    btn.addEventListener('click', function() {
+        const ID = btn.getAttribute('data-product-id');
+        const FORM_ELEMENTS = btn.closest('.productForm');
+        const FORM_DATA = new FormData(FORM_ELEMENTS);
 
-// 商品更新
-for (let i = 0; i < SUBMIT_BUTTONS.length; i++) {
-    SUBMIT_BUTTONS[i].addEventListener('click', function () {
-        const FORM_ELEMENTS = document.getElementsByClassName('productForm');
-        const formData = new FormData(FORM_ELEMENTS[i]);
-        const id = SUBMIT_BUTTONS[i].getAttribute('data-product-id');
+        // 画像が選択されていない場合はimgフィールドを削除
+        if (!FORM_ELEMENTS.querySelector('input[type="file"]').files.length) {
+            FORM_DATA.delete('img');
+        }
 
-        fetch(`/dashboard/link/${id}`, {
-            method: 'PATCH',
+        fetch(`/dashboard/product/${ID}`, {
+            method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // CSRFトークン
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
-            body: formData
+            body: FORM_DATA
         })
             .then(response => {
                 if (!response.ok) {
@@ -380,16 +384,52 @@ for (let i = 0; i < SUBMIT_BUTTONS.length; i++) {
             })
             .then(data => {
                 if (data.redirect) {
-                    alert(data.message);
+                    window.alert('商品を更新しました');
                     window.location.href = data.redirect;
                 } else if (data.message) {
-                    alert(data.message);
+                    window.alert(data.message);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('商品更新に失敗しました');
+                window.alert('商品の更新に失敗しました');
             });
     });
-}
+});
+
+
+
+// 商品更新
+// for (let i = 0; i < SUBMIT_BUTTONS.length; i++) {
+//     SUBMIT_BUTTONS[i].addEventListener('click', function () {
+//         const FORM_ELEMENTS = document.getElementsByClassName('productForm');
+//         const formData = new FormData(FORM_ELEMENTS[i]);
+//         const id = SUBMIT_BUTTONS[i].getAttribute('data-product-id');
+//         fetch(`/dashboard/product/${id}`, {
+//             method: 'PATCH',
+//             headers: {
+//                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // CSRFトークン
+//             },
+//             body: formData
+//         })
+//             .then(response => {
+//                 if (!response.ok) {
+//                     throw new Error('Network response was not ok');
+//                 }
+//                 return response.json();
+//             })
+//             .then(data => {
+//                 if (data.redirect) {
+//                     alert(data.message);
+//                     window.location.href = data.redirect;
+//                 } else if (data.message) {
+//                     alert(data.message);
+//                 }
+//             })
+//             .catch(error => {
+//                 console.error('Error:', error);
+//                 alert('商品更新に失敗しました');
+//             });
+//     });
+// }
 

@@ -86,9 +86,21 @@ class AdminController extends Controller
     }
 
     //[更新]商品
-    public function UpdateProduct(Request $request, Product $product)
+    public function updateProduct(Request $request, $id)
     {
+        // デバッグ用ログ
+//        Log::info('UpdateProduct request data', $request->all());
 
+        // バリデーション
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|integer',
+            'priority' => 'required|integer',
+            'img' => 'nullable|file|mimes:jpeg,png',
+            'quill_data' => 'required|json'
+        ]);
+
+        $product = Product::find($id);
         $fileName = null;
 
         if ($request->hasFile('img')) {
@@ -107,8 +119,9 @@ class AdminController extends Controller
 
         $product->update([
             "name" => $request->name,
-            "img" => $fileName,
-            "priority" => $request->priority
+            "price" => $request->price,
+            "priority" => $request->priority,
+            "img" => $fileName
         ]);
 
         // Quillの保存
@@ -132,7 +145,10 @@ class AdminController extends Controller
                 $detail->save();
             }
             DB::commit();
-            return redirect()->route('ShowProduct')->with('success_alert', '商品が更新されました。');
+            return response()->json([
+                'message' => '商品が正常に更新されました',
+                'redirect' => route('ShowProduct')
+            ], 200);
 
         } catch (\Exception $e) {
             DB::rollback();
