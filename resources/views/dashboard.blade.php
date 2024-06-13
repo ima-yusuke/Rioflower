@@ -33,7 +33,7 @@
             </a>
         </div>
         <div class="flex flex-col justify-center items-center shadow-xl text-center border-4 border-solid border-black bg-white w-[30%]">
-            <a href="" class="w-full h-full hover:bg-black hover:text-white p-3">
+            <a href="{{ route('ShowAttributeQuestion') }}" class="w-full h-full hover:bg-black hover:text-white p-3">
                 <div class="flex flex-col gap-2">
                     <p><i class="fa-solid fa-pen-to-square text-4xl"></i></p>
                     <p class="font-bold">回答への属性付与</p>
@@ -41,7 +41,7 @@
             </a>
         </div>
         <div class="flex flex-col justify-center items-center shadow-xl text-center border-4 border-solid border-black bg-white w-[30%]">
-            <a href="" class="w-full h-full hover:bg-black hover:text-white p-3">
+            <a href="{{ route('ShowAttributeProduct') }}" class="w-full h-full hover:bg-black hover:text-white p-3">
                 <div class="flex flex-col gap-2">
                     <p><i class="fa-solid fa-cart-plus text-4xl"></i></p>
                     <p class="font-bold">商品への属性付与</p>

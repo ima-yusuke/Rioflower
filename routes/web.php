@@ -49,10 +49,10 @@ Route::middleware('auth')->group(function () {
     Route::delete("/dashboard/attribute/{id}",[AdminController::class,"DeleteAttribute"])->name("DeleteAttribute");
 
     //商品属性付与
-    Route::get("/dashboard/attribute/product",[AdminController::class,"ShowProductAttribute"])->name("ShowProductAttribute");
+    Route::get("/dashboard/attribute/product",[AdminController::class,"ShowAttributeProduct"])->name("ShowAttributeProduct");
 
     //質問属性付与
-    Route::get("/dashboard/attribute/question",[AdminController::class,"ShowQuestionAttribute"])->name("ShowQuestionAttribute");
+    Route::get("/dashboard/attribute/question",[AdminController::class,"ShowAttributeQuestion"])->name("ShowAttributeQuestion");
 });
 
 require __DIR__.'/auth.php';
