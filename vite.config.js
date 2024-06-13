@@ -12,6 +12,8 @@ export default defineConfig({
                 'resources/js/admin/dash-link.js',
                 'resources/js/admin/dash-question.js',
                 'resources/js/admin/dash-add-attribute.js',
+                'resources/js/admin/dash-question-attribute.js',
+                'resources/js/admin/dash-product-attribute.js',
             ],
             refresh: true,
         }),
