@@ -165,8 +165,6 @@ function DeleteAnswer(btn) {
 
     let id = btn.getAttribute('data-product-id');
 
-    console.log(id);
-
     // 確認ダイアログを表示し、ユーザーがOKを押した場合のみ削除処理を実行
     if (confirm('本当に削除しますか？')) {
         // Ajaxリクエストを送信して削除処理を行う
@@ -240,16 +238,90 @@ function onChangeEvent(e){
 
 function onSortEvent(e){
     console.log("onSort!!");
-    // 3, 並び替え後のエレメントを確認
+    // 並び替え後のエレメントを確認
     const items = e.target.querySelectorAll("li div.qa__head div p");
-    for(let i=0; i<items.length; i++){
+    let questionOrder = [];
+    for(let i = 0; i < items.length; i++){
         let str = items[i].innerHTML;
         // 旧番号と"."を削除
-        items[i].innerHTML = str.slice( 2 )
+        items[i].innerHTML = str.slice(2);
         // 並び替えた最新の番号を書き込み
-        items[i].innerHTML = `${i+1}. ${items[i].innerHTML}`;
+        items[i].innerHTML = `${i + 1}. ${items[i].innerHTML}`;
+        // 質問のIDを順番に保存
+        let questionId = items[i].closest('li').getAttribute('data-question-id');
+        questionOrder.push({ id: questionId, order: i + 1 });
     }
+
+    // 質問の順番をサーバーに送信
+    updateQuestionOrder(questionOrder);
 }
+
+function updateQuestionOrder(orderData) {
+    fetch('/dashboard/update-question-order', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ orderData: orderData })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('質問の順番を更新しました');
+                window.location.href = '/dashboard/question'; // リダイレクト先のURLを設定する
+            } else {
+                console.error('質問の順番更新に失敗しました');
+            }
+        })
+        .catch(error => {
+            console.error('エラー:', error);
+        });
+}
+
+function onSortEventAnswer(e){
+    console.log("onSort!!");
+    // 並び替え後のエレメントを確認
+    const items = e.target.querySelectorAll("aside p");
+    let answerOrder = [];
+    for(let i = 0; i < items.length; i++){
+        let str = items[i].innerHTML;
+        // 旧番号と"."を削除
+        items[i].innerHTML = str.slice(2);
+        // 並び替えた最新の番号を書き込み
+        items[i].innerHTML = `${i + 1}. ${items[i].innerHTML}`;
+        // 回答のIDを順番に保存
+        let answerId = items[i].closest('aside').getAttribute('data-answer-id');
+        answerOrder.push({ id: answerId, order: i + 1 });
+    }
+    console.log(answerOrder)
+    // 回答の順番をサーバーに送信
+    updateAnswerOrder(answerOrder);
+}
+
+function updateAnswerOrder(orderData) {
+    fetch('/dashboard/update-answer-order', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ orderData: orderData })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('回答の順番を更新しました');
+                // window.location.href = '/dashboard/question'; // リダイレクト先のURLを設定する
+            } else {
+                console.error('回答の順番更新に失敗しました');
+            }
+        })
+        .catch(error => {
+            console.error('エラー:', error);
+        });
+}
+
 
 // --------------------------------[回答並び替え]-------------------------------------------------
 
@@ -266,15 +338,15 @@ for (let i=0;i<questions.length;i++){
     });
 }
 
-function onSortEventAnswer(e){
-    console.log("onSort!!");
-    // 3, 並び替え後のエレメントを確認
-    const items = e.target.querySelectorAll("aside p");
-    for(let i=0; i<items.length; i++){
-        let str = items[i].innerHTML;
-        // 旧番号と"."を削除
-        items[i].innerHTML = str.slice( 2 )
-        // 並び替えた最新の番号を書き込み
-        items[i].innerHTML = `${i+1}. ${items[i].innerHTML}`;
-    }
-}
+// function onSortEventAnswer(e){
+//     console.log("onSort!!");
+//     // 3, 並び替え後のエレメントを確認
+//     const items = e.target.querySelectorAll("aside p");
+//     for(let i=0; i<items.length; i++){
+//         let str = items[i].innerHTML;
+//         // 旧番号と"."を削除
+//         items[i].innerHTML = str.slice( 2 )
+//         // 並び替えた最新の番号を書き込み
+//         items[i].innerHTML = `${i+1}. ${items[i].innerHTML}`;
+//     }
+// }

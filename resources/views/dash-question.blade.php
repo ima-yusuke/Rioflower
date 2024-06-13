@@ -7,7 +7,7 @@
         </div>
         <div id="my_sortable" class="flex flex-col items-center w-full">
             @foreach($data as $idx=>$value)
-                <li id="{{$idx}}" class="qa__item bg-white border border-solid border-gray-200 w-[80%] shrink-0 list-none">
+                <li data-question-id="{{ $value['id'] }}" id="{{$idx}}" class="qa__item bg-white border border-solid border-gray-200 w-[80%] shrink-0 list-none">
                     {{-- 質問 --}}
                     <div class="qa__head js-ac flex items-center justify-between gap-4 py-6 px-2 ml-4">
                         <div>
@@ -29,7 +29,7 @@
                     <div class="qa__body flex flex-col gap-8">
                         <div class="answer_sortable">
                             @foreach($value["choices"] as $key=>$val)
-                                <aside id="{{$key}}" class="flex justify-between items-center border border-solid border-gray-200">
+                                <aside  data-answer-id="{{ $val['id'] }}" id="{{$key}}" class="flex justify-between items-center border border-solid border-gray-200">
                                     <p class="pl-2">{{$key+1}}.{{$val["text"]}}</p>
                                     <div>
                                         <button data-product-id="{{$val["id"]}}" class="delete-answer border border-solid border-black">削除</button>

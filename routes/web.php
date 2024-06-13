@@ -37,6 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::delete("/dashboard/question",[AdminController::class,"DeleteQuestion"])->name("DeleteQuestion");
     Route::delete("/dashboard/choice",[AdminController::class,"DeleteChoice"])->name("DeleteChoice");
     Route::post("/dashboard/toggle-question/",[AdminController::class,"ToggleQuestion"])->name("ToggleQuestion");
+    Route::post('/dashboard/update-question-order', [AdminController::class, 'UpdateQuestionOrder']);
+    Route::post('/dashboard/update-answer-order', [AdminController::class, 'UpdateAnswerOrder']);
+
 
     //属性追加
     Route::get("/dashboard/attribute",[AdminController::class,"ShowAddAttribute"])->name("ShowAddAttribute");

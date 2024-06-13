@@ -203,7 +203,9 @@ class AdminController extends Controller
         // 表示の質問をorder順に取得し、関連する選択肢も取得
         $questions = Question::where('is_enabled', 1)
             ->orderBy('order')
-            ->with('choices')
+            ->with(['choices' => function ($query) {
+                $query->orderBy('order'); // choicesをorder順に取得
+            }])
             ->get();
 
         // 非表示の質問をorder順に取得
@@ -231,8 +233,10 @@ class AdminController extends Controller
             $data[] = $enabledQuestion;
         }
 
-        return view("dash-question",compact("data","hiddenQuestions"));
+        return view("dash-question", compact("data", "hiddenQuestions"));
     }
+
+
 
     //【追加】質問
     public function AddQuestion(Request $request)
@@ -345,6 +349,49 @@ class AdminController extends Controller
             ], 500);
         }
     }
+
+    //質問order
+    public function UpdateQuestionOrder(Request $request)
+    {
+        $orderData = $request->orderData;
+
+        DB::beginTransaction();
+        try {
+            foreach ($orderData as $data) {
+                $question = Question::find($data['id']);
+                $question->order = $data['order'];
+                $question->save();
+            }
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+    //回答order
+    public function UpdateAnswerOrder(Request $request)
+    {
+        $orderData = $request->orderData;
+
+        DB::beginTransaction();
+        try {
+            foreach ($orderData as $data) {
+                $choice = Choice::find($data['id']);
+                $choice->order = $data['order'];
+                $choice->save();
+            }
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+
+
 
 
     //[表示設定]質問
