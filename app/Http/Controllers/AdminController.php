@@ -605,4 +605,21 @@ class AdminController extends Controller
             return response()->json(['message' => '属性の削除中にエラーが発生しました'], 500);
         }
     }
+
+    //[ページ遷移]商品属性付与
+    public function ShowAttributeProduct() {
+        $products = Product::all();
+        $categories = Category::all();
+        $attributes = Attribute::all();
+        return view("dash-product-attribute", compact("products", "categories","attributes"));
+    }
+
+    //[ページ遷移]質問属性付与
+    public function ShowAttributeQuestion() {
+        $questions = Question::all();
+        $choices = Choice::all();
+        $categories = Category::all();
+        $attributes = Attribute::all();
+        return view("dash-question-attribute", compact("questions", "choices", "categories", "attributes"));
+    }
 }

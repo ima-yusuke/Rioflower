@@ -47,6 +47,12 @@ Route::middleware('auth')->group(function () {
     Route::post("/dashboard/attribute",[AdminController::class,"AddAttribute"])->name("AddAttribute");
     Route::delete("/dashboard/category/{id}",[AdminController::class,"DeleteCategory"])->name("DeleteCategory");
     Route::delete("/dashboard/attribute/{id}",[AdminController::class,"DeleteAttribute"])->name("DeleteAttribute");
+
+    //商品属性付与
+    Route::get("/dashboard/attribute/product",[AdminController::class,"ShowProductAttribute"])->name("ShowProductAttribute");
+
+    //質問属性付与
+    Route::get("/dashboard/attribute/question",[AdminController::class,"ShowQuestionAttribute"])->name("ShowQuestionAttribute");
 });
 
 require __DIR__.'/auth.php';
