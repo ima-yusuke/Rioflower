@@ -27,8 +27,7 @@
         <section class="relative w-[40%] flex items-center justify-center border-r border-solid border-gray-500">
             <article id="default_title">質問をクリックし回答を選択してください</article>
             <article id ="choice_container" class="hide flex flex-col bg-white h-[600px] w-full overflow-y-scroll m-6 p-6 rounded-lg">
-                <div id="outer-dropzone" class="dropzone h-full w-full">
-                    #ドロップエリア
+                <div id="outer-dropzone" class="dropzone h-[100dvh] w-full">
                     @foreach($categories as $category)
                         <div id="category{{$category["id"]}}" class="hidden attributeContainer"></div>
                     @endforeach
