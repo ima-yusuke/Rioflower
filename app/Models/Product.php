@@ -22,10 +22,10 @@ class Product extends Model
         'is_enabled',
     ];
 
-//    public function attributes()
-//    {
-//        return $this->belongsToMany(Attribute::class, 'product_attributes');
-//    }
+    public function attributes()
+    {
+        return $this->belongsToMany(Attribute::class, 'product_attributes');
+    }
 
     public function details()
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Choice;
+use App\Models\Product_attributes;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -610,10 +611,67 @@ class AdminController extends Controller
 
     //[ページ遷移]商品属性付与
     public function ShowAttributeProduct() {
-        $products = Product::all();
+        $products = Product::with('attributes.category')->where('is_enabled', 1)->get();
         $categories = Category::all();
         $attributes = Attribute::all();
-        return view("dash-product-attribute", compact("products", "categories","attributes"));
+        $product_attributes = Product_attributes::all();
+        return view("dash-product-attribute", compact("products", "categories","attributes", "product_attributes"));
+    }
+
+    //[追加]商品属性付与
+    public function AddAttributeProduct(Request $request) {
+
+        // トランザクションを開始
+        DB::beginTransaction();
+        try {
+            // リンクモデルを使ってデータを作成し、保存
+            $product_attribute = new Product_attributes();
+            $product_attribute->product_id = $request->productId;
+            $product_attribute->attribute_id = $request->attributeId;
+            $product_attribute->save();
+
+            // トランザクションをコミット
+            DB::commit();
+
+            // 成功した場合はリダイレクト
+            return response()->json([
+                'redirect' => route('ShowAttributeProduct'),
+                'productId'=>$request->productId
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('属性付与に失敗しました: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => '属性付与に失敗しました'
+            ], 500);
+        }
+    }
+
+    //[削除]商品属性付与
+    public function DeleteAttributeProduct(Request $request, $id)
+    {
+        try {
+            $productId = $request->query('productId'); // クエリパラメータからchoiceIdを取得
+            $attributeId = $id; // ルートパラメータからattributeIdを取得
+
+            // choice_attributes テーブルから対象のデータを削除
+            Product_attributes::where('product_id', $productId)
+                ->where('attribute_id', $attributeId)
+                ->delete();
+
+            return response()->json([
+                'message' => '属性が正常に削除されました',
+                'redirect' => route('ShowAttributeProduct'),
+                'productId'=>$request->productId
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('属性の削除に失敗しました: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => '属性の削除に失敗しました'
+            ], 500);
+        }
     }
 
     //[ページ遷移]質問属性付与

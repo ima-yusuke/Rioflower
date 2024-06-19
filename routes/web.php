@@ -50,6 +50,8 @@ Route::middleware('auth')->group(function () {
 
     //商品属性付与
     Route::get("/dashboard/attribute/product",[AdminController::class,"ShowAttributeProduct"])->name("ShowAttributeProduct");
+    Route::post("/dashboard/attribute/product",[AdminController::class,"AddAttributeProduct"])->name("AddAttributeProduct");
+    Route::delete("/dashboard/attribute/product/{id}",[AdminController::class,"DeleteAttributeProduct"])->name("DeleteAttributeProduct");
 
     //質問属性付与
     Route::get("/dashboard/attribute/question",[AdminController::class,"ShowAttributeQuestion"])->name("ShowAttributeQuestion");
