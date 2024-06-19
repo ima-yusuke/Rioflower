@@ -15,4 +15,9 @@ class Link extends Model
         'pickup_link',
         'delivery_link',
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'price');
+    }
 }

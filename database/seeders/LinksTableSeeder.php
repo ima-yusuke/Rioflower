@@ -14,7 +14,7 @@ class LinksTableSeeder extends Seeder
      */
     public function run()
     {
-        // 50件のリンクデータを生成して挿入
+        // 5件のリンクデータを生成して挿入
         Link::factory()->count(5)->create();
     }
 }

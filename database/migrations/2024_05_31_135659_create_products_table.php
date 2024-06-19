@@ -16,9 +16,11 @@ return new class extends Migration
             $table->timestamps();
             $table->string("name");
             $table->string("img")->unique();
-            $table->integer("price");
+            $table->bigInteger("price")->nullable()->unsigned();
             $table->integer("priority")->unsigned()->default(0);
             $table->tinyInteger("is_enabled")->default(1);
+
+            $table->foreign('price')->references('id')->on('links')->onDelete('set null');
         });
     }
 
