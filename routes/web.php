@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
 
     //質問属性付与
     Route::get("/dashboard/attribute/question",[AdminController::class,"ShowAttributeQuestion"])->name("ShowAttributeQuestion");
+    Route::post("/dashboard/attribute/question",[AdminController::class,"AddAttributeQuestion"])->name("AddAttributeQuestion");
+    Route::delete("/dashboard/attribute/question/{id}",[AdminController::class,"DeleteAttributeQuestion"])->name("DeleteAttributeQuestion");
 });
 
 require __DIR__.'/auth.php';

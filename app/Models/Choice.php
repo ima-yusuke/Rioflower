@@ -24,4 +24,9 @@ class Choice extends Model
     {
         return $this->belongsTo(Question::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Detail;
 use App\Models\Link;
 use App\Models\Attribute;
+use App\Models\Choice_attribute;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,8 @@ class AdminController extends Controller
         $products = Product::where('is_enabled', 1)->get();;
         $hiddenProducts = Product::where('is_enabled', 0)->get();
         $details = Detail::all();
-        return view("dash-product", compact("products", "hiddenProducts", "details"));
+        $links = Link::all();
+        return view("dash-product", compact("products", "hiddenProducts", "details","links"));
     }
 
     //[追加]商品
@@ -616,10 +618,72 @@ class AdminController extends Controller
 
     //[ページ遷移]質問属性付与
     public function ShowAttributeQuestion() {
-        $questions = Question::all();
-        $choices = Choice::all();
-        $categories = Category::all();
+        $questions = Question::orderBy('order')
+        ->with(['choices' => function ($query) {
+            $query->orderBy('order');
+        }])
+            ->get();
+        $choice_attributes = Choice_attribute::all();
         $attributes = Attribute::all();
-        return view("dash-question-attribute", compact("questions", "choices", "categories", "attributes"));
+        $categories = Category::all();
+        return view("dash-question-attribute", compact("questions","categories","choice_attributes","attributes","categories"));
+    }
+
+    //[追加]質問属性付与
+    public function AddAttributeQuestion(Request $request) {
+
+        // トランザクションを開始
+        DB::beginTransaction();
+        try {
+            // リンクモデルを使ってデータを作成し、保存
+            $choice_attribute = new Choice_attribute();
+            $choice_attribute->choice_id = $request->choiceId;
+            $choice_attribute->attribute_id = $request->attributeId;
+            $choice_attribute->save();
+
+            // トランザクションをコミット
+            DB::commit();
+
+            // 成功した場合はリダイレクト
+            return response()->json([
+                'redirect' => route('ShowAttributeQuestion'),
+                'choiceId'=>$request->choiceId,
+                'accordionId'=>$request->accordionId
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('属性付与に失敗しました: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => '属性付与に失敗しました'
+            ], 500);
+        }
+    }
+
+    //[削除]質問属性付与
+    public function DeleteAttributeQuestion(Request $request, $id)
+    {
+        try {
+            $choiceId = $request->query('choiceId'); // クエリパラメータからchoiceIdを取得
+            $attributeId = $id; // ルートパラメータからattributeIdを取得
+
+            // choice_attributes テーブルから対象のデータを削除
+            Choice_attribute::where('choice_id', $choiceId)
+                ->where('attribute_id', $attributeId)
+                ->delete();
+
+            return response()->json([
+                'message' => '属性が正常に削除されました',
+                'redirect' => route('ShowAttributeQuestion'),
+                'choiceId'=>$request->choiceId,
+                'accordionId'=>$request->accordionId
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('属性の削除に失敗しました: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => '属性の削除に失敗しました'
+            ], 500);
+        }
     }
 }
