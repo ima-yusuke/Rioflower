@@ -37,11 +37,6 @@ ADD_BTN.addEventListener('click', function() {
     const PICKUP = document.getElementById('pickup').value;
     const DELIVERY = document.getElementById('delivery').value;
 
-    if (!COURSE || !PRICE) {
-        window.alert('コースと価格帯は必須です');
-        return;
-    }
-
     fetch('/dashboard/link', {
         method: 'POST',
         headers: {
@@ -57,21 +52,34 @@ ADD_BTN.addEventListener('click', function() {
     })
         .then(response => {
             if (!response.ok) {
+                if (response.status === 422) {
+                    return response.json().then(data => {
+                        throw { validationErrors: data.errors };
+                    });
+                }
                 throw new Error('Network response was not ok');
             }
             return response.json();
         })
         .then(data => {
             if (data.redirect) {
-                window.alert('リンクを追加しました')
+                window.alert('リンクを追加しました');
                 window.location.href = data.redirect;
             } else if (data.message) {
                 alert(data.message);
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            window.alert('リンクの追加に失敗しました');
+            if (error.validationErrors) {
+                let errorMessage = '';
+                for (const field in error.validationErrors) {
+                    errorMessage += `${error.validationErrors[field].join('\n')}\n`;
+                }
+                window.alert(errorMessage);
+            } else {
+                console.error('Error:', error);
+                window.alert('リンクの追加に失敗しました');
+            }
         });
 });
 
@@ -95,21 +103,34 @@ document.querySelectorAll('.updateBtn').forEach((btn) => {
         })
             .then(response => {
                 if (!response.ok) {
+                    if (response.status === 422) {
+                        return response.json().then(data => {
+                            throw { validationErrors: data.errors };
+                        });
+                    }
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then(data => {
                 if (data.redirect) {
-                    window.alert('リンクを更新しました')
+                    window.alert('リンクを更新しました');
                     window.location.href = data.redirect;
                 } else if (data.message) {
                     window.alert(data.message);
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                window.alert('リンクの更新に失敗しました');
+                if (error.validationErrors) {
+                    let errorMessage = '';
+                    for (const field in error.validationErrors) {
+                        errorMessage += `${error.validationErrors[field].join('\n')}\n`;
+                    }
+                    window.alert(errorMessage);
+                } else {
+                    console.error('Error:', error);
+                    window.alert('リンクの更新に失敗しました');
+                }
             });
 
     });

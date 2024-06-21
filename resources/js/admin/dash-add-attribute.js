@@ -92,6 +92,7 @@ CAT_DELETE_BTN.forEach((btn) => {
             })
             .then(data => {
                 if (data.redirect) {
+                    window.alert(data.message);
                     window.location.href = data.redirect;
                 } else if (data.message) {
                     window.alert(data.message);
@@ -110,6 +111,11 @@ ATT_ADD_BTN.forEach((btn) => {
         const INPUTFIELD = btn.closest('.link-area').querySelector('.attAdd');
         const NAME = INPUTFIELD.value;
         const CATEGORY_ID = btn.closest('.qa__item').querySelector('.deleteBtn').getAttribute('data-id');
+
+        if (!NAME) {
+            window.alert('属性名は必須です');
+            return;
+        }
 
         fetch('/dashboard/attribute', {
             method: 'POST',

@@ -26,7 +26,7 @@ let categoryData = Laravel.categoryData;
 // 保存済の要素のid
 let registerdIdArray = [];
 
-//編集する回答の選択
+//編集する商品の選択
 for (let i = 0; i < PRODUCTS.length; i++) {
     PRODUCTS[i].addEventListener('click', function() {
 
@@ -75,7 +75,7 @@ function DragMoveListener(event) {
 function ShowDropzone(idx){
     NEW_PRODUCT_CONTAINER.classList.remove("hide");
     DEFAULT_TITLE.classList.add("hide");
-    SELECTED_TITLE.innerHTML = "回答："+PRODUCTS[idx].innerText;
+    SELECTED_TITLE.innerHTML = "商品："+PRODUCTS[idx].innerText;
 }
 
 // DB登録済みのattributeデータを取得
@@ -357,7 +357,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     if (productId) {
 
-        // アコーディオン（質問）選択ボタン
+        // アコーディオン（商品）選択ボタン
         let selectButton = document.querySelector(`.qa__head[data-product-id="${productId}"]`);
         if (selectButton) {
             // 手動でクリックイベントを発生させる

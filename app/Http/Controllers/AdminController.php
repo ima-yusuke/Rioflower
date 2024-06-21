@@ -15,6 +15,7 @@ use App\Models\Choice_attribute;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -434,12 +435,25 @@ class AdminController extends Controller
     //[追加]リンク
     public function AddLink(Request $request) {
         // バリデーションルールを定義
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'course' => ['required'],
             'price' => ['required'],
             'pickup_link' => ['url', 'nullable'],
             'delivery_link' => ['url', 'nullable'],
+        ], [
+            'course.required' => 'コースは必須です。',
+            'price.required' => '価格は必須です。',
+            'pickup_link.url' => '受取リンクは正しいURL形式で入力してください。',
+            'delivery_link.url' => '郵送リンクは正しいURL形式で入力してください。',
         ]);
+
+        // バリデーションエラーが発生した場合の処理
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => '入力エラーがあります。',
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
         // トランザクションを開始
         DB::beginTransaction();
@@ -472,10 +486,24 @@ class AdminController extends Controller
 
     //[更新]リンク
     public function UpdateLink(Request $request, $id) {
-        $request->validate([
-            'pickup_link' => ['required'],
-            'delivery_link' => ['required'],
+        // バリデーションルールを定義
+        $validator = Validator::make($request->all(), [
+            'pickup_link' => ['url', 'required'],
+            'delivery_link' => ['url', 'required'],
+        ], [
+            'pickup_link.url' => '受取リンクは正しいURL形式で入力してください。',
+            'pickup_link.required' => '受取リンクは必須です。',
+            'delivery_link.url' => '郵送リンクは正しいURL形式で入力してください。',
+            'delivery_link.required' => '郵送リンクは必須です。',
         ]);
+
+        // バリデーションエラーが発生した場合の処理
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => '入力エラーがあります。',
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
         DB::beginTransaction();
         try {

@@ -18,7 +18,7 @@
 
         {{--左画面/商品--}}
         <section class="relative w-[40%] flex items-center justify-center border-r border-solid border-gray-500">
-            <article id="default_title">商品をクリックし回答を選択してください</article>
+            <article id="default_title">商品を選択してください</article>
             <article id ="choice_container" class="hide flex flex-col bg-white h-5/6 w-full overflow-y-scroll m-6 p-6 rounded-lg">
                 <div id="outer-dropzone" class="dropzone h-[100dvh] w-full">
                     @foreach($categories as $category)
