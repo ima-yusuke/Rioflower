@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+//        商品・属性中間テーブル
         Schema::create('product_attributes', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->bigInteger("product_id")->unsigned();
-            $table->bigInteger("attribute_id")->unsigned();
+            $table->bigInteger("product_id")->unsigned()->comment("商品ID");
+            $table->bigInteger("attribute_id")->unsigned()->comment("属性ID");
 
             $table->foreign('product_id')
                 ->references('id')->on('products')

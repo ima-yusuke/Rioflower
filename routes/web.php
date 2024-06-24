@@ -40,7 +40,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/update-question-order', [AdminController::class, 'UpdateQuestionOrder']);
     Route::post('/dashboard/update-answer-order', [AdminController::class, 'UpdateAnswerOrder']);
 
-
     //属性追加
     Route::get("/dashboard/attribute",[AdminController::class,"ShowAddAttribute"])->name("ShowAddAttribute");
     Route::post("/dashboard/category",[AdminController::class,"AddCategory"])->name("AddCategory");

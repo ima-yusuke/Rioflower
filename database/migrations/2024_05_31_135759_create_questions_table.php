@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+//        質問テーブル
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string("text");
-            $table->integer("order")->unsigned();
-            $table->tinyInteger("is_enabled")->default(1);
+            $table->string("text")->comment("質問文");
+            $table->integer("order")->unsigned()->comment("表示順");
+            $table->tinyInteger("is_enabled")->default(1)->comment("表示フラグ");
         });
     }
 

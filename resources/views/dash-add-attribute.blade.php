@@ -1,4 +1,5 @@
 <x-app-layout>
+{{--    カテゴリー追加--}}
     <div class="flex justify-center items-center w-full py-12">
         <div class="qa__item bg-white border border-solid border-gray-200 w-[80%] shrink-0">
             <div class="qa__head js-ac flex items-center justify-between gap-4 py-5 px-5">
@@ -15,6 +16,7 @@
             </div>
         </div>
     </div>
+{{--    カテゴリ一覧表示--}}
     <div class="flex flex-col items-center w-full py-12">
         @foreach($categories as $idx => $cat)
             <div class="qa__item bg-white border border-solid border-gray-200 w-[80%] shrink-0">
@@ -28,7 +30,6 @@
                         <button class="deleteBtn font-medium text-blue-600 px-2" data-id="{{ $cat['id'] }}">削除</button>
                     </div>
                 </div>
-
 {{--                 属性（最初非表示）--}}
                 <div class="qa__body link-area flex flex-col justify-between gap-4">
                     @foreach($attributes as $index => $att)

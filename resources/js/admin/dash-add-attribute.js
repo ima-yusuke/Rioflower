@@ -32,7 +32,7 @@ EDIT_BTN.forEach((btn,idx) => {
 //カテゴリーの追加
 // addBtnがクリックされたときの処理
 CAT_ADD_BTN.addEventListener('click', function() {
-    // 新しいコースと価格帯を取得
+    // 新しいカテゴリーを取得
     const CATEGORY = document.getElementById('category').value;
 
     if (!CATEGORY) {
@@ -108,8 +108,8 @@ CAT_DELETE_BTN.forEach((btn) => {
 //属性の追加
 ATT_ADD_BTN.forEach((btn) => {
     btn.addEventListener('click', function() {
-        const INPUTFIELD = btn.closest('.link-area').querySelector('.attAdd');
-        const NAME = INPUTFIELD.value;
+        const INPUT_FIELD = btn.closest('.link-area').querySelector('.attAdd');
+        const NAME = INPUT_FIELD.value;
         const CATEGORY_ID = btn.closest('.qa__item').querySelector('.deleteBtn').getAttribute('data-id');
 
         if (!NAME) {

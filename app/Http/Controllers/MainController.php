@@ -8,6 +8,7 @@ use App\Models\Question;
 
 class MainController extends Controller
 {
+    // [画面遷移]トップページ
     public function Index()
     {
         return view('index');
@@ -21,7 +22,7 @@ class MainController extends Controller
         ["id" => 5, "question" => "どこで渡す？", "answer" => ["家", "レストラン", "公園", "学校", "その他"], "order" => 5],
         ["id" => 6, "question" => "渡すときの時間帯は？", "answer" => ["朝", "昼", "夕方", "夜", "その他"], "order" => 6]
     ];
-
+    // [画面遷移]質問ページ
     public function ShowQuestionPage()
     {
         $data = $this->data;

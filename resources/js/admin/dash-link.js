@@ -158,7 +158,7 @@ DELETE_BTN.forEach((btn) => {
             })
             .then(data => {
                 if (data.redirect) {
-                    window.alert('コースを削除しました')
+                    window.alert('リンクを削除しました')
                     window.location.href = data.redirect;
                 } else if (data.message) {
                     window.alert(data.message);

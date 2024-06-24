@@ -90,7 +90,7 @@ class AdminController extends Controller
     }
 
     //[更新]商品
-    public function updateProduct(Request $request, $id)
+    public function UpdateProduct(Request $request, $id)
     {
         // デバッグ用ログ
 //        Log::info('UpdateProduct request data', $request->all());
@@ -437,12 +437,15 @@ class AdminController extends Controller
         // バリデーションルールを定義
         $validator = Validator::make($request->all(), [
             'course' => ['required'],
-            'price' => ['required'],
+            'price' => ['required', 'integer', 'min:0', 'numeric'],
             'pickup_link' => ['url', 'nullable'],
             'delivery_link' => ['url', 'nullable'],
         ], [
             'course.required' => 'コースは必須です。',
             'price.required' => '価格は必須です。',
+            'price.numeric' => '価格は数値で入力してください。',
+            'price.integer' => '価格は整数で入力してください。',
+            'price.min' => '価格は0以上で入力してください。',
             'pickup_link.url' => '受取リンクは正しいURL形式で入力してください。',
             'delivery_link.url' => '郵送リンクは正しいURL形式で入力してください。',
         ]);
@@ -542,8 +545,7 @@ class AdminController extends Controller
     }
 
     //[ページ遷移]属性追加
-    public function ShowAddAttribute()
-    {
+    public function ShowAddAttribute() {
         $attributes = Attribute::all();
         $categories = Category::all();
         return view("dash-add-attribute", compact("attributes", "categories"));
@@ -584,6 +586,11 @@ class AdminController extends Controller
 
     //[追加]属性
     public function AddAttribute(Request $request) {
+        // バリデーションルールを定義
+        $request->validate([
+            'name' => ['required'],
+        ]);
+
         DB::beginTransaction();
         try {
             $attribute = new Attribute();
@@ -680,10 +687,10 @@ class AdminController extends Controller
     public function DeleteAttributeProduct(Request $request, $id)
     {
         try {
-            $productId = $request->query('productId'); // クエリパラメータからchoiceIdを取得
+            $productId = $request->query('productId'); // クエリパラメータからproductIdを取得
             $attributeId = $id; // ルートパラメータからattributeIdを取得
 
-            // choice_attributes テーブルから対象のデータを削除
+            // product_attributes テーブルから対象のデータを削除
             Product_attributes::where('product_id', $productId)
                 ->where('attribute_id', $attributeId)
                 ->delete();

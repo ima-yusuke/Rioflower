@@ -34,6 +34,8 @@ export default defineConfig({
                 dashLink: 'resources/js/admin/dash-link.js',
                 question: 'resources/js/dash-question.js',
                 dashAddAttribute: 'resources/js/admin/dash-add-attribute.js',
+                dashQuestionAttribute: 'resources/js/admin/dash-question-attribute.js',
+                dashProductAttribute: 'resources/js/admin/dash-product-attribute.js',
             }
         }
     }

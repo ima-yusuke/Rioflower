@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+//        商品詳細テーブル
         Schema::create('details', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->bigInteger("product_id")->unsigned();
-            $table->longText("insert")->default(null)->nullable();
-            $table->text("attributes")->default(null)->nullable();
+            $table->bigInteger("product_id")->unsigned()->comment("商品ID");
+            $table->longText("insert")->default(null)->nullable()->comment("挿入文");
+            $table->text("attributes")->default(null)->nullable()->comment("css属性");
 
             $table->foreign('product_id')
                 ->references('id')

@@ -1,7 +1,6 @@
 <x-app-layout>
     {{--画面枠--}}
     <div class="flex w-full h-[calc(100vh-4rem-1px)]">
-
         {{--メニューバー--}}
         <section class="w-[20%] h-full bg-white">
             <article class="max-h-[90vh] overflow-y-scroll">
@@ -15,7 +14,6 @@
                 @endforeach
             </article>
         </section>
-
         {{--左画面/商品--}}
         <section class="relative w-[40%] flex items-center justify-center border-r border-solid border-gray-500">
             <article id="default_title">商品を選択してください</article>
@@ -28,7 +26,6 @@
             </article>
             <p id="selected_title" class="absolute top-4 left-8 text-2xl"></p>
         </section>
-
         {{--右画面/属性--}}
         <section class="w-[40%] flex items-center justify-center">
             <article class="flex flex-col gap-4 bg-white overflow-true h-[600px] w-full m-6 p-6 rounded-lg">

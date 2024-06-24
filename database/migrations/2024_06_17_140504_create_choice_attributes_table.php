@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+//        選択肢・属性中間テーブル
         Schema::create('choice_attributes', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger("choice_id")->unsigned();
-            $table->bigInteger("attribute_id")->unsigned();
+            $table->bigInteger("choice_id")->unsigned()->comment("選択肢ID");
+            $table->bigInteger("attribute_id")->unsigned()->comment("属性ID");
             $table->timestamps();
 
             $table->foreign('choice_id')->references('id')->on('choices')->onDelete('cascade');

@@ -1,5 +1,6 @@
 <x-app-layout>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+{{--    新規リンク先の追加--}}
     <div class="flex justify-center items-center w-full py-12">
         <div class="qa__item bg-white border border-solid border-gray-200 w-[80%] shrink-0">
             <div class="qa__head js-ac flex items-center justify-between gap-4 py-5 px-5">
@@ -34,10 +35,11 @@
             </div>
         </div>
     </div>
+{{--    既存リンク先の表示--}}
     <div class="flex flex-col items-center w-full py-12">
         @foreach($data as $idx=>$value)
             <div class="qa__item bg-white border border-solid border-gray-200 w-[80%] shrink-0">
-                {{-- 商品 --}}
+                {{-- コース表示 --}}
                 <div class="qa__head btn-area js-ac flex items-center justify-between gap-4 py-6 px-2 ml-4">
                     <div>
                         <p class="text-xs md:text-base lg:text-lg font-bold leading-6 opacity-90">{{ $value["course"] }}/{{ $value["price"] }}円</p>
@@ -47,7 +49,6 @@
                         <button class="deleteBtn font-medium text-blue-600 px-2" data-id="{{ $value['id'] }}">削除</button>
                     </div>
                 </div>
-
                 {{-- リンク（最初非表示） --}}
                 <div class="qa__body link-area flex justify-between gap-4">
                     <div class="flex flex-col gap-4 w-full">
