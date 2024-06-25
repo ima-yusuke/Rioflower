@@ -79,7 +79,7 @@
                 <p class="text-sm font-semibold text-gray-900 dark:text-white">住所</p>
                 <input type="text" placeholder="住所" class="w-full rounded-md">
                 <p class="text-sm font-semibold text-gray-900 dark:text-white">メールアドレス</p>
-                <input type="email" placeholder="test@com" class="w-full rounded-md">
+                <input type="email" placeholder="example@example.com" class="w-full rounded-md">
             </div>
             <!-- Modal footer -->
             <div class="flex items-center justify-between p-4 md:p-5 border-t border-gray-200 rounded-b">

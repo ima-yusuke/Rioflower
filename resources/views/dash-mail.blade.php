@@ -11,7 +11,7 @@
                                 メール上部
                             </div>
                             <div class="px-2 py-1">
-                                <textarea id="top" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" rows="6">{{ $mail['top'] }}</textarea>
+                                <textarea id="top" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" rows="8">{{ $mail['top'] }}</textarea>
                             </div>
                         </div>
 {{--                    メール下部--}}
@@ -20,7 +20,7 @@
                                 メール下部
                             </div>
                             <div class="px-2 py-1">
-                                <textarea id="bottom" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" rows="6">{{ $mail['bottom'] }}</textarea>
+                                <textarea id="bottom" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" rows="8">{{ $mail['bottom'] }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -31,8 +31,24 @@
                 <div class="w-full flex flex-col px-2">
                     <h2 class="text-xl mb-4">プレビュー</h2>
                     <div id="preview" class="w-full p-4 border border-gray-300 rounded-md bg-gray-50">
+                        <div class="mb-4 text-red-600">〇〇様</div>
                         <div id="preview-top" class="mb-4">{!! nl2br(e($mail['top'])) !!}</div>
-                        <div class="mb-4">----------------------------------<br>ここに商品情報が入ります<br>----------------------------------</div>
+                        <div class="mb-4 text-red-600">
+                            <span class="underline">購入者情報</span><br>
+                            氏名：〇〇様<br>
+                            住所：〇〇県〇〇市〇〇町〇〇丁目〇〇番地<br>
+                            メールアドレス：example@example.com<br>
+                            <br>
+                            <span class="underline">商品情報<br></span>
+                            商品名：〇〇〇〇<br>
+                            商品詳細<br>
+                            〇〇〇〇〇〇〇〇<br>
+                            〇〇〇〇〇〇〇〇<br>
+                            〇〇〇〇〇〇〇〇<br>
+                            <br>
+                            <span class="underline">商品リンク<br></span>
+                            https://www.example.com/〇〇〇〇<br>
+                        </div>
                         <div id="preview-bottom">{!! nl2br(e($mail['bottom'])) !!}</div>
                     </div>
                 </div>
