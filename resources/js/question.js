@@ -19,6 +19,7 @@ const SHOW_RESULT_BTN = document.getElementById("show_result_btn");
 const RESULT_CONTAINER = document.getElementById('result_container')
 const RESULT_P_NAME = document.getElementById("result_p_name");
 const RESULT_IMG = document.getElementById("result_img");
+const SEND_BTN = document.getElementById("send_btn");
 
 // 現在の質問番目
 let currentQuestionIdx = 0;
@@ -426,3 +427,8 @@ function CalPriority() {
     // 再度合計計算し並び替え
     SortScore();
 }
+
+// 顧客情報追加
+SEND_BTN.addEventListener("click",function(){
+
+});
