@@ -36,17 +36,6 @@ class AdminController extends Controller
         // アップロードされたファイル名を取得
         $fileName = $request->file('img')->getClientOriginalName();
 
-        // データベースに同じ名前の画像が存在するかチェック
-        if (Product::where('img', 'storage/img/' . $fileName)->exists()) {
-            return response()->json([
-                'message' => '同じ名前の画像が既に存在します'
-            ], 400);
-        }
-
-        //storageに保存（Laravelのデフォルト設定では、publicディスクは storage/app/public になっている）
-        $request->file('img')->storeAs('public/img', $fileName);
-
-
         //商品情報の保存
         $product = new Product();
         $product->name = $request->name;
@@ -60,6 +49,12 @@ class AdminController extends Controller
         $product->is_enabled = 1;
         $product->save();
 
+        //storageに画像ファイル保存（Laravelのデフォルト設定では、publicディスクは storage/app/public になっている）
+        $request->file('img')->storeAs('public/img/' . $product->id, $fileName);
+
+        // 画像パスを更新
+        $product->img = 'storage/img/' . $product->id . '/' . $fileName;
+        $product->save();
 
         //Quillの保存
         DB::beginTransaction();
@@ -107,21 +102,15 @@ class AdminController extends Controller
         if ($request->hasFile('img')) {
             $fileName = $request->file('img')->getClientOriginalName();
 
-            // データベースに同じ名前の画像が存在するかチェック
-            if (Product::where('img', 'storage/img/' . $fileName)->where('id', '!=', $id)->exists()) {
-                return response()->json([
-                    'message' => '同じ名前の画像が既に存在します'
-                ], 400);
-            }
-
-            $request->file('img')->storeAs('public/img', $fileName);
-            $fileName = 'storage/img/' . $fileName;
-
             // 以前に保存された画像ファイルのパスを取得
             $previousImgPath = str_replace('storage/img/', '', $product->img);
 
-            // 以前の画像ファイルを削除
-            Storage::disk('public')->delete('img/' . $previousImgPath);
+            // 以前の画像ディレクトリを削除
+            Storage::disk('public')->deleteDirectory('img/' . $product->id);
+
+            $request->file('img')->storeAs('public/img/' . $product->id, $fileName);
+
+            $fileName = 'storage/img/' . $product->id . '/' . $fileName;
         } else {
             $fileName = $product->img;
         }
@@ -176,6 +165,10 @@ class AdminController extends Controller
         $product = Product::find($request->id);
 
         if ($product) {
+
+            // ディレクトリを削除
+            Storage::disk('public')->deleteDirectory('img/' . $product->id);
+
             // レコードを削除
             $product->delete();
 

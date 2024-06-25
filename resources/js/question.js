@@ -95,6 +95,7 @@ function ShowResult() {
 
     CreateResult()
 
+    DisplayQuill();
 }
 
 
@@ -279,6 +280,28 @@ function CreateResult(){
     pickupLinkText.innerText = "受取："+maxProduct[0].link["pickup_link"];
 }
 
+function DisplayQuill(){
+    quill = new Quill("#viewer", {
+        //ツールバー無デザイン
+        readOnly: true
+    });
+
+    let maxProductId = scoreArray[0]["product_id"];
+    let maxProduct = products.filter(product => product.id === maxProductId);
+    let details =maxProduct[0]["details"];
+
+    let setData = [];
+
+    if(details.length>0){
+        details.forEach((value) => {
+            // DBから取得したので文字列からJSON形式に戻す
+            setData.push({"insert": JSON.parse(value["insert"]), "attributes": JSON.parse(value["attributes"])})
+        })
+    }
+
+    //Quillデータをエディター内に表示
+    quill.setContents(setData)
+}
 
 // ----------------------------------------[スコア計算]----------------------------------------
 
