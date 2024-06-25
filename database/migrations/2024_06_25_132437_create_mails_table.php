@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -17,6 +18,15 @@ return new class extends Migration
             $table->text('bottom')->nullable()->comment('メール下部');
             $table->timestamps();
         });
+
+        // テーブル作成後に初期データを挿入
+        DB::table('mails')->insert([
+            'id' => 1,
+            'top' => null,
+            'bottom' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     /**
