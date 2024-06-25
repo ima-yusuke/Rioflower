@@ -95,7 +95,8 @@ function ShowResult() {
 
     CreateResult()
 
-    DisplayQuill();
+    let productId = scoreArray[0]["product_id"];
+    DisplayQuill(productId);
 }
 
 
@@ -264,6 +265,9 @@ function DeleteConfirmContainer(){
 
 // 結果画面に最適な商品を表示
 function CreateResult(){
+
+    CalPriority();
+
     let maxProduct = products.filter(product => product.id === scoreArray[0]["product_id"]);
     RESULT_P_NAME.innerText = maxProduct[0]["name"]
     RESULT_IMG.src = maxProduct[0]["img"];
@@ -272,22 +276,52 @@ function CreateResult(){
     for(let i=0;i<otherImages.length;i++) {
         let otherProduct = products.filter(product => product.id === scoreArray[i+1]["product_id"]);
         otherImages[i].src = otherProduct[0]["img"];
+        otherImages[i].parentNode.setAttribute("id",otherProduct[0]["id"]);
+
+        otherImages[i].parentNode.addEventListener("click",function(){
+            RESULT_P_NAME.innerText = otherProduct[0]["name"];
+            RESULT_IMG.src = otherProduct[0]["img"];
+            function DeleteQuill(idx){
+                let quillContainer = document.getElementById("quill_view_container");
+                while(quillContainer.firstChild){
+                    quillContainer.removeChild(quillContainer.firstChild)
+                }
+
+                if (quill) {
+                    quill.off(); // イベントリスナーを解除
+                    let quillContainer = document.querySelector('.ql-container');
+                    if (quillContainer) {
+                        quillContainer.parentNode.removeChild(quillContainer);
+                    }
+                    quill = null;
+                }
+            }
+            DeleteQuill(0);
+            DisplayQuill(otherProduct[0]["id"]);
+        });
     }
 
-    let deliveryLinkText = document.getElementById("delivery_link");
-    let pickupLinkText = document.getElementById("pickup_link");
-    deliveryLinkText.innerText = "郵送："+maxProduct[0].link["delivery_link"];
-    pickupLinkText.innerText = "受取："+maxProduct[0].link["pickup_link"];
+    // let deliveryLinkText = document.getElementById("delivery_link");
+    // let pickupLinkText = document.getElementById("pickup_link");
+    // deliveryLinkText.innerText = "郵送："+maxProduct[0].link["delivery_link"];
+    // pickupLinkText.innerText = "受取："+maxProduct[0].link["pickup_link"];
 }
 
-function DisplayQuill(){
+function DisplayQuill(productId){
+
+    let quillDiv = document.createElement("div");
+    quillDiv.setAttribute("id", "viewer");
+    quillDiv.classList.add("bg-detail-bg","p-6");
+    let quillContainer = document.getElementById("quill_view_container");
+    quillContainer.appendChild(quillDiv);
+
     quill = new Quill("#viewer", {
         //ツールバー無デザイン
         readOnly: true
     });
 
-    let maxProductId = scoreArray[0]["product_id"];
-    let maxProduct = products.filter(product => product.id === maxProductId);
+
+    let maxProduct = products.filter(product => product.id === productId);
     let details =maxProduct[0]["details"];
 
     let setData = [];
@@ -344,10 +378,6 @@ function CalMaxIdx(choiceId){
                 existingScoreObj.score.push(count);
             }
         }
-
-        // プライオリティの計算
-        // count += products[i]["priority"];
-
     }
 
     SortScore();
@@ -374,5 +404,15 @@ function SortScore() {
     return scoreArray;
 }
 
+// プライオリティ計算
+function CalPriority() {
 
+    // スコア配列にpriorityを追加
+    for (let i = 0; i < products.length; i++) {
+        let existingScoreObj = scoreArray.find(scoreObj => scoreObj.product_id === products[i]["id"]);
+        existingScoreObj.score.push(products[i]["priority"]);
+    }
 
+    // 再度合計計算し並び替え
+    SortScore();
+}

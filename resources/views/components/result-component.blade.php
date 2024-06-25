@@ -1,33 +1,32 @@
 <div id="result_container" class="relative flex flex-col justify-center items-center hide gap-8 w-full min-h-screen">
-
-    <!-- その他おすすめ画像の表示エリア -->
-    <div class="z-30 w-full flex justify-center gap-10 md:gap-32 my-6 md:my-16">
-        <div class="flex flex-col items-center justify-center gap-2">
-            <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
-            <p>【第2位】</p>
-        </div>
-        <div class="flex flex-col items-center justify-center gap-2">
-            <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
-            <p>【第3位】</p>
-        </div>
-        <div class="flex flex-col items-center justify-center gap-2">
-            <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
-            <p>【第4位】</p>
-        </div>
-    </div>
-
     {{--１位商品詳細--}}
     <div class="flex flex-col md:flex-row justify-between items-center gap-80 md:gap-0 h-full md:w-full w-full">
         {{--左側詳細--}}
-        <div class="w-full md:w-[50%]">
-            <div id="big_ball" class="big-screen w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-main-brown rounded-full">
-                <img id="result_img" class="object-cover absolute left-[22%] md:left-1/3 top-[90%] md:top-1/4 transform translate-x-20 -translate-y-56 z-10 rounded-full w-[280px] md:w-[450px] h-[280px] md:h-[450px]">
+        <div class="w-full md:w-[50%] relative mt-8">
+            <div id="big_ball" class="big-screen w-[400px] md:w-[700px] h-[400px] md:h-[700px] bg-main-brown rounded-full">
+                <img id="result_img" class="object-cover absolute left-[22%] md:left-1/3 top-[80%] md:top-1/4 transform translate-x-20 -translate-y-56 z-10 rounded-full w-[280px] md:w-[400px] h-[280px] md:h-[400px]">
+            </div>
+
+            <!-- その他おすすめ画像の表示エリア -->
+            <div class="absolute bottom-12 z-30 w-full flex justify-center gap-10 md:gap-32 my-6">
+                <div class="flex flex-col items-center justify-center gap-2">
+                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+                    <p>【第2位】</p>
+                </div>
+                <div class="flex flex-col items-center justify-center gap-2">
+                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+                    <p>【第3位】</p>
+                </div>
+                <div class="flex flex-col items-center justify-center gap-2">
+                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+                    <p>【第4位】</p>
+                </div>
             </div>
         </div>
 
         {{--右側詳細--}}
         <div class="flex flex-col justify-center items-center gap-4 md:w-[50%] mx-10 w-full">
-            <div class="flex flex-col gap-8 w-full">
+            <div class="flex flex-col gap-4 w-full">
                 {{--タイトル--}}
                 <div class="font-bold flex flex-col  gap-2">
                     <p class="text-center">あなたにおすすめなのは</p>
@@ -37,9 +36,8 @@
                     </aside>
                 </div>
 
-                {{--Quill表示エリア
-                --}}
-                <div id="viewer" class="bg-detail-bg p-6 mx-6 md:mx-0 rounded-lg">
+                {{--Quill表示エリ--}}
+                <div class="h-[450px] overflow-scroll" id="quill_view_container">
 
                 </div>
 
