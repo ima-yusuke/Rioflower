@@ -49,11 +49,7 @@
 
                     {{--modal open button--}}
                     <button data-modal-target="default-modal1" data-modal-toggle="default-modal1" id="open-modal-btn1" class="open-modal pink-btn block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
-                        郵送
-                    </button>
-
-                    <button data-modal-target="default-modal2" data-modal-toggle="default-modal2" id="open-modal-btn2" class="open-modal pink-btn block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
-                        受取
+                        購入
                     </button>
                 </aside>
             </div>
@@ -61,7 +57,7 @@
     </div>
 </div>
 
-<!-- 郵送 modal -->
+<!-- 購入 modal -->
 <div id="default-modal1" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
@@ -69,7 +65,7 @@
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    郵送リンク
+                    お客情報入力フォーム
                 </h3>
             </div>
             <!-- Modal body -->
@@ -88,40 +84,7 @@
             <!-- Modal footer -->
             <div class="flex items-center justify-between p-4 md:p-5 border-t border-gray-200 rounded-b">
                 <button data-modal-hide="default-modal1" type="button" class="mail-btn py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">閉じる</button>
-                <button data-modal-hide="default-modal1" data-id="" type="button" class="send-btn mail-btn text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">送信</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 受取 modal -->
-<div id="default-modal2" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    受取リンク
-                </h3>
-            </div>
-            <!-- Modal body -->
-            <div class="p-4 md:p-5 space-y-4">
-                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    メールアドレスを入力して『送信』ボタンを押してください。<br>
-                    ご入力頂いたメールアドレスに購入先リンクをお送り致します。
-                </p>
-                <p class="text-sm font-semibold text-gray-900 dark:text-white">氏名</p>
-                <input type="text" placeholder="氏名" class="w-full rounded-md">
-                <p class="text-sm font-semibold text-gray-900 dark:text-white">住所</p>
-                <input type="text" placeholder="住所" class="w-full rounded-md">
-                <p class="text-sm font-semibold text-gray-900 dark:text-white">メールアドレス</p>
-                <input type="email" placeholder="example@example.com" class="w-full rounded-md">
-            </div>
-            <!-- Modal footer -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-t border-gray-200 rounded-b">
-                <button data-modal-hide="default-modal2" type="button" class="mail-btn py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">閉じる</button>
-                <button data-modal-hide="default-modal2" data-id="" type="button" class="send-btn mail-btn text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">送信</button>
+                <button data-modal-hide="default-modal1" data-id="" type="button" id="send_btn" class="mail-btn text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">送信</button>
             </div>
         </div>
     </div>

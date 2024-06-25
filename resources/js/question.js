@@ -284,29 +284,27 @@ function CreateResult(){
             RESULT_P_NAME.innerText = otherProduct[0]["name"];
             RESULT_IMG.src = otherProduct[0]["img"];
 
-            DeleteQuill();
+            // scoreArrayの入れ替え
+            let temp = scoreArray[0];
+            scoreArray[0] = scoreArray[i + 1];
+            scoreArray[i + 1] = temp;
 
+            DeleteQuill();
             DisplayQuill(otherProduct[0]["id"]);
+
         });
     }
-
-    // let deliveryLinkText = document.getElementById("delivery_link");
-    // let pickupLinkText = document.getElementById("pickup_link");
-    // deliveryLinkText.innerText = "郵送："+maxProduct[0].link["delivery_link"];
-    // pickupLinkText.innerText = "受取："+maxProduct[0].link["pickup_link"];
 }
 
 // 送信ボタンに購入商品のidを付与
-let openModalBtn = document.getElementsByClassName("open-modal");
-for (let i = 0; i < openModalBtn.length; i++) {
-    openModalBtn[i].addEventListener("click", function () {
-       SetMaxProductId(i);
+let openModalBtn = document.getElementById("open-modal-btn1");
+    openModalBtn.addEventListener("click", function () {
+       SetMaxProductId();
     });
-}
 
-function SetMaxProductId(idx) {
-    let sendBtn = document.getElementsByClassName("send-btn");
-    sendBtn[idx].setAttribute("data-id",scoreArray[0]["product_id"]);
+function SetMaxProductId() {
+    let sendBtn = document.getElementById("send_btn");
+    sendBtn.setAttribute("data-id",scoreArray[0]["product_id"]);
 }
 
 // Quill表示
