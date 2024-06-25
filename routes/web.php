@@ -58,8 +58,8 @@ Route::middleware('auth')->group(function () {
     Route::delete("/dashboard/attribute/question/{id}",[AdminController::class,"DeleteAttributeQuestion"])->name("DeleteAttributeQuestion");
 
     //メール
-    Route::get("/dashboard/mail",[AdminController::class,"ShowMail"])->name("ShowMail");
-    Route::PATCH("/dashboard/mail/{id}",[AdminController::class,"UpdateMail"])->name("UpdateMail");
+    Route::get("/dashboard/message",[AdminController::class,"ShowMessage"])->name("ShowMessage");
+    Route::PATCH("/dashboard/message/{id}",[AdminController::class,"UpdateMessage"])->name("UpdateMessage");
 });
 
 require __DIR__.'/auth.php';

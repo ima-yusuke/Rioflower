@@ -25,7 +25,7 @@ UPDATE_BTN.addEventListener('click', function() {
     const TOP = document.getElementById('top').value;
     const BOTTOM = document.getElementById('bottom').value;
 
-    fetch(`/dashboard/mail/${ID}`, {
+    fetch(`/dashboard/message/${ID}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',

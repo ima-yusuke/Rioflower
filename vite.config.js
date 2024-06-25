@@ -14,6 +14,7 @@ export default defineConfig({
                 'resources/js/admin/dash-add-attribute.js',
                 'resources/js/admin/dash-question-attribute.js',
                 'resources/js/admin/dash-product-attribute.js',
+                'resources/js/admin/dash-message.js',
             ],
             refresh: true,
         }),
@@ -36,6 +37,7 @@ export default defineConfig({
                 dashAddAttribute: 'resources/js/admin/dash-add-attribute.js',
                 dashQuestionAttribute: 'resources/js/admin/dash-question-attribute.js',
                 dashProductAttribute: 'resources/js/admin/dash-product-attribute.js',
+                dashMessage: 'resources/js/admin/dash-message.js',
             }
         }
     }

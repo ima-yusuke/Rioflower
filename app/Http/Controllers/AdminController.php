@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Choice;
-use App\Models\Mail;
+use App\Models\Message;
 use App\Models\Product_attributes;
 use App\Models\Question;
 use Illuminate\Http\Request;
@@ -757,12 +757,12 @@ class AdminController extends Controller
         }
     }
 
-    public function ShowMail() {
-        $mail = Mail::first();
-        return view("dash-mail", compact("mail"));
+    public function ShowMessage() {
+        $message = Message::first();
+        return view("dash-message", compact("message"));
     }
 
-    public function UpdateMail(Request $request, $id) {
+    public function UpdateMessage(Request $request, $id) {
         // バリデーションルールを定義
         $request->validate([
             'top' => ['required'],
@@ -771,14 +771,14 @@ class AdminController extends Controller
 
         DB::beginTransaction();
         try {
-            $mail = Mail::find($id);
-            $mail->top = $request->top;
-            $mail->bottom = $request->bottom;
-            $mail->save();
+            $message = Message::find($id);
+            $message->top = $request->top;
+            $message->bottom = $request->bottom;
+            $message->save();
 
             DB::commit();
 
-            return response()->json(['redirect' => route('ShowMail')]);
+            return response()->json(['redirect' => route('ShowMessage')]);
         } catch (\Exception $e) {
             DB::rollback();
             Log::error('メール設定の更新に失敗しました' . $e->getMessage());
