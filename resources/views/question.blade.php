@@ -11,29 +11,12 @@
     </div>
 
     <script>
-        const questions = @json($data);
-
+        let questions = @json($questions);
         let products = @json($products);
+        let productAttributes = @json($productAttributes);
+        let choiceAttributes = @json($choiceAttributes);
 
-        // let tmpArray =[];
 
-        // 非表示なのは除外(is_enabledが1でないもの)
-        // products.forEach((value)=>{
-        //     if(value["is_enabled"]===1){
-        //         tmpArray.push(value);
-        //     }
-        // })
-
-        // products = tmpArray;
-
-        // 購入ボタンを押したときにmodalでbodyのoverflow-hiddenが外れる問題に対応
-        let mail_btn = document.getElementsByClassName("mail-btn");
-        for (let i = 0; i < mail_btn.length; i++) {
-            mail_btn[i].addEventListener("click", function () {
-                let body = document.querySelector("body");
-                body.style.overflow = "hidden";
-            });
-        }
     </script>
 </x-template>
 

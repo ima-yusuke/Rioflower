@@ -3,10 +3,13 @@ const ADD_QUESTION_BTN  =document.getElementById("add_btn");
 const DELETE_QUESTION_BUTTONS = document.querySelectorAll('.deleteBtn');//削除ボタン
 const ADD_ANSWER_BUTTONS = document.querySelectorAll('.add-answer-btn');//回答追加ボタン
 const DELETE_ANSWER_BUTTONS = document.querySelectorAll('.delete-answer');//回答削除ボタン
+let accordionId =null;
 
 //アコーディオンの開閉
 EDIT_BTN.forEach((btn,idx) => {
     btn.addEventListener('click', function() {
+
+        accordionId = idx;
 
         let selected_qa_body = btn.parentNode.parentNode.nextElementSibling;//アコーディオン中身
 
@@ -71,7 +74,7 @@ ADD_QUESTION_BTN.addEventListener("click",function (){
 
 })
 
-//【商品削除】
+//【質問削除】
 for (let i = 0; i < DELETE_QUESTION_BUTTONS.length; i++) {
     DELETE_QUESTION_BUTTONS[i].addEventListener('click', function () {
         DeleteQuestion(DELETE_QUESTION_BUTTONS[i]);
@@ -131,6 +134,7 @@ function AddAnswer(btn,idx) {
         body: JSON.stringify({
             id: id,
             choice:newAnswer ,
+            accordionId:accordionId
         })
     })
         .then(response => {
@@ -142,6 +146,7 @@ function AddAnswer(btn,idx) {
         .then(data => {
             if (data.redirect) {
                 window.alert('回答を追加しました')
+                localStorage.setItem('accordionId', data.accordionId);
                 window.location.href = data.redirect;
             } else if (data.message) {
                 alert(data.message);
@@ -174,7 +179,10 @@ function DeleteAnswer(btn) {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // トークンをメタタグから取得
             },
-            body: JSON.stringify({ id: id })
+            body: JSON.stringify({
+                id: id,
+                accordionId:accordionId
+            })
         })
             .then(response => {
                 if (response.ok) {
@@ -184,6 +192,7 @@ function DeleteAnswer(btn) {
                 }
             })
             .then(data => {
+                localStorage.setItem('accordionId', data.accordionId);
                 location.reload(); // ページをリロードして削除を反映
             })
             .catch(error => {
@@ -322,6 +331,24 @@ function updateAnswerOrder(orderData) {
         });
 }
 
+// リダイレクト時の処理
+document.addEventListener('DOMContentLoaded', (event) => {
+
+    let accordionId = localStorage.getItem('accordionId');
+
+    if (accordionId) {
+
+        // アコーディオン（質問）選択ボタン
+        let editBtn = EDIT_BTN[accordionId];
+        if (editBtn) {
+            // 手動でクリックイベントを発生させる
+            editBtn.click();
+        }
+    }
+
+    // 状態をリセット
+    localStorage.removeItem('accordionId');
+});
 
 // --------------------------------[回答並び替え]-------------------------------------------------
 
@@ -338,15 +365,4 @@ for (let i=0;i<questions.length;i++){
     });
 }
 
-// function onSortEventAnswer(e){
-//     console.log("onSort!!");
-//     // 3, 並び替え後のエレメントを確認
-//     const items = e.target.querySelectorAll("aside p");
-//     for(let i=0; i<items.length; i++){
-//         let str = items[i].innerHTML;
-//         // 旧番号と"."を削除
-//         items[i].innerHTML = str.slice( 2 )
-//         // 並び替えた最新の番号を書き込み
-//         items[i].innerHTML = `${i+1}. ${items[i].innerHTML}`;
-//     }
-// }
+

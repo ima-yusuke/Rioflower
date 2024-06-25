@@ -2,7 +2,7 @@
     {{--表示商品一覧--}}
     <div class="flex flex-col items-center w-full pt-12">
         <div class="flex justify-start w-[80%]">
-            <h2 class="dash_h2 font-semibold text-gray-800">表示商品一覧</h2>
+            <h2 class="text-base pb-4 md:text-xl font-semibold text-gray-800">表示商品一覧</h2>
         </div>
 
         <div class="flex flex-col items-center w-full">
@@ -10,18 +10,18 @@
                 <div class="qa__item bg-white border border-solid border-gray-200 w-[80%] shrink-0">
                     {{--既存商品名--}}
                     <div class="qa__head js-ac flex items-center justify-between gap-4 py-6 px-2 ml-4">
-                        <div>
+                        <div class="product-title flex flex-col gap-2">
                             <p class="text-xs md:text-base lg:text-lg font-bold leading-6 opacity-90">{{$value["name"]}}</p>
                         </div>
                         <aside>
                             <label class="inline-flex items-center cursor-pointer mr-4">
-                                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">非表示</span>
+                                <span class="text-xs ms-3 md:text-sm font-medium text-gray-900 mr-2">非表示</span>
                                 <input type="checkbox" value="{{$value['id']}}" class="toggleBtn sr-only peer" checked>
-                                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">表示</span>
+                                <div class="relative w-7 h-4 sm:w-11 sm:h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 sm:after:h-5 sm:after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                <span class="text-xs ms-3 md:text-sm font-medium text-gray-900 dark:text-gray-300">表示</span>
                             </label>
-                            <a data-product-id="{{$value["id"]}}" class="editBtn font-medium text-blue-600 hover:underline mr-4">編集</a>
-                            <a data-product-id="{{$value["id"]}}" class="deleteBtn font-medium text-blue-600 hover:underline">削除</a>
+                            <a data-product-id="{{$value["id"]}}" class="editBtn text-xs md:text-base font-medium text-blue-600 hover:underline mr-4">編集</a>
+                            <a data-product-id="{{$value["id"]}}" class="deleteBtn text-xs md:text-base font-medium text-blue-600 hover:underline">削除</a>
                         </aside>
                     </div>
 
@@ -29,39 +29,43 @@
                     <div class="qa__body">
                         <form class="productForm h-[400px] overflow-y-scroll flex flex-col" method="post" enctype="multipart/form-data" data-product-id="{{$value["id"]}}">
                             @csrf
-                            <div class="flex items-center border-y border-solid border-gray-200 py-4">
-                                <p class="w-[250px]">1.商品画像の設定</p>
-                                <div class="flex gap-16">
-                                    <aside class="flex flex-col items-center gap-2">
-                                        <p>【現在の画像】</p>
+                            <div class="flex flex-col md:flex-row md:items-center gap-4 border-y border-solid border-gray-200 py-4">
+                                <p class="md:w-[250px] text-xs md:text-base">1.商品画像の設定</p>
+                                <div class="flex flex-col md:flex-row gap-6 md:gap-16">
+                                    <aside class="flex flex-col md:items-center gap-2">
+                                        <p class="text-xs md:text-base">【現在の画像】</p>
                                         <img src="{{asset($value->img)}}" width="100px">
                                     </aside>
                                     <aside class="flex flex-col gap-2">
-                                        <p>【新しい画像】</p>
-                                        <input type="file" accept="image/jpeg,image/png" name="img">
+                                        <p class="text-xs md:text-base">【新しい画像】</p>
+                                        <input type="file" accept="image/jpeg,image/png" name="img" class="w-full text-xs h-[35px] md:h-full">
                                     </aside>
                                 </div>
                             </div>
-                            <div class="flex items-center border-b border-solid border-gray-200 py-4">
-                                <p class="w-[250px]">2.商品名</p>
+                            <div class="flex flex-col md:flex-row md:items-center gap-4 border-y border-solid border-gray-200 py-4">
+                                <p class="md:w-[250px] text-xs md:text-base">2.商品名</p>
                                 <div class="flex-1">
-                                    <input name="name" value="{{$value['name']}}" class="w-full border border-solid border-gray-400 rounded-md">
+                                    <input name="name" value="{{$value['name']}}" class="w-full text-xs md:text-base h-[35px] md:h-full border border-solid border-gray-400 rounded-md">
                                 </div>
                             </div>
-                            <div class="flex items-center border-b border-solid border-gray-200 py-4">
-                                <p class="w-[250px]">3.料金</p>
+                            <div class="flex flex-col md:flex-row md:items-center gap-4 border-y border-solid border-gray-200 py-4">
+                                <p class="md:w-[250px] text-xs md:text-base">3.価格帯</p>
                                 <div class="flex-1">
-                                    <select name="price" class="w-full border border-solid border-gray-400 rounded-md">
-                                        <option value="0" @if($value["price"]==0) selected @endif>3,000円</option>
-                                        <option value="1" @if($value["price"]==1) selected @endif>5,000円</option>
-                                        <option value="2" @if($value["price"]==2) selected @endif>10,000円</option>
+                                    <select name="price" class="price-select-box w-full h-[35px] md:h-full text-xs md:text-base border border-solid border-gray-400 rounded-md">
+                                        @foreach($links as $link)
+                                            @if($value["price"]==$link["id"])
+                                                <option value="{{$link["id"]}}" selected class="saved-price">{{$link["course"]}}</option>
+                                            @else
+                                                <option value="{{$link["id"]}}">{{$link["course"]}}</option>
+                                            @endif
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
-                            <div class="flex items-center border-b border-solid border-gray-200 py-4">
-                                <p class="w-[250px]">4.プライオリティ</p>
+                            <div class="flex flex-col md:flex-row md:items-center gap-4 border-y border-solid border-gray-200 py-4">
+                                <p class="md:w-[250px] text-xs md:text-base">4.プライオリティ</p>
                                 <div class="flex-1">
-                                    <select name="priority" class="w-full border border-solid border-gray-400 rounded-md">
+                                    <select name="priority" class="w-full h-[35px] md:h-full text-xs md:text-base border border-solid border-gray-400 rounded-md">
                                         <option value="0" @if($value["priority"]==0) selected @endif>優先度：低</option>
                                         <option value="1" @if($value["priority"]==1) selected @endif>優先度：中</option>
                                         <option value="2" @if($value["priority"]==2) selected @endif>優先度：高</option>
@@ -84,14 +88,14 @@
 
             {{-- 新規商品 --}}
             <div class="qa__item bg-white border border-solid border-gray-200 w-[80%] shrink-0">
-                <div class="qa__head js-ac flex items-center justify-between gap-4 py-6 px-2 ml-4">
+                <div class="qa__head js-ac flex items-center justify-between gap-4 py-6 px-2 ml-2 md:ml-4">
                     <div>
                         <p class="text-xs md:text-base lg:text-lg font-bold leading-6 opacity-90">
-                            <span class="bg-red-500 text-white text-sm font-medium me-2 px-2.5 py-0.5 rounded-8">New</span>新規商品の追加
+                            <span class="bg-red-500 text-white text-xs md:text-sm font-medium me-2 px-2.5 py-0.5 rounded-8">New</span>新規商品の追加
                         </p>
                     </div>
                     <aside>
-                        <a class="editBtn addProductBtn font-medium text-blue-600 hover:underline">編集</a>
+                        <a class="editBtn addProductBtn text-xs md:text-base font-medium text-blue-600 hover:underline">編集</a>
                     </aside>
                 </div>
 
@@ -99,41 +103,33 @@
                 <div class="qa__body flex flex-col">
                     <form class="h-[400px] overflow-y-scroll flex flex-col" id="productForm" method="post" enctype="multipart/form-data">
                         @csrf
-                        <div class="flex items-center border-y border-solid border-gray-200 py-4">
-                            <div class="flex flex-col gap-2">
-                                <p class="bg-red-500 w-[50px] text-white text-sm font-medium me-2 text-center px-2.5 py-0.5 rounded-lg">必須</p>
-                                <p class="w-[250px]">1.商品画像</p>
-                            </div>
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 border-y border-solid border-gray-200 py-4">
+                            <x-required-title title="1.商品画像" />
                             <div class="flex-1">
-                                <input type="file" accept="image/jpeg,image/png" name="img" id="img" class="w-full border border-solid border-gray-400 rounded-md" required />
+                                <input type="file" accept="image/jpeg,image/png" name="img" id="img" class="w-full text-xs h-[35px] md:h-full border border-solid border-gray-400 rounded-md" required />
                             </div>
                         </div>
-                        <div class="flex items-center border-b border-solid border-gray-200 py-4">
-                            <div class="flex flex-col gap-2">
-                                <p class="bg-red-500 w-[50px] text-white text-sm font-medium me-2 text-center px-2.5 py-0.5 rounded-lg">必須</p>
-                                <p class="w-[250px]">2.商品名</p>
-                            </div>
+
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 border-y border-solid border-gray-200 py-4">
+                            <x-required-title title="2.商品名" />
                             <div class="flex-1">
-                                <input name="name" class="w-full border border-solid border-gray-400 rounded-md" required />
+                                <input name="name" class="w-full h-[35px] md:h-full border border-solid border-gray-400 rounded-md" required />
                             </div>
                         </div>
-                        <div class="flex items-center border-b border-solid border-gray-200 py-4">
-                            <div class="flex flex-col gap-2">
-                                <p class="bg-red-500 w-[50px] text-white text-sm font-medium me-2 text-center px-2.5 py-0.5 rounded-lg">必須</p>
-                                <p class="w-[250px]">3.料金</p>
-                            </div>
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 border-y border-solid border-gray-200 py-4">
+                            <x-required-title title="3.価格帯" />
                             <div class="flex-1">
-                                <select name="price" class="w-full border border-solid border-gray-400 rounded-md">
-                                    <option value="0">3,000円</option>
-                                    <option value="1">5,000円</option>
-                                    <option value="2">10,000円</option>
+                                <select name="price" class="w-full h-[35px] md:h-full text-xs md:text-base border border-solid border-gray-400 rounded-md">
+                                    @foreach($links as $link)
+                                        <option value="{{$link["id"]}}">{{$link["course"]}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
-                        <div class="flex items-center border-b border-solid border-gray-200 py-4">
-                            <p class="w-[250px]">4.プライオリティ</p>
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 border-y border-solid border-gray-200 py-4">
+                            <p class="md:w-[250px] text-xs md:text-base">4.プライオリティ</p>
                             <div class="flex-1">
-                                <select name="priority" class="w-full border border-solid border-gray-400 rounded-md">
+                                <select name="priority" class="w-full h-[35px] md:h-full text-xs md:text-base border border-solid border-gray-400 rounded-md">
                                     <option value="0">優先度：低</option>
                                     <option value="1">優先度：中</option>
                                     <option value="2">優先度：高</option>
@@ -163,7 +159,7 @@
     {{--非表示商品一覧--}}
     <div class="flex flex-col items-center w-full py-12">
         <div class="flex justify-start w-[80%]">
-            <h2 class="dash_h2 font-semibold text-gray-800">非表示商品一覧</h2>
+            <h2 class="text-base pb-4 md:text-xl font-semibold text-gray-800">非表示商品一覧</h2>
         </div>
 
         @foreach($hiddenProducts as $idx=>$value)
@@ -174,12 +170,12 @@
                     </div>
                     <aside>
                         <label class="inline-flex items-center cursor-pointer mr-4">
-                            <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">非表示</span>
+                            <span class="ms-3 text-xs md:text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">非表示</span>
                             <input type="checkbox" value="{{$value['id']}}" class="toggleBtn sr-only peer">
-                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                            <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">表示</span>
+                            <div class="relative w-7 h-4 sm:w-11 sm:h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 sm:after:h-5 sm:after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            <span class="ms-3 text-xs md:text-sm font-medium text-gray-900 dark:text-gray-300">表示</span>
                         </label>
-                        <a data-product-id="{{$value["id"]}}" class="deleteBtn font-medium text-blue-600 hover:underline">削除</a>
+                        <a data-product-id="{{$value["id"]}}" class="deleteBtn text-xs md:text-base font-medium text-blue-600 hover:underline">削除</a>
                     </aside>
                 </div>
             </div>
@@ -189,11 +185,14 @@
 </x-app-layout>
 
 <script>
-
-
     // Quillデータの受け渡し
     window.Laravel = {};
     window.Laravel.data = @json($details);
+
+    let div = document.querySelectorAll("body > div")[0];
+    div.classList.remove("h-[100dvh]"); // 100dvh を削除
+    div.classList.add("h-full"); // h-full を追加
+    div.style.minHeight = "100vh"; // 最低でも画面の高さになるように設定
 
 </script>
 

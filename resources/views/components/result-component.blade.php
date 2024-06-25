@@ -2,14 +2,17 @@
 
     <!-- その他おすすめ画像の表示エリア -->
     <div class="z-30 w-full flex justify-center gap-10 md:gap-32 my-6 md:my-16">
-        <div>
-            <img src="{{asset('img/flower01.jpeg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+        <div class="flex flex-col items-center justify-center gap-2">
+            <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+            <p>【第2位】</p>
         </div>
-        <div>
-            <img src="{{asset('img/flower02.jpeg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+        <div class="flex flex-col items-center justify-center gap-2">
+            <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+            <p>【第3位】</p>
         </div>
-        <div>
-            <img src="{{asset('img/flower03.jpg')}}" class="object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+        <div class="flex flex-col items-center justify-center gap-2">
+            <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+            <p>【第4位】</p>
         </div>
     </div>
 
@@ -41,6 +44,9 @@
                     <p>So I started to walk into the water. I won't lie to you boys, I was terrified. But I pressed on, and as I made my way past the breakers a strange calm came over me. I don't know if it was divine intervention or the kinship of all living things but I tell you Jerry at that moment, I was a marine biologist.</p>
                     <p>So I started to walk into the water. I won't lie to you boys, I was terrified. But I pressed on, and as I made my way past the breakers a strange calm came over me. I don't know if it was divine intervention or the kinship of all living things but I tell you Jerry at that moment, I was a marine biologist.</p>
                     <p>So I started to walk into the water. I won't lie to you boys, I was terrified. But I pressed on, and as I made my way past the breakers a strange calm came over me. I don't know if it was divine intervention or the kinship of all living things but I tell you Jerry at that moment, I was a marine biologist.</p>
+                </div>
+                <div id="editor">
+
                 </div>
 
                 {{--ボタン--}}
@@ -77,6 +83,8 @@
                     ご入力頂いたメールアドレスに購入先リンクをお送り致します。
                 </p>
                 <input type="email" placeholder="test@com" class="w-full rounded-md">
+                <p id="delivery_link"></p>
+                <p id="pickup_link"></p>
             </div>
             <!-- Modal footer -->
             <div class="flex items-center justify-between p-4 md:p-5 border-t border-gray-200 rounded-b">

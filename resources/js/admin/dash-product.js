@@ -69,8 +69,8 @@ function CreateQuill(idx){
 
     // タイトル作成
     let title = document.createElement("p");
-    title.classList.add("quillTitle")
-    title.innerHTML = "5.商品詳細";
+    title.innerText = "5.商品詳細";
+    title.classList.add("text-xs", "md:text-base");
 
     // 選択されたアコーディオンにappend
     EDITOR_CONTAINERS[idx].appendChild(title);
@@ -339,23 +339,22 @@ ADD_BUTTON.addEventListener('click', function() {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                return response.json().then(errorData => {
+                    throw new Error(errorData.message || 'Network response was not ok');
+                });
             }
             return response.json();
         })
         .then(data => {
-            if (data.redirect) {
-                alert(data.message);
-                window.location.href = data.redirect;
-            } else if (data.message) {
-                alert(data.message);
-            }
+            alert(data.message);
+            window.location.href = data.redirect;
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('商品追加に失敗しました');
+            alert(error.message);
         });
 });
+
 
 //商品更新テスト用
 document.querySelectorAll('.update-btn').forEach((btn) => {
@@ -363,11 +362,6 @@ document.querySelectorAll('.update-btn').forEach((btn) => {
         const ID = btn.getAttribute('data-product-id');
         const FORM_ELEMENTS = btn.closest('.productForm');
         const FORM_DATA = new FormData(FORM_ELEMENTS);
-
-        // 画像が選択されていない場合はimgフィールドを削除
-        if (!FORM_ELEMENTS.querySelector('input[type="file"]').files.length) {
-            FORM_DATA.delete('img');
-        }
 
         fetch(`/dashboard/product/${ID}`, {
             method: 'POST',
@@ -378,25 +372,46 @@ document.querySelectorAll('.update-btn').forEach((btn) => {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'Network response was not ok');
+                    });
                 }
                 return response.json();
             })
             .then(data => {
-                if (data.redirect) {
-                    window.alert('商品を更新しました');
-                    window.location.href = data.redirect;
-                } else if (data.message) {
-                    window.alert(data.message);
-                }
+                window.alert(data.message);
+                window.location.href = data.redirect;
             })
             .catch(error => {
                 console.error('Error:', error);
-                window.alert('商品の更新に失敗しました');
+                window.alert(error.message || '商品の更新に失敗しました');
             });
     });
 });
 
+
+// 価格帯データ有無チェック
+let priceSelectBoxes = document.getElementsByClassName('price-select-box');
+let productTitle = document.getElementsByClassName('product-title');
+
+for (let i=0;i<priceSelectBoxes.length;i++){
+
+    let savedPrices = priceSelectBoxes[i].querySelectorAll('.saved-price');
+
+    if (savedPrices.length===0){
+        let newOptionElement = document.createElement("option");
+        newOptionElement.value = null;
+        newOptionElement.innerText = '価格帯を選択してください';
+        newOptionElement.selected = true;
+        priceSelectBoxes[i].insertBefore(newOptionElement, priceSelectBoxes[i].firstChild);
+
+        let newAlertElement = document.createElement("p");
+        newAlertElement.innerText ="※価格帯が登録されていません";
+        newAlertElement.style.color = "red";
+        newAlertElement.classList.add("text-xs");
+        productTitle[i].appendChild(newAlertElement);
+    }
+}
 
 
 // 商品更新

@@ -1,4 +1,7 @@
 import "flowbite";
+import Quill from "quill";
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
 
 // 質問画面
 const QUESTION_CONTAINER = document.getElementById('question_container');
@@ -21,38 +24,41 @@ const RESULT_IMG = document.getElementById("result_img");
 let currentQuestionIdx = 0;
 // 選択した回答のindexを保存
 let selectedAnswersArray = [];
-
+// スコア
+let scoreArray =[];
+// Quillインスタンスを保持する変数
+let quill = null;
 // --------------------------------------[①質問開始]--------------------------------------
 function StartQuiz() {
     RESULT_CONTAINER.classList.add('hide')
     QUESTION_CONTAINER.classList.remove('hide')
     ShowQuestion()
-    CountQuestions()
+    ShowCurrentQstNum()
 }
 
 StartQuiz()
 // ----------------------------------[②残り質問数計算＆表示]----------------------------------
-function CountQuestions(){
+function ShowCurrentQstNum(){
     let questionLength = questions.length;
     let currentQuestionNum = document.getElementById("question_num");
     currentQuestionNum.innerText =  Number(currentQuestionIdx+1)+"問目/"+questionLength+"問中";
 }
 // -------------------------------------[③質問&回答作成]-------------------------------------
-function ShowQuestion() {
+function ShowQuestion(choiceId) {
 
     // 質問作成
-    QUESTION_TEXT.innerText = questions[currentQuestionIdx]["question"]
+    QUESTION_TEXT.innerText = questions[currentQuestionIdx]["text"]
 
     // 回答選択肢作成
     CreateAnswers()
 
     // 2問目以降、最適な画像を表示
-    if(currentQuestionIdx>0){
-        CreateMaxImg();
+    if(currentQuestionIdx>0&&choiceId!=null){
+        CreateMaxImg(choiceId);
     }
 }
 // ---------------------------------------[④回答選択]---------------------------------------
-function SelectAnswer(idx) {
+function SelectAnswer(idx,choiceId) {
 
     // 配列に選択されたボタンのindexを追加もしくはindexを更新
     if(questions.length !== selectedAnswersArray.length){
@@ -65,9 +71,10 @@ function SelectAnswer(idx) {
     if (questions.length !== selectedAnswersArray.length ) {
         currentQuestionIdx++
         DeleteQuestionAnswers()
-        CountQuestions()
-        ShowQuestion()
+        ShowCurrentQstNum()
+        ShowQuestion(choiceId)
     } else {
+        CalMaxIdx(choiceId);
         ShowConfirm()
     }
 }
@@ -82,24 +89,24 @@ function ShowConfirm(){
 SHOW_RESULT_BTN.addEventListener("click",ShowResult);
 
 function ShowResult() {
-    // 修正必要!!!!!!!
-    // let maxIndex = calMaxIdx()
 
     CONFIRM_CONTAINER.classList.add('hide');
     RESULT_CONTAINER.classList.remove('hide');
 
-    // 修正必要!!!!!!!(0固定でなくスコア最大のindex⇒上記maxIndex)
-    CreateResult(0)
+    CreateResult()
+
 }
+
+
 // --------------------------------------[質問画面/機能]--------------------------------------
 //選択肢作成
 function CreateAnswers(){
 
     ShowBackBtn();
 
-    let answersArray = questions[currentQuestionIdx]["answer"]
+    let choicesArray = questions[currentQuestionIdx].choices;
 
-    answersArray.forEach((value,idx) => {
+    choicesArray.forEach((choice,idx) => {
 
         const ANSWER_BTN = document.createElement('button')
         const NUM_TEXT_CONTAINER = document.createElement('div')
@@ -109,7 +116,7 @@ function CreateAnswers(){
 
         ANSWER_NUM.innerText = idx+1;
         ANSWER_NUM.classList.add("answer-num-white")
-        ANSWER_TEXT.innerText = value;
+        ANSWER_TEXT.innerText = choice["text"];
 
         NUM_TEXT_CONTAINER.appendChild(ANSWER_NUM);
         NUM_TEXT_CONTAINER.appendChild(ANSWER_TEXT)
@@ -123,23 +130,24 @@ function CreateAnswers(){
 
         // 選択肢をクリックをする
         ANSWER_BTN.addEventListener('click', ()=>{
-            SelectAnswer(idx);
+            SelectAnswer(idx,choice["id"]);
         })
     })
 }
 
 // 2問目以降、質問横に最適な画像を表示
-function CreateMaxImg(){
-    // 修正必要!!!!!!!
-    // let maxIndex = calMaxIdx()
+function CreateMaxImg(choiceId){
+
+    // 最適な商品のIDを取得
+    let maxProductId = CalMaxIdx(choiceId)
 
     // 現在の画像を削除
     DeleteQuestionImage();
 
     // 新規画像を作成
-    // 修正必要!!!!!!!(0固定でなくスコア最大のindex⇒上記maxIndex)
     let newImage = document.createElement("img");
-    newImage.src = products[0]["img"];
+    let maxProduct = products.filter(product => product.id === maxProductId);
+    newImage.src = maxProduct[0]["img"];
     newImage.classList.add("question-img")
     QUESTION_IMG_CONTAINER.appendChild(newImage)
 }
@@ -164,8 +172,11 @@ function ShowBackBtn(){
 function HandleBackButtonClick() {
     currentQuestionIdx--;
     selectedAnswersArray.pop(); // 配列の末尾を削除
+    for (let i = 0; i < scoreArray.length; i++) {
+        scoreArray[i].score.pop(); // スコア配列の末尾を削除
+    }
     DeleteQuestionAnswers();
-    CountQuestions();
+    ShowCurrentQstNum();
     ShowQuestion();
 }
 
@@ -205,13 +216,13 @@ function CreateConfirmContainer(){
         // 質問文と番号
         CONFIRM_QUESTION_NUM.innerText = i+1+"問目";
         CONFIRM_QUESTION_NUM.classList.add("confirm-question-num");
-        CONFIRM_QUESTION_TEXT.innerText = questions[i]["question"];
+        CONFIRM_QUESTION_TEXT.innerText = questions[i]["text"];
         CONFIRM_QUESTION_TEXT.insertBefore(CONFIRM_QUESTION_NUM,CONFIRM_QUESTION_TEXT.firstChild)
 
         // 回答
-        CONFIRM_ANSWER_NUM.innerText = i+1;
+        CONFIRM_ANSWER_NUM.innerText = selectedAnswersArray[i]+1;
         CONFIRM_ANSWER_NUM.classList.add("confirm-answer-num")
-        CONFIRM_ANSWER_TEXT.innerText = questions[i]["answer"][selectedAnswersArray[i]];
+        CONFIRM_ANSWER_TEXT.innerText = questions[i].choices[selectedAnswersArray[i]]["text"];
         CONFIRM_ANSWER_TEXT.style.color = "rgb(191,158,116)"
         CONFIRM_NUM_TEXT_CONTAINER.appendChild(CONFIRM_ANSWER_NUM);
         CONFIRM_NUM_TEXT_CONTAINER.appendChild(CONFIRM_ANSWER_TEXT)
@@ -233,7 +244,7 @@ function CreateConfirmContainer(){
             QUESTION_CONTAINER.classList.remove('hide');
             currentQuestionIdx = i;
             DeleteQuestionAnswers()
-            CountQuestions()
+            ShowCurrentQstNum()
             ShowQuestion()
             BACK_BTN.classList.add("hide");
             BACK_BTN.parentNode.classList.add("back-btn-container"); // ボタンの表示時にスペースを確保
@@ -251,38 +262,93 @@ function DeleteConfirmContainer(){
 // --------------------------------------[結果画面/機能]--------------------------------------
 
 // 結果画面に最適な商品を表示
-function CreateResult(maxIndex){
-    RESULT_P_NAME.innerText = products[maxIndex]["name"];
-    RESULT_IMG.src = products[maxIndex]["img"];
+function CreateResult(){
+    let maxProduct = products.filter(product => product.id === scoreArray[0]["product_id"]);
+    RESULT_P_NAME.innerText = maxProduct[0]["name"]
+    RESULT_IMG.src = maxProduct[0]["img"];
+
+    let otherImages = document.getElementsByClassName("otherImg");
+    for(let i=0;i<otherImages.length;i++) {
+        let otherProduct = products.filter(product => product.id === scoreArray[i+1]["product_id"]);
+        otherImages[i].src = otherProduct[0]["img"];
+    }
+
+    let deliveryLinkText = document.getElementById("delivery_link");
+    let pickupLinkText = document.getElementById("pickup_link");
+    deliveryLinkText.innerText = "郵送："+maxProduct[0].link["delivery_link"];
+    pickupLinkText.innerText = "受取："+maxProduct[0].link["pickup_link"];
 }
+
 
 // ----------------------------------------[スコア計算]----------------------------------------
 
 // 修正必要！！！
-function calMaxIdx(){
-    let maxCount = 0; // 最大のincludes()カウント
-    let maxIndex = null; // 最大のincludes()カウントが見つかったインデックス
+function CalMaxIdx(choiceId){
+
+    // 選択した選択肢の属性を取得
+    let selectedChoiceAttributes = choiceAttributes.filter(choice => choice.choice_id === choiceId);
 
     for (let i = 0; i < products.length; i++) {
-        let count = 0; // includes()が真に評価された回数をカウントする変数
+        let count = 0;
 
-        // includes()のカウントを計算
-        for (let b = 0; b < selectedAnswersArray.length; b++) {
-            if (products[i]["attributes"].includes(selectedAnswersArray[b])) {
-                count++; // includes()が真に評価されたらカウントを増やす
+        // 商品（product_id)とそれに付随する属性を取得
+        let productAttribute = productAttributes.filter(product=>product.product_id===products[i]["id"])
+
+        // 選択した選択肢の属性と商品の属性を比較
+        for (let b = 0; b < selectedChoiceAttributes.length; b++) {
+            let some = productAttribute.some(
+                product => product.attribute_id === selectedChoiceAttributes[b].attribute_id
+            );
+
+            // 一致するものがあればカウント
+            if(some){
+                count++;
+            }
+        }
+
+        if (questions.length === selectedAnswersArray.length ) {
+            // 確認画面から変更した場合は更新
+            let existingScoreObj = scoreArray.find(scoreObj => scoreObj.product_id === products[i]["id"]);
+            existingScoreObj.score[currentQuestionIdx] = count;
+        }else{
+            // 確認画面でなく普通に回答した場合は追加
+            if(scoreArray[i]==null){
+                // 1問目
+                scoreArray.push({"product_id":products[i]["id"],"score":[count]});
+            }else{
+                // 2問目以降
+                let existingScoreObj = scoreArray.find(scoreObj => scoreObj.product_id === products[i]["id"]);
+                existingScoreObj.score.push(count);
             }
         }
 
         // プライオリティの計算
-        count += products[i]["priority"];
+        // count += products[i]["priority"];
 
-        // より大きいカウントが見つかった場合は更新
-        if (count > maxCount) {
-            maxCount = count;
-            maxIndex = i;
-        }
     }
-    return maxIndex;
+
+    SortScore();
+
+    return scoreArray[0].product_id;
+}
+
+// スコア高い順に並び替え
+function SortScore() {
+    scoreArray.sort((a, b) => {
+
+        let sumA = 0
+        a.score.forEach((num) => {
+                sumA = sumA + num;
+        });
+        let sumB = 0;
+        b.score.forEach((num) => {
+            sumB = sumB + num;
+        });
+
+        // 合計値で降順ソート
+        return sumB - sumA;
+    });
+    return scoreArray;
 }
 
 

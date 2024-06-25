@@ -36,8 +36,16 @@ class AdminController extends Controller
         // アップロードされたファイル名を取得
         $fileName = $request->file('img')->getClientOriginalName();
 
+        // データベースに同じ名前の画像が存在するかチェック
+        if (Product::where('img', 'storage/img/' . $fileName)->exists()) {
+            return response()->json([
+                'message' => '同じ名前の画像が既に存在します'
+            ], 400);
+        }
+
         //storageに保存（Laravelのデフォルト設定では、publicディスクは storage/app/public になっている）
         $request->file('img')->storeAs('public/img', $fileName);
+
 
         //商品情報の保存
         $product = new Product();
@@ -83,7 +91,7 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
-                'message' => '商品追加に失敗しました',
+                'message' => '商品追加に失敗しました!!!',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -92,24 +100,21 @@ class AdminController extends Controller
     //[更新]商品
     public function UpdateProduct(Request $request, $id)
     {
-        // デバッグ用ログ
-//        Log::info('UpdateProduct request data', $request->all());
-
-        // バリデーション
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'price' => 'required|integer',
-            'priority' => 'required|integer',
-            'img' => 'nullable|file|mimes:jpeg,png',
-            'quill_data' => 'required|json'
-        ]);
 
         $product = Product::find($id);
         $fileName = null;
 
         if ($request->hasFile('img')) {
             $fileName = $request->file('img')->getClientOriginalName();
-            $filePath = $request->file('img')->storeAs('public/img', $fileName);
+
+            // データベースに同じ名前の画像が存在するかチェック
+            if (Product::where('img', 'storage/img/' . $fileName)->where('id', '!=', $id)->exists()) {
+                return response()->json([
+                    'message' => '同じ名前の画像が既に存在します'
+                ], 400);
+            }
+
+            $request->file('img')->storeAs('public/img', $fileName);
             $fileName = 'storage/img/' . $fileName;
 
             // 以前に保存された画像ファイルのパスを取得
@@ -217,29 +222,8 @@ class AdminController extends Controller
             ->orderBy('order')
             ->get();
 
-        // 質問と選択肢を格納する配列
-        $data = [];
-
-        foreach ($questions as $question) {
-            // 有効な質問の配列
-            $enabledQuestion = [
-                'id' => $question->id,
-                'question' => $question->text,
-                'choices' => $question->choices->map(function ($choice) {
-                    return [
-                        'id' => $choice->id,
-                        'text' => $choice->text
-                    ];
-                })->toArray() // 選択肢のIDとテキストを取得
-            ];
-
-            // 有効な質問とその選択肢を配列に追加
-            $data[] = $enabledQuestion;
-        }
-
-        return view("dash-question", compact("data", "hiddenQuestions"));
+        return view("dash-question", compact("questions", "hiddenQuestions"));
     }
-
 
 
     //【追加】質問
@@ -306,7 +290,8 @@ class AdminController extends Controller
             DB::commit();
             return response()->json([
                 'message' => '回答が正常に追加されました',
-                'redirect' => route('ShowQuestion')
+                'redirect' => route('ShowQuestion'),
+                'accordionId'=>$request->accordionId
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -343,7 +328,8 @@ class AdminController extends Controller
             $choice->delete();
 
             return response()->json([
-                'message' => ' 回答とそれに対応する回答が正常に削除されました'
+                'message' => ' 回答とそれに対応する回答が正常に削除されました',
+                'accordionId'=>$request->accordionId
             ], 200);
         } catch (\Exception $e) {
             Log::error('回答の削除に失敗しました: ' . $e->getMessage());
@@ -393,9 +379,6 @@ class AdminController extends Controller
             return response()->json(['success' => false, 'error' => $e->getMessage()]);
         }
     }
-
-
-
 
 
     //[表示設定]質問
