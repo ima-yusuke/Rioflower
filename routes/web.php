@@ -56,6 +56,9 @@ Route::middleware('auth')->group(function () {
     Route::get("/dashboard/attribute/question",[AdminController::class,"ShowAttributeQuestion"])->name("ShowAttributeQuestion");
     Route::post("/dashboard/attribute/question",[AdminController::class,"AddAttributeQuestion"])->name("AddAttributeQuestion");
     Route::delete("/dashboard/attribute/question/{id}",[AdminController::class,"DeleteAttributeQuestion"])->name("DeleteAttributeQuestion");
+
+    //メール
+    Route::get("/dashboard/mail",[AdminController::class,"ShowMail"])->name("ShowMail");
 });
 
 require __DIR__.'/auth.php';

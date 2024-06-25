@@ -755,4 +755,8 @@ class AdminController extends Controller
             ], 500);
         }
     }
+
+    public function ShowMail() {
+        return view("dash-mail");
+    }
 }

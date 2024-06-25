@@ -48,5 +48,13 @@
                 </div>
             </a>
         </div>
+        <div class="flex flex-col justify-center items-center shadow-xl text-center border-4 border-solid border-black bg-white w-[30%]">
+            <a href="{{ route('ShowMail') }}" class="w-full h-full hover:bg-black hover:text-white p-3">
+                <div class="flex flex-col gap-2">
+                    <p><i class="fa-solid fa-envelope text-4xl"></i></p>
+                    <p class="font-bold">メール設定</p>
+                </div>
+            </a>
+        </div>
     </div>
 </x-app-layout>

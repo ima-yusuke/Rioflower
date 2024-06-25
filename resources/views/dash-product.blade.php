@@ -54,9 +54,9 @@
                                     <select name="price" class="price-select-box w-full h-[35px] md:h-full text-xs md:text-base border border-solid border-gray-400 rounded-md">
                                         @foreach($links as $link)
                                             @if($value["price"]==$link["id"])
-                                                <option value="{{$link["id"]}}" selected class="saved-price">{{$link["course"]}}</option>
+                                                <option value="{{$link["id"]}}" selected class="saved-price">{{$link["course"]}}/{{ $link["price"] }}円</option>
                                             @else
-                                                <option value="{{$link["id"]}}">{{$link["course"]}}</option>
+                                                <option value="{{$link["id"]}}">{{$link["course"]}}/{{ $link["price"] }}円</option>
                                             @endif
                                         @endforeach
                                     </select>

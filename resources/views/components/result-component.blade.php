@@ -75,9 +75,12 @@
                     メールアドレスを入力して『送信』ボタンを押してください。<br>
                     ご入力頂いたメールアドレスに購入先リンクをお送り致します。
                 </p>
+                <p class="text-sm font-semibold text-gray-900 dark:text-white">氏名</p>
+                <input type="text" placeholder="氏名" class="w-full rounded-md">
+                <p class="text-sm font-semibold text-gray-900 dark:text-white">住所</p>
+                <input type="text" placeholder="住所" class="w-full rounded-md">
+                <p class="text-sm font-semibold text-gray-900 dark:text-white">メールアドレス</p>
                 <input type="email" placeholder="test@com" class="w-full rounded-md">
-                <p id="delivery_link"></p>
-                <p id="pickup_link"></p>
             </div>
             <!-- Modal footer -->
             <div class="flex items-center justify-between p-4 md:p-5 border-t border-gray-200 rounded-b">
