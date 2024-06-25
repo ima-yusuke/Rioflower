@@ -268,35 +268,24 @@ function CreateResult(){
 
     CalPriority();
 
+    // 1位の商品
     let maxProduct = products.filter(product => product.id === scoreArray[0]["product_id"]);
     RESULT_P_NAME.innerText = maxProduct[0]["name"]
     RESULT_IMG.src = maxProduct[0]["img"];
 
+    // 2~4位の商品
     let otherImages = document.getElementsByClassName("otherImg");
     for(let i=0;i<otherImages.length;i++) {
         let otherProduct = products.filter(product => product.id === scoreArray[i+1]["product_id"]);
         otherImages[i].src = otherProduct[0]["img"];
-        otherImages[i].parentNode.setAttribute("id",otherProduct[0]["id"]);
 
+        // 表示商品の入れ替え
         otherImages[i].parentNode.addEventListener("click",function(){
             RESULT_P_NAME.innerText = otherProduct[0]["name"];
             RESULT_IMG.src = otherProduct[0]["img"];
-            function DeleteQuill(idx){
-                let quillContainer = document.getElementById("quill_view_container");
-                while(quillContainer.firstChild){
-                    quillContainer.removeChild(quillContainer.firstChild)
-                }
 
-                if (quill) {
-                    quill.off(); // イベントリスナーを解除
-                    let quillContainer = document.querySelector('.ql-container');
-                    if (quillContainer) {
-                        quillContainer.parentNode.removeChild(quillContainer);
-                    }
-                    quill = null;
-                }
-            }
-            DeleteQuill(0);
+            DeleteQuill();
+
             DisplayQuill(otherProduct[0]["id"]);
         });
     }
@@ -307,19 +296,34 @@ function CreateResult(){
     // pickupLinkText.innerText = "受取："+maxProduct[0].link["pickup_link"];
 }
 
+// 送信ボタンに購入商品のidを付与
+let openModalBtn = document.getElementsByClassName("open-modal");
+for (let i = 0; i < openModalBtn.length; i++) {
+    openModalBtn[i].addEventListener("click", function () {
+       SetMaxProductId(i);
+    });
+}
+
+function SetMaxProductId(idx) {
+    let mailBtn = document.getElementsByClassName("mail-btn");
+    mailBtn[idx].setAttribute("data-id",scoreArray[0]["product_id"]);
+}
+
+// Quill表示
 function DisplayQuill(productId){
 
-    let quillDiv = document.createElement("div");
-    quillDiv.setAttribute("id", "viewer");
-    quillDiv.classList.add("bg-detail-bg","p-6");
+    // Quill表示エリアの作成
+    let quillDisplayArea = document.createElement("div");
+    quillDisplayArea.setAttribute("id", "viewer");
+    quillDisplayArea.classList.add("bg-detail-bg","p-6");
+
     let quillContainer = document.getElementById("quill_view_container");
-    quillContainer.appendChild(quillDiv);
+    quillContainer.appendChild(quillDisplayArea);
 
     quill = new Quill("#viewer", {
         //ツールバー無デザイン
         readOnly: true
     });
-
 
     let maxProduct = products.filter(product => product.id === productId);
     let details =maxProduct[0]["details"];
@@ -335,6 +339,14 @@ function DisplayQuill(productId){
 
     //Quillデータをエディター内に表示
     quill.setContents(setData)
+}
+
+// Quill削除
+function DeleteQuill(){
+    let quillContainer = document.getElementById("quill_view_container");
+    while(quillContainer.firstChild){
+        quillContainer.removeChild(quillContainer.firstChild)
+    }
 }
 
 // ----------------------------------------[スコア計算]----------------------------------------
