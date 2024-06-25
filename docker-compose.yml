@@ -1,4 +1,3 @@
-version: '3'
 services:
     laravel.test:
         build:
@@ -25,6 +24,9 @@ services:
         depends_on:
             - mysql
             - redis
+            - meilisearch
+            - mailpit
+            - selenium
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -76,12 +78,39 @@ services:
             PMA_USER: '${DB_USERNAME}'
             PMA_PASSWORD: '${DB_PASSWORD}'
         depends_on:
-            -   mysql
+            - mysql
         networks:
             - sail
+    meilisearch:
+        image: getmeili/meilisearch:latest
+        container_name: meilisearch
+        ports:
+            - "7700:7700"
+        environment:
+            MEILI_NO_ANALYTICS: "true"
+        networks:
+            - sail
+    mailpit:
+        image: axllent/mailpit:latest
+        container_name: mailpit
+        ports:
+            - "1025:1025"   # SMTP port
+            - "8025:8025"   # HTTP port
+        networks:
+            - sail
+    selenium:
+        image: seleniarm/standalone-chromium:latest
+        container_name: selenium
+        ports:
+            - "4444:4444"
+        shm_size: '2g'
+        networks:
+            - sail
+
 networks:
     sail:
         driver: bridge
+
 volumes:
     sail-mysql:
         driver: local
