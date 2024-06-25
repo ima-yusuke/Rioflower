@@ -37,7 +37,8 @@
                     </aside>
                 </div>
 
-                {{--Quill表示エリア--}}
+                {{--Quill表示エリア
+                --}}
                 <div id="viewer" class="bg-detail-bg p-6 mx-6 md:mx-0 rounded-lg">
 
                 </div>
