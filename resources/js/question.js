@@ -305,8 +305,8 @@ for (let i = 0; i < openModalBtn.length; i++) {
 }
 
 function SetMaxProductId(idx) {
-    let mailBtn = document.getElementsByClassName("mail-btn");
-    mailBtn[idx].setAttribute("data-id",scoreArray[0]["product_id"]);
+    let sendBtn = document.getElementsByClassName("send-btn");
+    sendBtn[idx].setAttribute("data-id",scoreArray[0]["product_id"]);
 }
 
 // Quill表示
