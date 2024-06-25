@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Choice;
+use App\Models\Mail;
 use App\Models\Product_attributes;
 use App\Models\Question;
 use Illuminate\Http\Request;
@@ -757,6 +758,31 @@ class AdminController extends Controller
     }
 
     public function ShowMail() {
-        return view("dash-mail");
+        $mail = Mail::first();
+        return view("dash-mail", compact("mail"));
+    }
+
+    public function UpdateMail(Request $request, $id) {
+        // バリデーションルールを定義
+        $request->validate([
+            'top' => ['required'],
+            'bottom' => ['required'],
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $mail = Mail::find($id);
+            $mail->top = $request->top;
+            $mail->bottom = $request->bottom;
+            $mail->save();
+
+            DB::commit();
+
+            return response()->json(['redirect' => route('ShowMail')]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('メール設定の更新に失敗しました' . $e->getMessage());
+            return response()->json(['message' => 'メール設定の更新に失敗しました'], 500);
+        }
     }
 }

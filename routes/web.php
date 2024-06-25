@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
 
     //メール
     Route::get("/dashboard/mail",[AdminController::class,"ShowMail"])->name("ShowMail");
+    Route::PATCH("/dashboard/mail/{id}",[AdminController::class,"UpdateMail"])->name("UpdateMail");
 });
 
 require __DIR__.'/auth.php';
