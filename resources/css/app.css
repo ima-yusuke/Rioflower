@@ -220,6 +220,10 @@
     align-items: center;
     gap: 1rem;
 }
+.transition {
+    transition: transform 1s ease-in-out;
+}
+
 
 /*----------[管理画面]----------*/
 
