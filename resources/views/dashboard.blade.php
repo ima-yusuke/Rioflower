@@ -49,7 +49,7 @@
             </a>
         </div>
         <div class="flex flex-col justify-center items-center shadow-xl text-center border-4 border-solid border-black bg-white w-[30%]">
-            <a href="{{ route('ShowMessage') }}" class="w-full h-full hover:bg-black hover:text-white p-3">
+            <a href="{{ route('ShowWord') }}" class="w-full h-full hover:bg-black hover:text-white p-3">
                 <div class="flex flex-col gap-2">
                     <p><i class="fa-solid fa-envelope text-4xl"></i></p>
                     <p class="font-bold">メール設定</p>

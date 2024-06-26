@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Choice;
-use App\Models\Message;
+use App\Models\Word;
 use App\Models\Product_attributes;
 use App\Models\Question;
 use Illuminate\Http\Request;
@@ -757,12 +757,12 @@ class AdminController extends Controller
         }
     }
 
-    public function ShowMessage() {
-        $message = Message::first();
-        return view("dash-message", compact("message"));
+    public function ShowWord() {
+        $word = Word::first();
+        return view("dash-word", compact("word"));
     }
 
-    public function UpdateMessage(Request $request, $id) {
+    public function UpdateWord(Request $request, $id) {
         // バリデーションルールを定義
         $request->validate([
             'top' => ['required'],
@@ -771,14 +771,14 @@ class AdminController extends Controller
 
         DB::beginTransaction();
         try {
-            $message = Message::find($id);
-            $message->top = $request->top;
-            $message->bottom = $request->bottom;
-            $message->save();
+            $word = Word::find($id);
+            $word->top = $request->top;
+            $word->bottom = $request->bottom;
+            $word->save();
 
             DB::commit();
 
-            return response()->json(['redirect' => route('ShowMessage')]);
+            return response()->json(['redirect' => route('ShowWord')]);
         } catch (\Exception $e) {
             DB::rollback();
             Log::error('メール設定の更新に失敗しました' . $e->getMessage());

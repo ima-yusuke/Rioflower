@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('words', function (Blueprint $table) {
             $table->id();
             $table->text('top')->nullable()->comment('メール上部');
             $table->text('bottom')->nullable()->comment('メール下部');
@@ -20,7 +20,7 @@ return new class extends Migration
         });
 
         // テーブル作成後に初期データを挿入
-        DB::table('messages')->insert([
+        DB::table('words')->insert([
             'id' => 1,
             'top' => null,
             'bottom' => null,
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('words');
     }
 };

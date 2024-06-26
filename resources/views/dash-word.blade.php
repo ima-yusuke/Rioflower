@@ -11,7 +11,7 @@
                                 メール上部
                             </div>
                             <div class="px-2 py-1">
-                                <textarea id="top" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" rows="8">{{ $message['top'] }}</textarea>
+                                <textarea id="top" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" rows="8">{{ $word['top'] }}</textarea>
                             </div>
                         </div>
 {{--                    メール下部--}}
@@ -20,7 +20,7 @@
                                 メール下部
                             </div>
                             <div class="px-2 py-1">
-                                <textarea id="bottom" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" rows="8">{{ $message['bottom'] }}</textarea>
+                                <textarea id="bottom" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" rows="8">{{ $word['bottom'] }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                     <h2 class="text-xl mb-4">プレビュー</h2>
                     <div id="preview" class="w-full p-4 border border-gray-300 rounded-md bg-gray-50">
                         <div class="mb-4 text-red-600">〇〇様</div>
-                        <div id="preview-top" class="mb-4">{!! nl2br(e($message['top'])) !!}</div>
+                        <div id="preview-top" class="mb-4">{!! nl2br(e($word['top'])) !!}</div>
                         <div class="mb-4 text-red-600">
                             <span class="underline">購入者情報</span><br>
                             氏名：〇〇様<br>
@@ -49,15 +49,15 @@
                             <span class="underline">商品リンク<br></span>
                             https://www.example.com/〇〇〇〇<br>
                         </div>
-                        <div id="preview-bottom">{!! nl2br(e($message['bottom'])) !!}</div>
+                        <div id="preview-bottom">{!! nl2br(e($word['bottom'])) !!}</div>
                     </div>
                 </div>
             </div>
         </div>
         {{--                    更新ボタン--}}
         <div class="w-11/12 bg-white rounded-b-xl flex items-center justify-center py-4">
-            <button id="updateBtn" class="border border-solid border-black text-center text-2xl px-2 py-1 rounded-lg" data-id="{{ $message['id'] }}">更新</button>
+            <button id="updateBtn" class="border border-solid border-black text-center text-2xl px-2 py-1 rounded-lg" data-id="{{ $word['id'] }}">更新</button>
         </div>
     </div>
-    @vite('resources/js/admin/dash-message.js')
+    @vite('resources/js/admin/dash-word.js')
 </x-app-layout>
