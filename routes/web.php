@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 
 Route::get('/', [MainController::class, 'Index'])->name('Index');
 Route::get('/question', [MainController::class, 'ShowQuestionPage'])->name('ShowQuestionPage');
+Route::post('/question', [MainController::class, 'AddCustomer'])->name('AddCustomer');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
