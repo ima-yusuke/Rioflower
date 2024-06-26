@@ -280,6 +280,10 @@ function CreateResult(){
     RESULT_P_NAME.innerText = maxProduct[0]["name"]
     RESULT_IMG.src = maxProduct[0]["img"];
     purchaseProductId = maxProduct[0]["id"];
+    const insertImgTop = RESULT_IMG.getBoundingClientRect().top;
+    const insertImgLeft = RESULT_IMG.getBoundingClientRect().left;
+    const insertImgWidth = RESULT_IMG.getBoundingClientRect().width;
+    const insertImgHeight = RESULT_IMG.getBoundingClientRect().height;
 
     // 1~4位の商品（下3つの小さい画像）
     let otherImages = document.getElementsByClassName("otherImg");
@@ -290,21 +294,35 @@ function CreateResult(){
         let otherProduct = products.filter(product => product.id === scoreArray[i]["product_id"]);
         otherImages[i].src = otherProduct[0]["img"];
 
+        // Add transition class for smooth animation
+        otherImages[i].classList.add("transition");
+
         // 表示商品の入れ替え
         otherImages[i].parentNode.addEventListener("click",function(){
 
-            // クリックした要素を非表示に
-            otherImages[i].parentNode.classList.add("hidden");
-            otherImages[i].parentNode.classList.remove("other-img-container");
+            const clickedImgTop = otherImages[i].getBoundingClientRect().top;
+            const clickedImgLeft = otherImages[i].getBoundingClientRect().left;
+            const clickedImgWidth = otherImages[i].getBoundingClientRect().width;
+            const clickedImgHeight = otherImages[i].getBoundingClientRect().height;
 
-            // クリックした商品をトップへ表示
-            RESULT_P_NAME.innerText = otherProduct[0]["name"];
-            RESULT_IMG.src = otherProduct[0]["img"];
+            otherImages[i].style.transform = `translate(${(insertImgLeft-clickedImgLeft)+ ((insertImgWidth - clickedImgWidth)/2)}px,${(insertImgTop-clickedImgTop)+ ((insertImgHeight - clickedImgHeight)/2)}px) scale(${insertImgWidth/clickedImgWidth},${insertImgHeight/clickedImgHeight})`;
 
-            // 現在非表示（トップに表示されてる商品）の商品を下に表示
-            let hiddenElement = Array.from(otherImages).filter(image => image.parentNode.classList.contains('hidden'));
-            hiddenElement[0].parentNode.classList.remove("hidden");
-            hiddenElement[0].parentNode.classList.add("other-img-container");
+            setTimeout(() => {
+                // クリックした商品をトップへ表示
+                RESULT_P_NAME.innerText = otherProduct[0]["name"];
+                RESULT_IMG.src = otherProduct[0]["img"];
+
+                // 現在非表示（トップに表示されてる商品）の商品を下に表示
+                let hiddenElement = Array.from(otherImages).filter(image => image.parentNode.classList.contains('hidden'));
+                hiddenElement[0].parentNode.classList.remove("hidden");
+                hiddenElement[0].parentNode.classList.add("other-img-container");
+
+                // クリックした要素を非表示に
+                otherImages[i].parentNode.classList.add("hidden");
+                otherImages[i].parentNode.classList.remove("other-img-container");
+                otherImages[i].style.transform = "translate(0,0)";
+            }, 1000);
+
 
             // 購入商品のidを更新
             purchaseProductId = otherProduct[0]["id"];
