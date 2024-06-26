@@ -9,15 +9,19 @@
 
             <!-- その他おすすめ画像の表示エリア -->
             <div class="absolute bottom-12 z-30 w-full flex justify-center gap-10 md:gap-32 my-6">
-                <div class="flex flex-col items-center justify-center gap-2">
+                <div class="hidden" data-id="" id="result_first">
+                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
+                    <p>【第1位】</p>
+                </div>
+                <div class="other-img-container" data-id="" id="result_second">
                     <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
                     <p>【第2位】</p>
                 </div>
-                <div class="flex flex-col items-center justify-center gap-2">
+                <div class="other-img-container" data-id="" id="result_third">
                     <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
                     <p>【第3位】</p>
                 </div>
-                <div class="flex flex-col items-center justify-center gap-2">
+                <div class="other-img-container" data-id="" id="result_fourth">
                     <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
                     <p>【第4位】</p>
                 </div>
@@ -48,7 +52,7 @@
                     </button>
 
                     {{--modal open button--}}
-                    <button data-modal-target="default-modal1" data-modal-toggle="default-modal1" id="open-modal-btn1" class="open-modal pink-btn block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
+                    <button data-modal-target="default-modal1" data-modal-toggle="default-modal1" id="open_modal_btn" class="open-modal pink-btn block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
                         購入
                     </button>
                 </aside>

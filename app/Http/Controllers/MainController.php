@@ -20,7 +20,9 @@ class MainController extends Controller
 
     // 質問ページ
     public function ShowQuestionPage() {
-        $products = Product::with(['details', 'link'])->get();
+        $products = Product::with(['details', 'link'])
+            ->where('is_enabled', 1)
+            ->get();
         $questions = Question::where('is_enabled', 1)
             ->orderBy('order')
             ->with(['choices' => function ($query) {

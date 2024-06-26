@@ -9,6 +9,7 @@ const QUESTION_IMG_CONTAINER = document.getElementById("question_img");
 const QUESTION_TEXT = document.getElementById('question_text');
 const QUESTION_ANSWERS_CONTAINER = document.getElementById('question_answers_container');
 const BACK_BTN = document.getElementById("back_btn");
+let currentQuestionIdx = 0;// 現在の質問番目
 
 // 確認画面
 const CONFIRM_CONTAINER = document.getElementById("confirm_container");
@@ -19,16 +20,21 @@ const SHOW_RESULT_BTN = document.getElementById("show_result_btn");
 const RESULT_CONTAINER = document.getElementById('result_container')
 const RESULT_P_NAME = document.getElementById("result_p_name");
 const RESULT_IMG = document.getElementById("result_img");
+const OPEN_MODAL_BTN = document.getElementById("open_modal_btn");
 const SEND_BTN = document.getElementById("send_btn");
+const RESULT_FIRST = document.getElementById("result_first");
+const RESULT_SECOND = document.getElementById("result_second");
+const RESULT_THIRD = document.getElementById("result_third");
+const RESULT_FOURTH = document.getElementById("result_fourth");
+let quill = null;// Quillインスタンスを保持する変数
+let purchaseProductId = null;
 
-// 現在の質問番目
-let currentQuestionIdx = 0;
 // 選択した回答のindexを保存
 let selectedAnswersArray = [];
+
 // スコア
 let scoreArray =[];
-// Quillインスタンスを保持する変数
-let quill = null;
+
 // --------------------------------------[①質問開始]--------------------------------------
 function StartQuiz() {
     RESULT_CONTAINER.classList.add('hide')
@@ -269,44 +275,52 @@ function CreateResult(){
 
     CalPriority();
 
-    // 1位の商品
+    // 1位の商品（トップ）
     let maxProduct = products.filter(product => product.id === scoreArray[0]["product_id"]);
     RESULT_P_NAME.innerText = maxProduct[0]["name"]
     RESULT_IMG.src = maxProduct[0]["img"];
+    purchaseProductId = maxProduct[0]["id"];
 
-    // 2~4位の商品
+    // 1~4位の商品（下3つの小さい画像）
     let otherImages = document.getElementsByClassName("otherImg");
+
     for(let i=0;i<otherImages.length;i++) {
-        let otherProduct = products.filter(product => product.id === scoreArray[i+1]["product_id"]);
+
+        // スコア高い順に下の画像にsrcを付与
+        let otherProduct = products.filter(product => product.id === scoreArray[i]["product_id"]);
         otherImages[i].src = otherProduct[0]["img"];
 
         // 表示商品の入れ替え
         otherImages[i].parentNode.addEventListener("click",function(){
+
+            // クリックした要素を非表示に
+            otherImages[i].parentNode.classList.add("hidden");
+            otherImages[i].parentNode.classList.remove("other-img-container");
+
+            // クリックした商品をトップへ表示
             RESULT_P_NAME.innerText = otherProduct[0]["name"];
             RESULT_IMG.src = otherProduct[0]["img"];
 
-            // scoreArrayの入れ替え
-            let temp = scoreArray[0];
-            scoreArray[0] = scoreArray[i + 1];
-            scoreArray[i + 1] = temp;
+            // 現在非表示（トップに表示されてる商品）の商品を下に表示
+            let hiddenElement = Array.from(otherImages).filter(image => image.parentNode.classList.contains('hidden'));
+            hiddenElement[0].parentNode.classList.remove("hidden");
+            hiddenElement[0].parentNode.classList.add("other-img-container");
 
+            // 購入商品のidを更新
+            purchaseProductId = otherProduct[0]["id"];
+
+            // Quill更新
             DeleteQuill();
             DisplayQuill(otherProduct[0]["id"]);
-
         });
     }
 }
 
 // 送信ボタンに購入商品のidを付与
-let openModalBtn = document.getElementById("open-modal-btn1");
-    openModalBtn.addEventListener("click", function () {
-       SetMaxProductId();
-    });
-
-function SetMaxProductId() {
-    let sendBtn = document.getElementById("send_btn");
-    sendBtn.setAttribute("data-id",scoreArray[0]["product_id"]);
-}
+OPEN_MODAL_BTN.addEventListener("click", function () {
+    console.log(purchaseProductId)
+    SEND_BTN.setAttribute("data-id",purchaseProductId);
+});
 
 // Quill表示
 function DisplayQuill(productId){
@@ -315,6 +329,7 @@ function DisplayQuill(productId){
     let quillDisplayArea = document.createElement("div");
     quillDisplayArea.setAttribute("id", "viewer");
     quillDisplayArea.classList.add("bg-detail-bg","p-6");
+    quillDisplayArea.style.backgroundColor = "rgb(255,248,248)";
 
     let quillContainer = document.getElementById("quill_view_container");
     quillContainer.appendChild(quillDisplayArea);
