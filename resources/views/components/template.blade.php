@@ -10,7 +10,7 @@
     <x-header>
 
     </x-header>
-    <body class="bg-main-bg">
+    <body class="bg-main-bg flex-1">
     {{ $slot }}
     </body>
     <x-footer>

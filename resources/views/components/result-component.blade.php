@@ -1,4 +1,4 @@
-<div id="result_container" class="relative flex flex-col justify-center items-center hide gap-8 w-full min-h-screen">
+<div id="result_container" class="relative flex flex-col justify-center items-center hide gap-8 w-full">
     {{--１位商品詳細--}}
     <div class="flex flex-col md:flex-row justify-between items-center gap-80 md:gap-0 h-full md:w-full w-full">
         {{--左側詳細--}}

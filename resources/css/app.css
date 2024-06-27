@@ -224,6 +224,27 @@
     transition: transform 1s ease-in-out;
 }
 
+.transition-quick {
+    transition: transform 0.1s ease-in-out;
+}
+ /*上から降りてくるアニメーションの定義*/
+.hidden-element-slide-down {
+    animation: slide-down 1.0s ease-in-out forwards;
+}
+
+@keyframes slide-down {
+    0% {
+        transform: translateY(-200px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+
 
 /*----------[管理画面]----------*/
 
