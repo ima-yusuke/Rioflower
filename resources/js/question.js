@@ -21,11 +21,13 @@ const RESULT_CONTAINER = document.getElementById('result_container')
 const RESULT_P_NAME = document.getElementById("result_p_name");
 const RESULT_IMG = document.getElementById("result_img");
 const OPEN_MODAL_BTN = document.getElementById("open_modal_btn");
-const SEND_BTN = document.getElementById("send_btn");
+let PRODUCT_NUM = document.getElementById("product-id");
+const SEND_BTN = document.getElementById("send-btn");
 const RESULT_FIRST = document.getElementById("result_first");
 const RESULT_SECOND = document.getElementById("result_second");
 const RESULT_THIRD = document.getElementById("result_third");
 const RESULT_FOURTH = document.getElementById("result_fourth");
+const BACK_START_BTN = document.getElementById("back-start-btn");
 let quill = null;// Quillインスタンスを保持する変数
 let purchaseProductId = null;
 
@@ -381,8 +383,8 @@ function DisplayTopProduct(scoreArray){
 
 // 送信ボタンに購入商品のidを付与
 OPEN_MODAL_BTN.addEventListener("click", function () {
-    console.log(purchaseProductId)
-    SEND_BTN.setAttribute("data-id",purchaseProductId);
+    // console.log(purchaseProductId)
+    PRODUCT_NUM.setAttribute("value", purchaseProductId);
 });
 
 // Quill表示
@@ -505,6 +507,40 @@ function CalPriority(scoreArray) {
     // 再度合計計算し並び替え
     SortScore(scoreArray);
 }
+
+SEND_BTN.addEventListener("click",function(){
+    if (sessionStorage.getItem('test') !== null) {
+        let scoreArray = sessionStorage.getItem('test');
+        sessionStorage.setItem('test', scoreArray);
+    } else {
+        sessionStorage.setItem('test', JSON.stringify(scoreArray));
+    }
+    // フォームデータを取得
+    let formData = new FormData(document.getElementById('form-id'));
+
+    // リクエストを作成
+    fetch('/submit-form', {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        // 成功時の処理
+        if (response.ok) {
+            return response.json(); // 必要に応じてレスポンスを処理
+        }
+        throw new Error('Network response was not ok.');
+    }).then(data => {
+        // レスポンスの処理
+        console.log(data);
+        // 成功後のリダイレクトなど
+    }).catch(error => {
+        // エラー処理
+        console.error('There has been a problem with your fetch operation:', error);
+    });
+});
+
+BACK_START_BTN.addEventListener("click",function(){
+    sessionStorage.removeItem('test');
+});
 
 // 結果画面再表示
 function ReShowResult(scoreData) {

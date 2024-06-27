@@ -47,7 +47,7 @@
 
                 {{--ボタン--}}
                 <aside class="flex justify-center gap-4 mx-6 md:mx-0">
-                    <button class="back-start-btn">
+                    <button id="back-start-btn" class="back-start-btn">
                         <a href="{{route('Index')}}">初めからやり直す</a>
                     </button>
 
@@ -73,23 +73,27 @@
                 </h3>
             </div>
             <!-- Modal body -->
-            <div class="p-4 md:p-5 space-y-4">
-                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    メールアドレスを入力して『送信』ボタンを押してください。<br>
-                    ご入力頂いたメールアドレスに購入先リンクをお送り致します。
-                </p>
-                <p class="text-sm font-semibold text-gray-900 dark:text-white">氏名</p>
-                <input type="text" placeholder="氏名" id="customer-name" class="w-full rounded-md">
-                <p class="text-sm font-semibold text-gray-900 dark:text-white">住所</p>
-                <input type="text" placeholder="住所" id="customer-address" class="w-full rounded-md">
-                <p class="text-sm font-semibold text-gray-900 dark:text-white">メールアドレス</p>
-                <input type="email" placeholder="example@example.com" id="customer-mail" class="w-full rounded-md">
-            </div>
-            <!-- Modal footer -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-t border-gray-200 rounded-b">
-                <button data-modal-hide="default-modal1" type="button" class="mail-btn py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">閉じる</button>
-                <button data-modal-hide="default-modal1" data-id="" type="button" id="send_btn" class="mail-btn text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">送信</button>
-            </div>
+            <form method="POST" action="{{ route('SubmitForm') }}">
+                @csrf
+                <div class="p-4 md:p-5 space-y-4">
+                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                        メールアドレスを入力して『送信』ボタンを押してください。<br>
+                        ご入力頂いたメールアドレスに購入先リンクをお送り致します。
+                    </p>
+                    <p class="text-sm font-semibold text-gray-900 dark:text-white">氏名</p>
+                    <input type="text" name="customer-name" id="customer-name" placeholder="氏名" class="w-full rounded-md">
+                    <p class="text-sm font-semibold text-gray-900 dark:text-white">住所</p>
+                    <input type="text" name="customer-address" id="customer-address" placeholder="住所" class="w-full rounded-md">
+                    <p class="text-sm font-semibold text-gray-900 dark:text-white">メールアドレス</p>
+                    <input type="email" name="customer-mail" id="customer-mail" placeholder="example@example.com" class="w-full rounded-md">
+                    <input type="hidden" name="product_id" id="product-id" value="">
+                </div>
+                <!-- Modal footer -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-t border-gray-200 rounded-b">
+                    <button data-modal-hide="default-modal1" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">閉じる</button>
+                    <button data-modal-hide="default-modal1" type="submit" id="send-btn" class="mail-btn text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">送信</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

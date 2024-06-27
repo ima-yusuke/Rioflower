@@ -7,7 +7,12 @@ use App\Http\Controllers\AdminController;
 
 Route::get('/', [MainController::class, 'Index'])->name('Index');
 Route::get('/question', [MainController::class, 'ShowQuestionPage'])->name('ShowQuestionPage');
-Route::post('/question', [MainController::class, 'AddCustomer'])->name('AddCustomer');
+
+//購入確認ページ
+Route::get('/check', [MainController::class, 'ShowCheck'])->name('ShowCheck');
+Route::post('/check', [MainController::class, 'AddCustomer'])->name('AddCustomer');
+
+Route::post('/submit-form', [MainController::class, 'SubmitForm'])->name('SubmitForm');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
