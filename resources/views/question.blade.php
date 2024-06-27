@@ -18,9 +18,8 @@
 
         window.onload = function() {
             if (sessionStorage.getItem('test') != null) {
-                // sessionStorage.removeItem('test');
                 let scoreData = JSON.parse(sessionStorage.getItem('test'));
-                window.ShowResult2(scoreData);
+                window.ReShowResult(scoreData);
             }
         };
     </script>
