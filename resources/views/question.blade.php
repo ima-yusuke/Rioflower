@@ -16,7 +16,13 @@
         let productAttributes = @json($productAttributes);
         let choiceAttributes = @json($choiceAttributes);
 
-
+        window.onload = function() {
+            if (sessionStorage.getItem('test') != null) {
+                // sessionStorage.removeItem('test');
+                let scoreData = JSON.parse(sessionStorage.getItem('test'));
+                window.ShowResult2(scoreData);
+            }
+        };
     </script>
 </x-template>
 

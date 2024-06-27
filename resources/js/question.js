@@ -107,6 +107,7 @@ function ShowResult() {
 }
 
 
+
 // --------------------------------------[質問画面/機能]--------------------------------------
 //選択肢作成
 function CreateAnswers(){
@@ -275,6 +276,7 @@ function CreateResult(){
 
     // プライオリティ計算
     CalPriority();
+    console.log(scoreArray)
 
     // 1位の商品（トップ）
     DisplayTopProduct();
@@ -511,7 +513,7 @@ SEND_BTN.addEventListener("click",function(){
     const ADDRESS = document.getElementById("customer-address").value;
     const EMAIL = document.getElementById("customer-mail").value;
     const ID = SEND_BTN.getAttribute("data-id");
-
+    sessionStorage.setItem('test', JSON.stringify(scoreArray))
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     fetch('/question', {
@@ -558,3 +560,133 @@ SEND_BTN.addEventListener("click",function(){
             }
         });
 });
+
+
+function ShowResult2(scoreData) {
+    console.log(scoreData)
+    QUESTION_CONTAINER.classList.add('hide');
+    CONFIRM_CONTAINER.classList.add('hide');
+    RESULT_CONTAINER.classList.remove('hide');
+
+    let scoreArray = scoreData;
+    // プライオリティ計算
+    // CalPriority();
+    for (let i = 0; i < products.length; i++) {
+        let existingScoreObj = scoreArray.find(scoreObj => scoreObj.product_id === products[i]["id"]);
+        existingScoreObj.score.push(products[i]["priority"]);
+    }
+    scoreArray.sort((a, b) => {
+
+        let sumA = 0
+        a.score.forEach((num) => {
+            sumA = sumA + num;
+        });
+        let sumB = 0;
+        b.score.forEach((num) => {
+            sumB = sumB + num;
+        });
+
+        // 合計値で降順ソート
+        return sumB - sumA;
+    });
+
+    // 1位の商品（トップ）
+    // DisplayTopProduct();
+
+    let maxProduct = products.filter(product => product.id === scoreArray[0]["product_id"]);
+    RESULT_P_NAME.innerText = maxProduct[0]["name"]
+    RESULT_IMG.src = maxProduct[0]["img"];
+    purchaseProductId = maxProduct[0]["id"];
+    // 1~4位の商品（下3つの小さい画像）
+    let otherImages = document.getElementsByClassName("otherImg");
+
+    for(let i=0;i<otherImages.length;i++) {
+
+        // スコア高い順に下の画像にsrcを付与
+        let otherProduct = products.filter(product => product.id === scoreArray[i]["product_id"]);
+        otherImages[i].src = otherProduct[0]["img"];
+
+        // 表示商品の入れ替え
+        otherImages[i].parentNode.addEventListener("click",function(){
+
+            const insertImgTop = RESULT_IMG.getBoundingClientRect().top;
+            const insertImgLeft = RESULT_IMG.getBoundingClientRect().left;
+            const insertImgWidth = RESULT_IMG.getBoundingClientRect().width;
+            const insertImgHeight = RESULT_IMG.getBoundingClientRect().height;
+
+
+            let clickedImg = otherImages[i];
+
+            // Add transition class for smooth animation
+            clickedImg.classList.add("transition");
+
+            // クリックした画像
+            const clickedImgTop = clickedImg.getBoundingClientRect().top;
+            const clickedImgLeft = clickedImg.getBoundingClientRect().left;
+            const clickedImgWidth = clickedImg.getBoundingClientRect().width;
+            const clickedImgHeight = clickedImg.getBoundingClientRect().height;
+
+            //最初非表示の画像
+            let hiddenElement = Array.from(otherImages).filter(image => image.parentNode.classList.contains('hidden'))[0];
+
+            // クリックした画像をトップに移動
+            clickedImg.style.transform = `translate(${(insertImgLeft-clickedImgLeft)+ ((insertImgWidth - clickedImgWidth)/2)}px,${(insertImgTop-clickedImgTop)+ ((insertImgHeight - clickedImgHeight)/2)}px) scale(${insertImgWidth/clickedImgWidth},${insertImgHeight/clickedImgHeight})`;
+
+            // transformが完了したら下記実行
+            clickedImg.addEventListener('transitionend', function onTransitionEnd(){
+
+                // transformを一度だけ実行
+                clickedImg.removeEventListener('transitionend', onTransitionEnd);
+
+                hiddenElement.parentNode.classList.remove("hidden");
+
+                // クリックした要素を非表示に
+                clickedImg.parentNode.classList.add("hidden");
+                clickedImg.parentNode.classList.remove("other-img-container");
+                clickedImg.style.transform = "translate(0,0)";
+                clickedImg.classList.remove("transition");
+
+                // 新しく表示する画像の位置を取得
+                const hiddenElementTop = hiddenElement.getBoundingClientRect().top;
+                const hiddenElementLeft = hiddenElement.getBoundingClientRect().left;
+                const hiddenElementWidth = hiddenElement.getBoundingClientRect().width;
+                const hiddenElementHeight = hiddenElement.getBoundingClientRect().height;
+
+                // 移動と縮小設定
+                let moveY = (insertImgTop-hiddenElementTop) + ((insertImgHeight - hiddenElementHeight)/2)
+                let moveX = (insertImgLeft-hiddenElementLeft) + ((insertImgWidth - hiddenElementWidth)/2)
+                let moveWidth =insertImgWidth/hiddenElementWidth;
+                let moveHeight = insertImgHeight/hiddenElementHeight;
+
+                // 要素をトップに移動
+                hiddenElement.classList.add("transition-quick");
+                hiddenElement.style.transform = `translate(${moveX}px, ${moveY}px) scale(${moveWidth},${moveHeight}`;
+                hiddenElement.classList.remove("transition-quick");
+
+                // トップから要素を降ろす
+                setTimeout(() => {
+                    hiddenElement.classList.add("transition");
+                    hiddenElement.parentNode.classList.add('other-img-container');
+                    hiddenElement.style.transform = `translate(0px, 0px)`;
+                },50)
+
+                // クリックした商品をトップへ表示
+                RESULT_P_NAME.innerText = otherProduct[0]["name"];
+                RESULT_IMG.src = otherProduct[0]["img"];
+
+                // Quill更新
+                DeleteQuill();
+                DisplayQuill(otherProduct[0]["id"]);
+
+            });
+
+            // 購入商品のidを更新
+            purchaseProductId = otherProduct[0]["id"];
+        });
+    }
+
+
+    let productId = scoreArray[0]["product_id"];
+    DisplayQuill(productId);
+}
+window.ShowResult2 = ShowResult2;
