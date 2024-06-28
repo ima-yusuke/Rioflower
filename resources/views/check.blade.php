@@ -13,7 +13,7 @@
     <p>住所：<span id="customer-address">{{ $address }}</span></p>
     <p>メールアドレス：<span id="customer-mail">{{ $email }}</span></p>
     <p>商品ID：<span id="product-id">{{ $product_id }}</span></p>
-    <a href="{{ route('ShowQuestionPage') }}"><button id="back-btn">やり直す</button></a>
+    <button type="button" onclick="location.href='{{ route('ShowQuestionPage') }}'" id="back-btn">やり直す</button>
     <button data-id="" type="button" id="mail-btn" class="mail-btn text-sm px-5 py-2.5 text-center">送信</button>
 </body>
 @vite('resources/js/check.js')

@@ -24,7 +24,7 @@ class MainController extends Controller
     }
 
     // 質問ページ
-    public function ShowQuestionPage() {
+    public function ShowQuestionPage(Request $request) {
         $products = Product::with(['details', 'link'])
             ->where('is_enabled', 1)
             ->get();
@@ -37,7 +37,11 @@ class MainController extends Controller
         $productAttributes = Product_attributes::all();
         $choiceAttributes = Choice_attribute::all();
 
-        return view("question", compact( "products","questions","productAttributes","choiceAttributes"));
+        $name = $request->session()->get('name');
+        $address = $request->session()->get('address');
+        $email = $request->session()->get('email');
+
+        return view("question", compact( "products","questions","productAttributes","choiceAttributes"), ['name' => $name, 'address' => $address, 'email' => $email]);
     }
 
     //注文確認ページ

@@ -5,14 +5,21 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\AdminController;
 
+//TOPページ
 Route::get('/', [MainController::class, 'Index'])->name('Index');
+//質問ページ
 Route::get('/question', [MainController::class, 'ShowQuestionPage'])->name('ShowQuestionPage');
-
 //購入確認ページ
 Route::get('/check', [MainController::class, 'ShowCheck'])->name('ShowCheck');
 Route::post('/check', [MainController::class, 'AddCustomer'])->name('AddCustomer');
 //確認ページフォーム送信
 Route::post('/submit-form', [MainController::class, 'SubmitForm'])->name('SubmitForm');
+//顧客情報のセッション削除
+Route::post('/clear-session', function () {
+    session()->flush(); // セッションをクリアする
+    return response()->json(['message' => 'セッションをクリアしました']);
+});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
