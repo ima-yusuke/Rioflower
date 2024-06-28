@@ -11,7 +11,7 @@ Route::get('/question', [MainController::class, 'ShowQuestionPage'])->name('Show
 //購入確認ページ
 Route::get('/check', [MainController::class, 'ShowCheck'])->name('ShowCheck');
 Route::post('/check', [MainController::class, 'AddCustomer'])->name('AddCustomer');
-
+//確認ページフォーム送信
 Route::post('/submit-form', [MainController::class, 'SubmitForm'])->name('SubmitForm');
 
 Route::get('/dashboard', function () {

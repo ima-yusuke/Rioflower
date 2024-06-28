@@ -58,10 +58,10 @@ class MainController extends Controller
         $product_id = $request->input('product_id');
 
         // フォームデータをセッションに保存
-        $request->session()->flash('name', $name);
-        $request->session()->flash('address', $address);
-        $request->session()->flash('email', $email);
-        $request->session()->flash('product_id', $product_id);
+        $request->session()->put('name', $name);
+        $request->session()->put('address', $address);
+        $request->session()->put('email', $email);
+        $request->session()->put('product_id', $product_id);
 
         return redirect()->route('ShowCheck');
     }
