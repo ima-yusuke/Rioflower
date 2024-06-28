@@ -9,7 +9,7 @@
         {{--結果画面--}}
         <x-result-component></x-result-component>
     </div>
-
+    @vite('resources/js/question.js')
     <script>
         let questions = @json($questions);
         let products = @json($products);
