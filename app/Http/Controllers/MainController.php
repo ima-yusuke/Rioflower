@@ -72,25 +72,6 @@ class MainController extends Controller
 
     // 顧客データ送信
     public function AddCustomer(Request $request) {
-        // バリデーションルールを定義
-        $validator = \Validator::make($request->all(), [
-            'name' => ['required'],
-            'address' => ['required'],
-            'email' => ['required', 'email'],
-        ], [
-            'name.required' => '名前を入力してください',
-            'address.required' => '住所を入力してください',
-            'email.required' => 'メールアドレスを入力してください',
-            'email.email' => 'メールアドレスの形式で入力してください',
-        ]);
-
-        // バリデーションエラーが発生した場合の処理
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => '入力エラーがあります。',
-                'errors' => $validator->errors()
-            ], 422);
-        }
 
         // トランザクションを開始
         DB::beginTransaction();

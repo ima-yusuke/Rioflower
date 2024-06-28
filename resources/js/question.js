@@ -508,13 +508,44 @@ function CalPriority(scoreArray) {
     SortScore(scoreArray);
 }
 
-SEND_BTN.addEventListener("click",function(){
+SEND_BTN.addEventListener('click', function(event) {
+    // バリデーションチェック
+    const name = document.getElementById('customer-name').value;
+    const address = document.getElementById('customer-address').value;
+    const email = document.getElementById('customer-mail').value;
+
+    // バリデーションチェック
+    let errorMessages = [];
+    if (name === "") {
+        errorMessages.push("名前を入力してください");
+    }
+    if (address === "") {
+        errorMessages.push("住所を入力してください");
+    }
+    if (email === "") {
+        errorMessages.push("メールアドレスを入力してください");
+    } else {
+        // メールアドレスの形式チェック
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            errorMessages.push("メールアドレスの形式が正しくありません");
+        }
+    }
+
+    if (errorMessages.length > 0) {
+        alert(errorMessages.join("\n"));
+        event.preventDefault(); // フォーム送信を中止
+        return;
+    }
+
+
     if (sessionStorage.getItem('test') !== null) {
         let scoreArray = sessionStorage.getItem('test');
         sessionStorage.setItem('test', scoreArray);
     } else {
         sessionStorage.setItem('test', JSON.stringify(scoreArray));
     }
+
     // フォームデータを取得
     let formData = new FormData(document.getElementById('form-id'));
 
