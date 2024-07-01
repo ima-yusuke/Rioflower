@@ -57,7 +57,10 @@ for (let i = 0; i < CHOICE_BUTTONS.length; i++) {
 
         choiceId = CHOICE_BUTTONS[i].getAttribute("data-product-id");
 
-        initialWidth = document.getElementsByClassName("yes-drop")[0].getBoundingClientRect();
+        if(document.getElementsByClassName("yes-drop")[0]!=null){
+            initialWidth = document.getElementsByClassName("yes-drop")[0].getBoundingClientRect();
+
+        }
 
         // interact.jsの開始
         startInteract();

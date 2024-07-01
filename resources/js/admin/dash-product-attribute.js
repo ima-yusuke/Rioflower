@@ -32,7 +32,9 @@ for (let i = 0; i < PRODUCTS.length; i++) {
 
         productId = PRODUCTS[i].getAttribute("data-product-id");
 
-        initialWidth = document.getElementsByClassName("yes-drop")[0].getBoundingClientRect();
+        if(document.getElementsByClassName("yes-drop")[0]!=null){
+            initialWidth = document.getElementsByClassName("yes-drop")[0].getBoundingClientRect();
+        }
 
         // interact.jsの開始
         startInteract();
