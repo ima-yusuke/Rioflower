@@ -51,7 +51,13 @@ class MainController extends Controller
         $email = $request->session()->get('email');
         $product_id = $request->session()->get('product_id');
 
-        return view('check', compact('name', 'address', 'email', 'product_id'));
+        //追加データの取得
+        $product = Product::find($product_id);
+        $details = Detail::where('product_id', $product_id)->get();
+        $word = Word::first();
+        $link = Link::where('id', $product->price)->first();
+
+        return view('check', compact('name', 'address', 'email', 'product_id', 'product', 'details', 'word', 'link'));
     }
 
     // フォーム送信
@@ -70,7 +76,7 @@ class MainController extends Controller
         return redirect()->route('ShowCheck');
     }
 
-    // 顧客データ送信
+    // 顧客データ・メール送信
     public function AddCustomer(Request $request) {
 
         // トランザクションを開始

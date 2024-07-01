@@ -37,10 +37,13 @@ class CustomerRegistered extends Mailable
      */
     public function build()
     {
-        return $this->subject('顧客情報登録完了')
-            ->view('emails.customer_registered')
+        return $this->subject('購入リンクのお知らせ')
+            ->view('check')
             ->with([
-                'customer' => $this->customers,
+                'name' => $this->customers->name,
+                'address' => $this->customers->address,
+                'email' => $this->customers->email,
+                'product_id' => $this->products->id,
                 'product' => $this->products,
                 'details' => $this->details,
                 'word' => $this->words,
