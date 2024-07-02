@@ -123,7 +123,7 @@
                             <div class="flex-1">
                                 <select name="price" class="w-full h-[35px] md:h-full text-xs md:text-base border border-solid border-gray-400 rounded-md">
                                     @foreach($links as $link)
-                                        <option value="{{$link["id"]}}">{{$link["course"]}}</option>
+                                        <option value="{{$link["id"]}}">{{$link["course"]}}/{{ $link["price"] }}円</option>
                                     @endforeach
                                 </select>
                             </div>

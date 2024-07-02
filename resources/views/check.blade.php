@@ -13,7 +13,7 @@
     @vite(['resources/css/app.css'])
 </head>
 <body class="bg-main-bg">
-    <div class="flex flex-col w-full md:w-1/2 mx-auto my-10 rounded-xl justify-center bg-white">
+    <div class="flex flex-col w-11/12 md:w-1/2 md:mx-auto mx-3 my-10 rounded-xl justify-center bg-white">
         <div class="m-5">
             <p class="text-2xl font-bold my-3">{{ $name }}様</p>
             <p class="mt-5 mb-10">{!! nl2br(e($word['top'])) !!}</p>
