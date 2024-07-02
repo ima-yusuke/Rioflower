@@ -798,6 +798,29 @@ class AdminController extends Controller
         }
     }
 
+    //[クリア]質問属性付与
+    public function DeleteAllAttributeQuestion(Request $request, $id)
+    {
+        try {
+            // choice_attributes テーブルから対象のデータを削除
+            Choice_attribute::where('choice_id', $id)
+                ->delete();
+
+            return response()->json([
+                'message' => '属性が全て正常に削除されました',
+                'redirect' => route('ShowAttributeQuestion'),
+                'choiceId'=>$request->choiceId,
+                'accordionId'=>$request->accordionId
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('属性の削除に失敗しました: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => '属性の削除に失敗しました'
+            ], 500);
+        }
+    }
+
     public function ShowWord() {
         $word = Word::first();
         return view("dash-word", compact("word"));

@@ -9,7 +9,9 @@ const NEW_CHOICE_CONTAINER = document.getElementById("choice_container");
 const DROPZONE = document.getElementById("outer-dropzone");
 const DEFAULT_TITLE = document.getElementById("default_title");
 const SELECTED_TITLE = document.getElementById("selected_title");
+const CLEAR_BUTTON = document.getElementById("clear_button");
 let attributeContainer = null;
+
 
 // 属性画面
 const CHOICE_CONTAINER = document.querySelector('.overflow-true');
@@ -103,8 +105,11 @@ function DragMoveListener(event) {
 function ShowDropzone(idx){
     NEW_CHOICE_CONTAINER.classList.remove("hide");
     DEFAULT_TITLE.classList.add("hide");
+    CLEAR_BUTTON.classList.remove("hide");
     SELECTED_TITLE.innerHTML = "回答："+CHOICE_BUTTONS[idx].innerText;
 }
+
+
 
 // DB登録済みのattributeデータを取得
 function GetAttributeById(id) {
@@ -238,6 +243,44 @@ function DeleteAttribute(btn){
 
     });
 }
+
+// 属性全て削除
+CLEAR_BUTTON.addEventListener("click",function (){
+    if (!confirm('属性を全て削除しますか？')) {
+        return;
+    }
+    fetch(`/dashboard/attribute/delete-attributes/${choiceId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            choiceId: choiceId,
+            accordionId:accordionId
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.redirect) {
+                window.alert(data.message);
+                localStorage.setItem('choiceId', data.choiceId);
+                localStorage.setItem('accordionId', data.accordionId);
+                window.location.href = data.redirect;
+            } else if (data.message) {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            window.alert('属性の削除に失敗しました');
+        });
+})
 
 // event.targetは指定エリア（ドラッグアイテムでない）
 interact('.dropzone').dropzone({
