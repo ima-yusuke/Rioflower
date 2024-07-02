@@ -8,6 +8,7 @@ const NEW_PRODUCT_CONTAINER = document.getElementById("choice_container");
 const DROPZONE = document.getElementById("outer-dropzone");
 const DEFAULT_TITLE = document.getElementById("default_title");
 const SELECTED_TITLE = document.getElementById("selected_title");
+const ALL_DELETE_BUTTON = document.getElementById("all-delete-button");
 let attributeContainer = null;
 
 // 属性画面
@@ -77,6 +78,7 @@ function DragMoveListener(event) {
 function ShowDropzone(idx){
     NEW_PRODUCT_CONTAINER.classList.remove("hide");
     DEFAULT_TITLE.classList.add("hide");
+    ALL_DELETE_BUTTON.classList.remove("hidden");
     SELECTED_TITLE.innerHTML = "商品："+PRODUCTS[idx].innerText;
 }
 
@@ -210,6 +212,43 @@ function DeleteAttribute(btn){
 
     });
 }
+
+// 属性一括削除
+ALL_DELETE_BUTTON.addEventListener("click", function() {
+    let attributeId =  ALL_DELETE_BUTTON.getAttribute("data-product-id")
+    if (!confirm('属性を全て削除しますか？')) {
+        return;
+    }
+    fetch(`/dashboard/attribute/product/${productId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            productId:productId
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.redirect) {
+                window.alert(data.message);
+                localStorage.setItem('productId', data.productId);
+                window.location.href = data.redirect;
+            } else if (data.message) {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            window.alert('属性の削除に失敗しました');
+        });
+});
 
 // event.targetは指定エリア（ドラッグアイテムでない）
 interact('.dropzone').dropzone({

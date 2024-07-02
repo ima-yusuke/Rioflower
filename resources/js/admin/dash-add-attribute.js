@@ -137,6 +137,7 @@ ATT_ADD_BTN.forEach((btn) => {
             .then(data => {
                 if (data.message) {
                     window.alert(data.message);
+                    localStorage.setItem('category_id', data.category_id);
                     window.location.reload(); // 成功したらページをリロード
                 }
             })
@@ -170,6 +171,7 @@ ATT_DELETE_BTN.forEach((btn) => {
             .then(data => {
                 if (data.redirect) {
                     window.alert(data.message);
+                    localStorage.setItem('category_id', data.category_id);
                     window.location.href = data.redirect;
                 } else if (data.message) {
                     window.alert(data.message);
@@ -180,4 +182,22 @@ ATT_DELETE_BTN.forEach((btn) => {
                 window.alert('属性の削除に失敗しました');
             });
     });
+});
+
+// リダイレクト時の処理
+document.addEventListener('DOMContentLoaded', (event) => {
+
+    let ATT_ID = localStorage.getItem('category_id');
+    if (ATT_ID) {
+
+        // アコーディオン（商品）選択ボタン
+        let selectButton = document.querySelector(`.editBtn[data-category-id="${ATT_ID}"]`);
+
+        if (selectButton) {
+            // 手動でクリックイベントを発生させる
+            selectButton.click();
+        }
+    }
+    // 状態をリセット
+    localStorage.removeItem('category_id');
 });

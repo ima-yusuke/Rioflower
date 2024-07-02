@@ -3,15 +3,20 @@
     <div class="flex justify-center items-center w-full py-12">
         <div class="qa__item bg-white border border-solid border-gray-200 w-[80%] shrink-0">
             <div class="qa__head js-ac flex items-center justify-between gap-4 py-5 px-5">
-                <div class="flex flex-col">
-                    <p class="flex items-center text-xl pb-2">新規属性カテゴリー追加</p>
-                    <div class="flex justify-center items-center pt-8 pb-4">
-                        <label for="category" class="pe-2 font-medium text-gray-900 text-nowrap">新規属性カテゴリー：</label>
-                        <input type="text" name="category" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="新規属性カテゴリー"/>
+                <div class="flex flex-col w-full">
+                    <p class="text-xl pb-2">新規属性カテゴリー追加</p>
+                    <div class="flex items-end w-full pt-8 pb-4">
+                        <div class="flex flex-1 items-center">
+                            <div class="flex flex-col">
+                                <p class="bg-red-500 w-[40px] md:w-[40px] text-white text-xs md:text-xs me-2 p-[1px] text-nowrap text-center rounded-lg">必須</p>
+                                <div class="flex flex-col md:flex-row items-center">
+                                    <label for="category" class="pe-2 font-medium text-gray-900 text-nowrap">新規属性カテゴリー：</label>
+                                    <input type="text" name="category" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="新規属性カテゴリー"/>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="addBtn" class="addBtn border border-solid border-black p-2">追加</button>
                     </div>
-                </div>
-                <div class="pt-10 flex items-center sm:ps-10">
-                    <button id="addBtn" class="addBtn border border-solid border-black px-2 py-2">追加</button>
                 </div>
             </div>
         </div>
@@ -35,7 +40,7 @@
                     @foreach($attributes as $index => $att)
                         @if($cat['id'] === $att['category_id'])
                             <div class="w-full flex">
-                                <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full sm:w-2/3 md:w-1/3 p-2.5" value="{{ $att['name'] }}">
+                                <p type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full sm:w-2/3 md:w-1/3 p-2.5">{{ $att['name'] }}</p>
                                 <button class="att-deleteBtn ms-5 border border-solid border-black px-2 py-2 text-nowrap" data-id="{{ $att['id'] }}">削除</button>
                             </div>
                         @endif

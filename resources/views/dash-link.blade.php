@@ -7,17 +7,23 @@
                 <div class="flex flex-col">
                     <p class="flex items-center text-xl pb-2">新規コース/価格帯の追加</p>
                     <div class="new-course flex">
-                        <div class="flex flex-col md:pe-2">
-                            <div class="flex justify-center items-center py-2">
-                                <label for="category" class="pe-2 font-medium text-gray-900 text-nowrap">新規コース：</label>
-                                <input type="text" name="course" id="course" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="新規コース"/>
+                        <div class="flex flex-col md:pe-2 my-3">
+                            <div class="flex flex-col">
+                                <p class="bg-red-500 w-[40px] md:w-[40px] text-white text-xs md:text-xs me-2 p-[1px] text-nowrap text-center rounded-lg">必須</p>
+                                <div class="flex justify-center items-center pb-2">
+                                    <label for="category" class="pe-2 font-medium text-gray-900 text-nowrap">新規コース：</label>
+                                    <input type="text" name="course" id="course" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="新規コース"/>
+                                </div>
                             </div>
-                            <div class="flex justify-center items-center py-2">
-                                <label for="category" class="pe-2 font-medium text-gray-900 text-nowrap">新規価格帯：</label>
-                                <input type="text" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="新規価格帯"/>
+                            <div class="flex flex-col">
+                                <p class="bg-red-500 w-[40px] md:w-[40px] text-white text-xs md:text-xs me-2 p-[1px] text-nowrap text-center rounded-lg">必須</p>
+                                <div class="flex justify-center items-center pb-2">
+                                    <label for="category" class="pe-2 font-medium text-gray-900 text-nowrap">新規価格帯：</label>
+                                    <input type="text" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="新規価格帯"/>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex flex-col md:ps-2">
+                        <div class="flex flex-col md:ps-2 justify-center">
                             <div class="flex justify-center items-center py-2">
                                 <label for="category" class="pe-2 font-medium text-gray-900 text-nowrap">受取リンク：</label>
                                 <input type="text" name="pickup" id="pickup" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="受取リンク"/>

@@ -4,14 +4,23 @@
         {{--メニューバー--}}
         <section class="w-[20%] h-full bg-white">
             <article class="max-h-[90vh] overflow-y-scroll">
-                @foreach($products as $product)
-                    <li class="qa__item bg-white border border-solid border-gray-200 shrink-0 list-none">
-                        {{-- 商品 --}}
-                        <div data-product-id="{{$product["id"]}}" class="qa__head js-ac flex items-center justify-between gap-4 py-6 px-2 ml-4">
-                            <p class="text-xs md:text-base lg:text-lg font-bold leading-6 opacity-90">{{$product["name"]}}</p>
+                @for($i=1; $i>=0; $i--)
+                    <li class="bg-gray-300 border border-solid border-gray-200 shrink-0 list-none">
+                        <div class="flex items-center justify-between gap-4 py-1 px-2 ml-4">
+                            <p class="text-xs md:text-base lg:text-lg font-bold leading-6 opacity-90">{{ $i==1 ? "表示一覧" : "非表示一覧" }}</p>
                         </div>
                     </li>
-                @endforeach
+                    @foreach($products as $product)
+                        @if($i == $product["is_enabled"])
+                            <li class="qa__item bg-white border border-solid border-gray-200 shrink-0 list-none">
+                                {{-- 商品 --}}
+                                <div data-product-id="{{$product["id"]}}" class="qa__head js-ac flex items-center justify-between gap-4 py-6 px-2 ml-4">
+                                    <p class="text-xs md:text-base lg:text-lg font-bold leading-6 opacity-90">{{$product["name"]}}</p>
+                                </div>
+                            </li>
+                        @endif
+                    @endforeach
+                @endfor
             </article>
         </section>
         {{--左画面/商品--}}
@@ -25,26 +34,31 @@
                 </div>
             </article>
             <p id="selected_title" class="absolute top-4 left-8 text-2xl"></p>
+            <button id="all-delete-button" class="hidden absolute bottom-4 right-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">一括削除</button>
         </section>
         {{--右画面/属性--}}
         <section class="w-[40%] flex items-center justify-center">
             <article class="flex flex-col gap-4 bg-white overflow-true h-[600px] w-full m-6 p-6 rounded-lg">
                 @foreach($categories as $category)
-                    <div class="flex flex-col gap-2">
-                        <p class="text-gray-800">カテゴリー：{{$category["name"]}}</p>
-                        <div class="flex flex-wrap">
-                            @foreach($category->attributes as $attribute)
-                                <div data-product-id="{{$attribute["id"]}}" class="drop-item yes-drop l-wrapper_06 w-[30%] my-4 mx-auto">
-                                    <div class="bg-white rounded-lg shadow-md shadow-gray-300">
-                                        <div class="flex flex-col items-center justify-center px-4 py-2">
-                                            <p class="text-gray-500 text-sm leading-6 mb-1">【{{$category["name"]}}】</p>
-                                            <p class="text-xl text-gray-800 font-bold">{{$attribute["name"]}}</p>
+                    @if($category->attributes->isEmpty())
+                        @continue
+                    @else
+                        <div class="flex flex-col gap-2">
+                            <p class="text-gray-800">カテゴリー：{{$category["name"]}}</p>
+                            <div class="flex flex-wrap">
+                                @foreach($category->attributes as $attribute)
+                                    <div data-product-id="{{$attribute["id"]}}" class="drop-item yes-drop l-wrapper_06 w-[30%] my-4 mx-auto">
+                                        <div class="bg-white rounded-lg shadow-md shadow-gray-300">
+                                            <div class="flex flex-col items-center justify-center px-4 py-2">
+                                                <p class="text-gray-500 text-sm leading-6 mb-1">【{{$category["name"]}}】</p>
+                                                <p class="text-xl text-gray-800 font-bold">{{$attribute["name"]}}</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 @endforeach
             </article>
         </section>

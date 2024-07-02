@@ -592,7 +592,7 @@ class AdminController extends Controller
             $attribute->save();
 
             DB::commit();
-            return response()->json(['message' => '属性が追加されました'], 200);
+            return response()->json(['message' => '属性が追加されました', 'category_id'=>$request->category_id], 200);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => '属性の追加に失敗しました'], 500);
@@ -626,7 +626,7 @@ class AdminController extends Controller
             if ($attribute) {
                 $attribute->delete();
                 DB::commit();
-                return response()->json(['message' => '属性が削除されました', 'redirect' => route('ShowAddAttribute')]);
+                return response()->json(['message' => '属性が削除されました', 'category_id'=>$attribute->category_id, 'redirect' => route('ShowAddAttribute')]);
             } else {
                 DB::rollBack();
                 return response()->json(['message' => '属性が見つかりませんでした'], 404);
@@ -686,6 +686,31 @@ class AdminController extends Controller
             // product_attributes テーブルから対象のデータを削除
             Product_attributes::where('product_id', $productId)
                 ->where('attribute_id', $attributeId)
+                ->delete();
+
+            return response()->json([
+                'message' => '属性が正常に削除されました',
+                'redirect' => route('ShowAttributeProduct'),
+                'productId'=>$request->productId
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('属性の削除に失敗しました: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => '属性の削除に失敗しました'
+            ], 500);
+        }
+    }
+
+    //[一括削除]商品属性付与
+    public function AllDeleteAttributeProduct(Request $request, $id)
+    {
+        try {
+            $productId = $request->query('productId'); // クエリパラメータからproductIdを取得
+            $attributeId = $id; // ルートパラメータからattributeIdを取得
+
+            // product_attributes テーブルから対象のデータを削除
+            Product_attributes::where('product_id', $id)
                 ->delete();
 
             return response()->json([
@@ -779,11 +804,6 @@ class AdminController extends Controller
     }
 
     public function UpdateWord(Request $request, $id) {
-        // バリデーションルールを定義
-        $request->validate([
-            'top' => ['required'],
-            'bottom' => ['required'],
-        ]);
 
         DB::beginTransaction();
         try {
