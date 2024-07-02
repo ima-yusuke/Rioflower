@@ -225,8 +225,6 @@ for(let  i =0;i<SUBMIT_BUTTONS.length;i++){
 }
 
 // ---------------------------------------------------
-
-
 //商品追加
 ADD_BUTTON.addEventListener('click', function() {
     const formData = new FormData(FORM_ELEMENT);
@@ -262,6 +260,19 @@ document.querySelectorAll('.update-btn').forEach((btn) => {
         const ID = btn.getAttribute('data-product-id');
         const FORM_ELEMENTS = btn.closest('.productForm');
         const FORM_DATA = new FormData(FORM_ELEMENTS);
+
+        // バリデーション
+        if(FORM_DATA.get('name').trim() === ""){
+            alert('商品名を入力してください');
+            return;
+        }
+
+        // バリデーション
+        const price = FORM_DATA.get('price');
+        if (price === null || price.trim() === "") {
+            alert('価格帯を選択してください');
+            return;
+        }
 
         FetchData(`/dashboard/product/${ID}`, 'POST',null, FORM_DATA)
             .then(data => {
@@ -312,7 +323,6 @@ function ToggleProduct(btn) {
 
     FetchData('/dashboard/toggle-product', 'POST',true,JSON.stringify({ id: id, is_enabled: is_enabled }))
         .then(data => {
-            alert(data.message);
             window.location.href = data.redirect;
         })
         .catch(error => {
@@ -358,7 +368,7 @@ for (let i=0;i<priceSelectBoxes.length;i++){
 
     if (savedPrices.length===0){
         let newOptionElement = document.createElement("option");
-        newOptionElement.value = null;
+        newOptionElement.value = "";
         newOptionElement.innerText = '価格帯を選択してください';
         newOptionElement.selected = true;
         priceSelectBoxes[i].insertBefore(newOptionElement, priceSelectBoxes[i].firstChild);
