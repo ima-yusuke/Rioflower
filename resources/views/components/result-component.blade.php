@@ -1,14 +1,14 @@
 <div id="result_container" class="relative flex flex-col justify-center items-center hide gap-8 w-full">
     {{--１位商品詳細--}}
-    <div class="flex flex-col md:flex-row justify-between items-center gap-80 md:gap-0 h-full md:w-full w-full">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 h-full md:w-full w-full">
         {{--左側詳細--}}
-        <div class="w-full md:w-[50%] relative mt-8">
-            <div id="big_ball" class="big-screen w-[400px] md:w-[700px] h-[400px] md:h-[700px] bg-main-brown rounded-full">
-                <img id="result_img" class="object-cover absolute left-[22%] md:left-1/3 top-[80%] md:top-1/4 transform translate-x-20 -translate-y-56 z-10 rounded-full w-[280px] md:w-[400px] h-[280px] md:h-[400px]">
+        <div class="w-full md:w-[50%] relative md:mt-8 flex flex-col md:flex-row md:gap-0">
+            <div id="big_ball" class="big-ball w-[450px] md:w-[90vh] h-[450px] md:h-[90vh] bg-main-brown rounded-full">
+                <img id="result_img" class="result-img w-[300px] md:w-[350px] h-[300px] md:h-[350px]">
             </div>
 
             <!-- その他おすすめ画像の表示エリア -->
-            <div class="absolute bottom-12 z-30 w-full flex justify-center gap-10 md:gap-32 my-6">
+            <div class="md:absolute md:bottom-12 z-30 w-full flex justify-center gap-x-12 md:gap-32 md:mt-6">
                 <div class="hidden" data-id="">
                     <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
                     <p>【第1位】</p>
@@ -41,9 +41,9 @@
                 </div>
 
                 {{--Quill表示エリア--}}
-                <div class="h-[450px] overflow-scroll" id="quill_view_container">
+                <div class="md:h-[450px] h-[400xx] mx-4 md:mx-0 overflow-scroll" id="quill_view_container">
                     <p class=""></p>
-                    <div id="viewer" class="bg-detail-bg p-6">
+                    <div id="viewer" class="bg-detail-bg p-2.5 md:p-6">
                     </div>
                 </div>
 
@@ -100,22 +100,4 @@
     </div>
 </div>
 
-<script>
-    function handleBallResize() {
-        const BIG_BALL = document.getElementById('big_ball');
 
-        if (window.innerWidth < 768) {
-            BIG_BALL.classList.remove('big-screen');
-            BIG_BALL.classList.add('small-screen');
-        }else{
-            BIG_BALL.classList.remove('small-screen');
-            BIG_BALL.classList.add('big-screen');
-        }
-    }
-
-    // 初期ロード時の処理
-    handleBallResize();
-
-    // 画面サイズ変更時の処理
-    window.addEventListener('resize', handleBallResize);
-</script>

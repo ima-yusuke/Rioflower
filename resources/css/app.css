@@ -201,15 +201,29 @@
     width: 250px;
 }
 
-.big-screen{
+.big-ball{
     position: relative;
-    transform: translateX(-10rem);
+    transform: translateX(-15em) translateY(-5em);
+    z-index: 1;
 }
 
-.small-screen{
-    position: absolute;
-    top:1%;
-    left: -30%;
+@media (max-width: 767px) {
+    .big-ball {
+        transform: translateX(-10em) translateY(-10em);
+    }
+}
+
+.result-img{
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: 10;
+    transform: translateX(27em) translateY(8em);
+}
+
+@media (max-width: 767px) {
+    .result-img {
+        transform: translateX(13em) translateY(13em);
+    }
 }
 
 .link-display {
@@ -233,6 +247,8 @@
         margin: 0.75rem 0 0.75rem 0;
     }
 }
+
+
 
 /*その他画像親div*/
 .other-img-container{
