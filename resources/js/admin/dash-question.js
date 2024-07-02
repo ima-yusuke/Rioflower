@@ -105,8 +105,14 @@ for (let i = 0; i <ADD_ANSWER_BUTTONS.length; i++) {
 }
 
 function AddAnswer(btn,idx) {
-    let newAnswer = document.getElementsByClassName("add-answer")[idx].value;
+    let newAnswer = document.getElementsByClassName("add-answer")[idx].value.trim();
     let id = btn.getAttribute('data-product-id');
+
+    // バリデーション
+    if (newAnswer === "") {
+        alert("回答を入力してください");
+        return;
+    }
 
     FetchData('/dashboard/choice','POST',true,JSON.stringify({
         id: id,
@@ -242,7 +248,6 @@ function UpdateOrderOnServer(url, orderData) {
         accordionId:accordionId
     }))
         .then(data => {
-            alert(data.message);
             localStorage.setItem('accordionId', data.accordionId);
             window.location.href = data.redirect;
         })
