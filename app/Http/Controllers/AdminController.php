@@ -639,7 +639,7 @@ class AdminController extends Controller
 
     //[ページ遷移]商品属性付与
     public function ShowAttributeProduct() {
-        $products = Product::with('attributes.category')->where('is_enabled', 1)->get();
+        $products = Product::with('attributes.category')->get();
         $categories = Category::all();
         $attributes = Attribute::all();
         $product_attributes = Product_attributes::all();
