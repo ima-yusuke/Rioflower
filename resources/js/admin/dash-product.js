@@ -9,75 +9,89 @@ const SUBMIT_BUTTONS = document.getElementsByClassName('submit-btn');//登録/�
 const TOGGLE_INPUT = document.querySelectorAll('.toggleBtn');//toggle input
 const FORM_ELEMENT = document.getElementById('productForm');//新規登録form
 
-const EDITOR_CONTAINERS = document.getElementsByClassName("editor");//Quill挿入箇所
 let quill = null; // Quillインスタンスを保持する変数
-let newImgQuillData = null;//現在のQuill内のデータを保存
+let quillContentArray =[]//Quill情報を保存
 let currentIndex = null;//更新時に何番目のQuillかindexを保存
-let newImgString64 = null;//画像データを文字にして保存
-
-let imgFlag = false;
-let addUpdateFlag = false;
+let selectedId = null//現在の商品id
+let addUpdateFlag = false;//追加か更新か判断用
 
 EDIT_BUTTONS.forEach((btn,idx) => {
     btn.addEventListener('click', function() {
 
+        SaveCurrentQuillContent();
+
         currentIndex = idx;
+        selectedId = this.getAttribute('data-product-id');
 
         let selectedAccordion = btn.parentNode.parentNode.nextElementSibling;//アコーディオン中身
 
-        // 現在表示している要素を再度クリックした場合はそのアコーディオンを閉じる
-        if(selectedAccordion.classList.contains('visible')){
-            selectedAccordion.classList.remove('visible')
-            btn.innerHTML = "編集"
-            DeleteQuill(idx)
+        ToggleAccordion(selectedAccordion, btn);
 
-        }else {
-            // 全てを一度非表示
-            for (let i = 0; i < EDIT_BUTTONS.length; i++) {
-                let tmpBody =  EDIT_BUTTONS[i].parentNode.parentNode.nextElementSibling;
-                tmpBody.classList.remove('visible')
-                EDIT_BUTTONS[i].innerHTML = "編集"
-            }
+        if (selectedAccordion.classList.contains('visible')) {
+            CreateQuill(idx);
 
-            // クリックされた要素のみ表示
-            selectedAccordion.classList.add('visible');
-            btn.innerHTML = "閉じる";
-
-            // Quill実装
-            DeleteQuill(idx)
-            CreateQuill(idx)
-
-            // 新規登録のみflag=trueになる
-            if(this.classList.contains("addProductBtn")){
+            if (this.classList.contains("addProductBtn")) {
                 addUpdateFlag = true;
             }
 
-            // DBに保存されてるデータの表示
-            if(this.getAttribute('data-product-id')!=null){
-                ShowData(this.getAttribute('data-product-id'));
+            if (selectedId != null) {
+                ShowData(selectedId);
             }
         }
     });
 });
 
+// 現在のQuillデータを保存
+function SaveCurrentQuillContent() {
+    if (quill != null) {
+        let found = false;
+        for (let i = 0; i < quillContentArray.length; i++) {
+            if (quillContentArray[i].id === selectedId) {
+                quillContentArray[i]["quillContent"] = quill.getContents().ops;
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            quillContentArray.push({
+                "id": selectedId,
+                "quillContent": quill.getContents().ops
+            });
+        }
+    }
+}
+
+function ToggleAccordion(selectedAccordion, btn) {
+    if (selectedAccordion.classList.contains('visible')) {
+        selectedAccordion.classList.remove('visible');
+        btn.innerHTML = "編集";
+    } else {
+        EDIT_BUTTONS.forEach(button => {
+            let tmpBody = button.parentNode.parentNode.nextElementSibling;
+            tmpBody.classList.remove('visible');
+            button.innerHTML = "編集";
+        });
+        selectedAccordion.classList.add('visible');
+        btn.innerHTML = "閉じる";
+    }
+}
+
+
 // [Quill作成]
 function CreateQuill(idx){
 
-    // 編集用Quill(リッチテキスト)作成
-    let quillDiv = document.createElement("div");
-    quillDiv.setAttribute("id", "editor");
+    DeleteQuillToolbar(idx)
 
-    // タイトル作成
-    let title = document.createElement("p");
-    title.innerText = "5.商品詳細";
-    title.classList.add("text-xs", "md:text-base");
+    let quillId = null;
+    if (selectedId=== null) {
+        quillId = "#new_editor";
+    }else{
+        quillId = `#editor${idx}`
+    }
 
-    // 選択されたアコーディオンにappend
-    EDITOR_CONTAINERS[idx].appendChild(title);
-    EDITOR_CONTAINERS[idx].appendChild(quillDiv);
 
     // Quill設定
-    quill=new Quill('#editor', {
+    quill=new Quill(quillId, {
         modules: {
             toolbar: [
                 [{ header: [1, 2,3,4,5,6,false] },],
@@ -103,9 +117,9 @@ function CreateQuill(idx){
     });
 
     // toolbarのimageをクリックしたときに下記selectLocalImage()が実行される
-    quill.getModule('toolbar').addHandler('image', () => {
-        SelectLocalImage();
-    });
+    // quill.getModule('toolbar').addHandler('image', () => {
+    //     SelectLocalImage();
+    // });
 }
 
 // [Quill表示]
@@ -113,24 +127,32 @@ function ShowData(id) {
 
     let currentData = [];
 
-    if(imgFlag === false) {
-        // 編集をクリックしアコーディオンを開いたときDBに既にデータがあればcurrentDataに追加
+    let found = false;
+
+    if(quillContentArray.length>0) {
+        for (let i = 0; i < quillContentArray.length; i++) {
+            if (quillContentArray[i].id === selectedId) {
+                currentData = quillContentArray[i]["quillContent"];
+                found = true;
+                break;
+            }
+        }
+    }
+
+    if(currentData.length === 0) {
         let detailsAllData =Laravel.data;
         detailsAllData.forEach((value)=>{
             if(value["product_id"]==id){
                 currentData.push(value);
             }
         })
-    }else{
-        // 画像をQuillにアップロードした場合
-        currentData = newImgQuillData;
     }
 
     let setData = [];
 
     if(currentData.length>0){
         currentData.forEach((value) => {
-            if(imgFlag===false) {
+            if(found===false) {
                 // DBから取得したので文字列からJSON形式に戻す
                 setData.push({"insert": JSON.parse(value["insert"]), "attributes": JSON.parse(value["attributes"])})
             }else{
@@ -142,81 +164,35 @@ function ShowData(id) {
 
     //Quillデータをエディター内に表示
     quill.setContents(setData);
-
-    newImgString64 = null;
 }
 
-// [Quill削除]
-function DeleteQuill(idx){
-    let quillContainer = EDITOR_CONTAINERS[idx];
-    while(quillContainer.firstChild){
-        quillContainer.removeChild(quillContainer.firstChild)
+// [Quillツールバー削除(重複回避)]
+function DeleteQuillToolbar(idx){
+
+    let quillId = null;
+    if (selectedId=== null) {
+        quillId = "new_editor";
+    }else{
+        quillId = `editor${idx}`
     }
 
-    if (quill) {
-        quill.off(); // イベントリスナーを解除
-        let quillContainer = document.querySelector('.ql-container');
-        if (quillContainer) {
-            quillContainer.parentNode.removeChild(quillContainer);
-        }
-        quill = null;
-    }
-}
+    let editorContainer = document.getElementById(quillId);
 
-// [Quillのimgアイコンクリック時の処理]
-function SelectLocalImage() {
+    if (editorContainer) {
+        // Quillインスタンスを取得
+        let quillInstance = Quill.find(editorContainer);
 
-    const IMG_INPUT = document.createElement('input');
-    IMG_INPUT.setAttribute('type', 'file');
-    IMG_INPUT.setAttribute("accept", "image/*");
-    IMG_INPUT.click();
-
-    // Listen upload local image and save to server
-    IMG_INPUT.onchange = () => {
-
-        const UPLOAD_IMG = IMG_INPUT.files[0];
-
-        // FileReader インスタンスを作成
-        const READER = new FileReader();
-
-        // 読み込みが完了したときの処理
-        READER.onload = () => {
-
-            //アップロードした画像を文字にしたデータを保存
-            const IMG_STRING64 = READER.result;
-
-            newImgString64 = IMG_STRING64;
-
-            // 現在のカーソル位置に画像データを追加
-            if(newImgString64 !== null) {
-                // 挿入する位置を取得
-                let index = GetCurrentIndex();
-                // 画像を挿入する
-                quill.insertEmbed(index, 'image', newImgString64);
+        if (quillInstance) {
+            // ツールバーを削除
+            let toolbar = editorContainer.previousSibling;
+            if (toolbar && toolbar.classList.contains('ql-toolbar')) {
+                toolbar.remove();
             }
-            newImgQuillData = quill.getContents().ops;
-
-            imgFlag = true;
-            ShowData()
-        };
-
-        // ここで読み込みが完了したときに onload イベントが発生し、上記コールバック関数が呼び出される。
-        READER.readAsDataURL(UPLOAD_IMG);
-    };
-}
-
-//[現在のカーソル位置取得]
-function GetCurrentIndex() {
-    // 現在のカーソル位置を取得
-    let selection = quill.getSelection();
-    if(selection) {
-        return selection.index;
-    } else {
-        return 0; // カーソル位置がない場合は0を返す
+        }
     }
 }
 
-// [データ受け渡しfunction]
+//Quillデータinputへ保存
 function SendData(){
     const OPS = quill.getContents().ops;
     const DATAS = [];
@@ -250,43 +226,55 @@ for(let  i =0;i<SUBMIT_BUTTONS.length;i++){
 
 // ---------------------------------------------------
 
-// 【表示設定】
-for (let i = 0; i < TOGGLE_INPUT.length; i++) {
-    TOGGLE_INPUT[i].addEventListener('change', function () {
-        ToggleProduct(TOGGLE_INPUT[i]);
-    });
-}
-function ToggleProduct(btn) {
 
-    let id = btn.value;
-    let is_enabled = btn.checked ? 1 : 0; // チェックボックスがチェックされているかどうかでis_enabledを設定
+//商品追加
+ADD_BUTTON.addEventListener('click', function() {
+    const formData = new FormData(FORM_ELEMENT);
+    const imgInput = document.getElementById('img');
+    const nameInput = document.getElementById('new_product_name');
 
-    // Ajaxリクエストを送信して更新処理を行う
-    fetch('/dashboard/toggle-product', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // トークンをメタタグから取得
-        },
-        body: JSON.stringify({ id: id, is_enabled: is_enabled })
-    })
-        .then(response => {
-            if (response.ok) {
-                return response.json(); // JSONレスポンスをパースする
-            } else {
-                throw new Error('削除に失敗しました');
-            }
-        })
+    // バリデーション
+    if (!imgInput.files.length) {
+        alert('商品画像を選択してください。');
+        return;
+    }
+
+    // バリデーション
+    if (nameInput.value.trim() === "") {
+        alert('商品名を入力してください。');
+        return;
+    }
+
+    FetchData('/dashboard/product', 'POST',null, formData)
         .then(data => {
-            console.log(data.message); // 成功メッセージをコンソールに表示
-            location.reload(); // ページをリロードして削除を反映
+            alert(data.message);
+            window.location.href = data.redirect;
         })
         .catch(error => {
-            console.error('削除に失敗しました:', error);
+            alert(error.message);
         });
-}
+});
 
-//【商品削除】
+
+//商品更新
+document.querySelectorAll('.update-btn').forEach((btn) => {
+    btn.addEventListener('click', function() {
+        const ID = btn.getAttribute('data-product-id');
+        const FORM_ELEMENTS = btn.closest('.productForm');
+        const FORM_DATA = new FormData(FORM_ELEMENTS);
+
+        FetchData(`/dashboard/product/${ID}`, 'POST',null, FORM_DATA)
+            .then(data => {
+                alert(data.message);
+                window.location.href = data.redirect;
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+    });
+});
+
+//商品削除
 for (let i = 0; i < DELETE_BUTTONS.length; i++) {
     DELETE_BUTTONS[i].addEventListener('click', function () {
         DeleteProduct(DELETE_BUTTONS[i]);
@@ -298,96 +286,66 @@ function DeleteProduct(btn) {
 
     // 確認ダイアログを表示し、ユーザーがOKを押した場合のみ削除処理を実行
     if (confirm('本当に削除しますか？')) {
+
         // Ajaxリクエストを送信して削除処理を行う
-        fetch('/dashboard/product', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // トークンをメタタグから取得
-            },
-            body: JSON.stringify({ id: id })
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json(); // JSONレスポンスをパースする
-                } else {
-                    throw new Error('削除に失敗しました');
-                }
-            })
+        FetchData('/dashboard/product', 'DELETE',true,JSON.stringify({ id: id }))
             .then(data => {
-                location.reload(); // ページをリロードして削除を反映
+                alert(data.message);
+                window.location.href = data.redirect;
             })
             .catch(error => {
                 console.error('削除に失敗しました:', error);
             });
-    } else {
-        console.log('削除がキャンセルされました');
     }
 }
 
+//表示設定
+for (let i = 0; i < TOGGLE_INPUT.length; i++) {
+    TOGGLE_INPUT[i].addEventListener('change', function () {
+        ToggleProduct(TOGGLE_INPUT[i]);
+    });
+}
+function ToggleProduct(btn) {
 
-// 商品追加
-ADD_BUTTON.addEventListener('click', function() {
-    const formData = new FormData(FORM_ELEMENT);
+    let id = btn.value;
+    let is_enabled = btn.checked ? 1 : 0; // チェックボックスがチェックされているかどうかでis_enabledを設定
 
-    fetch('/dashboard/product', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: formData
-    })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(errorData => {
-                    throw new Error(errorData.message || 'Network response was not ok');
-                });
-            }
-            return response.json();
-        })
+    FetchData('/dashboard/toggle-product', 'POST',true,JSON.stringify({ id: id, is_enabled: is_enabled }))
         .then(data => {
             alert(data.message);
             window.location.href = data.redirect;
         })
         .catch(error => {
-            console.error('Error:', error);
             alert(error.message);
         });
-});
+}
 
+function FetchData(url,method,headerData,bodyData) {
 
-//商品更新テスト用
-document.querySelectorAll('.update-btn').forEach((btn) => {
-    btn.addEventListener('click', function() {
-        const ID = btn.getAttribute('data-product-id');
-        const FORM_ELEMENTS = btn.closest('.productForm');
-        const FORM_DATA = new FormData(FORM_ELEMENTS);
+    const headers = {
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    };
 
-        fetch(`/dashboard/product/${ID}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: FORM_DATA
+    // headerDataがtrueであれば、既存のheadersにマージする
+    if (headerData) {
+        Object.assign(headers, {
+            'Content-Type': 'application/json'
+        });
+    }
+
+    return fetch(url, {
+        method: method,
+        headers: headers,
+        body: bodyData
+    })
+        .then(response => {
+            return response.json();
         })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(errorData => {
-                        throw new Error(errorData.message || 'Network response was not ok');
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                window.alert(data.message);
-                window.location.href = data.redirect;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                window.alert(error.message || '商品の更新に失敗しました');
-            });
-    });
-});
+        .catch(error => {
+            console.error('Error:', error);
+            throw new Error(error.message);
+        });
+}
 
 
 // 価格帯データ有無チェック
@@ -412,6 +370,53 @@ for (let i=0;i<priceSelectBoxes.length;i++){
         productTitle[i].appendChild(newAlertElement);
     }
 }
+
+// [Quillのimgアイコンクリック時の処理]
+// function SelectLocalImage() {
+//
+//     const IMG_INPUT = document.createElement('input');
+//     IMG_INPUT.setAttribute('type', 'file');
+//     IMG_INPUT.setAttribute("accept", "image/*");
+//     IMG_INPUT.click();
+//
+//     IMG_INPUT.onchange = () => {
+//         const UPLOAD_IMG = IMG_INPUT.files[0];
+//
+//         // FileReader インスタンスを作成
+//         const READER = new FileReader();
+//
+//         // 読み込みが完了したときの処理
+//         READER.onload = () => {
+//
+//             //アップロードした画像を文字にしたデータを保存
+//             const newImgString64 = READER.result;
+//
+//             if (newImgString64 !== null) {
+//                 let index = GetCurrentIndex();
+//                 // 現在のカーソル位置に画像データを追加
+//                 quill.insertEmbed(index, 'image', newImgString64);
+//             }
+//
+//             SaveCurrentQuillContent();
+//             ShowData();
+//         };
+//
+//         // ここで読み込みが完了したときに onload イベントが発生し、上記コールバック関数が呼び出される。
+//         READER.readAsDataURL(UPLOAD_IMG);
+//     };
+// }
+//
+// //[現在のカーソル位置取得]
+// function GetCurrentIndex() {
+//     // 現在のカーソル位置を取得
+//     let selection = quill.getSelection();
+//
+//     if(selection) {
+//         return selection.index;
+//     } else {
+//         return 0; // カーソル位置がない場合は0を返す
+//     }
+// }
 
 
 // 商品更新

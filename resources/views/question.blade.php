@@ -17,8 +17,8 @@
         let choiceAttributes = @json($choiceAttributes);
 
         window.onload = function() {
-            if (sessionStorage.getItem('test') != null) {
-                let scoreData = JSON.parse(sessionStorage.getItem('test'));
+            if (sessionStorage.getItem('scoreData') != null) {
+                let scoreData = JSON.parse(sessionStorage.getItem('scoreData'));
                 window.ReShowResult(scoreData);
             }
         };

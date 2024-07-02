@@ -39,42 +39,38 @@ ADD_QUESTION_BTN.addEventListener("click",function (){
     let answerArray =[];
 
     for(let i=0;i<answerInput.length;i++){
-        answerArray.push(answerInput[i].value);
+        // trimでスペースだけを入力した場合でも、そのスペースを無視して適切にチェック
+        let answerText = answerInput[i].value.trim();
+        if (answerText !== "") {
+            answerArray.push(answerText);
+        }
     }
 
-    fetch('/dashboard/question', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({
-            question: questionText,
-            answers: answerArray,
-        })
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
+    // 質問入力チェック
+    if (questionText === "") {
+        alert("質問を入力してください。");
+        return;
+    }
+    // 回答入力チェック
+    if (answerArray.length === 0) {
+        alert("少なくとも1つの回答を入力してください。");
+        return;
+    }
+
+    FetchData('/dashboard/question','POST',true,JSON.stringify({
+        question: questionText,
+        answers: answerArray,
+    }))
         .then(data => {
-            if (data.redirect) {
-                window.alert('質問を追加しました')
-                window.location.href = data.redirect;
-            } else if (data.message) {
-                alert(data.message);
-            }
+            alert(data.message);
+            window.location.href = data.redirect;
         })
         .catch(error => {
-            console.error('Error:', error);
-            window.alert('質問の追加に失敗しました');
+            alert(error.message);
         });
-
 })
 
-//【質問削除】
+//【削除】質問
 for (let i = 0; i < DELETE_QUESTION_BUTTONS.length; i++) {
     DELETE_QUESTION_BUTTONS[i].addEventListener('click', function () {
         DeleteQuestion(DELETE_QUESTION_BUTTONS[i]);
@@ -88,33 +84,20 @@ function DeleteQuestion(btn) {
     // 確認ダイアログを表示し、ユーザーがOKを押した場合のみ削除処理を実行
     if (confirm('本当に削除しますか？')) {
         // Ajaxリクエストを送信して削除処理を行う
-        fetch('/dashboard/question', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // トークンをメタタグから取得
-            },
-            body: JSON.stringify({ id: id })
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json(); // JSONレスポンスをパースする
-                } else {
-                    throw new Error('削除に失敗しました');
-                }
-            })
+        FetchData('/dashboard/question','DELETE',true,JSON.stringify({ id: id }))
             .then(data => {
-                location.reload(); // ページをリロードして削除を反映
+                alert(data.message);
+                window.location.href = data.redirect;
             })
             .catch(error => {
-                console.error('削除に失敗しました:', error);
+                alert(error.message);
             });
     } else {
         console.log('削除がキャンセルされました');
     }
 }
 
-//【回答追加】
+//【追加】回答
 for (let i = 0; i <ADD_ANSWER_BUTTONS.length; i++) {
     ADD_ANSWER_BUTTONS[i].addEventListener('click', function () {
         AddAnswer(ADD_ANSWER_BUTTONS[i],i);
@@ -125,41 +108,22 @@ function AddAnswer(btn,idx) {
     let newAnswer = document.getElementsByClassName("add-answer")[idx].value;
     let id = btn.getAttribute('data-product-id');
 
-    fetch('/dashboard/choice', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({
-            id: id,
-            choice:newAnswer ,
-            accordionId:accordionId
-        })
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
+    FetchData('/dashboard/choice','POST',true,JSON.stringify({
+        id: id,
+        choice:newAnswer,
+        accordionId:accordionId
+    }))
         .then(data => {
-            if (data.redirect) {
-                window.alert('回答を追加しました')
-                localStorage.setItem('accordionId', data.accordionId);
-                window.location.href = data.redirect;
-            } else if (data.message) {
-                alert(data.message);
-            }
+            alert(data.message);
+            localStorage.setItem('accordionId', data.accordionId);
+            window.location.href = data.redirect;
         })
         .catch(error => {
-            console.error('Error:', error);
-            window.alert('回答の追加に失敗しました');
+            alert(error.message);
         });
-
 }
 
-//【回答削除】
+//【削除】回答
 for (let i = 0; i <DELETE_ANSWER_BUTTONS.length; i++) {
     DELETE_ANSWER_BUTTONS[i].addEventListener('click', function () {
         DeleteAnswer(DELETE_ANSWER_BUTTONS[i]);
@@ -172,37 +136,23 @@ function DeleteAnswer(btn) {
 
     // 確認ダイアログを表示し、ユーザーがOKを押した場合のみ削除処理を実行
     if (confirm('本当に削除しますか？')) {
-        // Ajaxリクエストを送信して削除処理を行う
-        fetch('/dashboard/choice', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // トークンをメタタグから取得
-            },
-            body: JSON.stringify({
-                id: id,
-                accordionId:accordionId
-            })
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json(); // JSONレスポンスをパースする
-                } else {
-                    throw new Error('削除に失敗しました');
-                }
-            })
+
+        FetchData('/dashboard/choice','DELETE',true,JSON.stringify({
+            id: id,
+            accordionId:accordionId
+        }))
             .then(data => {
+                alert(data.message);
                 localStorage.setItem('accordionId', data.accordionId);
-                location.reload(); // ページをリロードして削除を反映
+                window.location.href = data.redirect;
             })
             .catch(error => {
-                console.error('削除に失敗しました:', error);
+                alert(error.message);
             });
     } else {
         console.log('削除がキャンセルされました');
     }
 }
-
 
 // 新規回答input作成
 let inpContainer = document.getElementById("answerInp");
@@ -210,17 +160,25 @@ let createInpBtn = document.getElementById("createInpBtn");
 
 createInpBtn.addEventListener("click",function (){
     let newInp = document.createElement("input");
+    let newBtn = document.createElement("button");
+    let newInpContainer = document.createElement("div");
     newInp.name = 'text';
+    newBtn.innerHTML = "×";
     newInp.classList.add("new-answer")
-    inpContainer.appendChild(newInp);
+    newBtn.classList.add("close-button");
+    newInpContainer.style.position = "relative";
+    newInpContainer.appendChild(newInp);
+    newInpContainer.appendChild(newBtn);
+    inpContainer.appendChild(newInpContainer);
+
+    newBtn.addEventListener("click",function (){
+        newInpContainer.remove();
+    })
 })
-
-
 
 // --------------------------------[質問並び替え]-------------------------------------------------
 
 window.onload = (e)=>{
-    console.log("onload!!");
 
     // 1, SortableJS
     const elem = document.getElementById("my_sortable");
@@ -245,91 +203,54 @@ function onChangeEvent(e){
     console.log("onChange!!");
 }
 
+// 【順番更新】質問
 function onSortEvent(e){
-    console.log("onSort!!");
-    // 並び替え後のエレメントを確認
-    const items = e.target.querySelectorAll("li div.qa__head div p");
-    let questionOrder = [];
-    for(let i = 0; i < items.length; i++){
-        let str = items[i].innerHTML;
-        // 旧番号と"."を削除
-        items[i].innerHTML = str.slice(2);
-        // 並び替えた最新の番号を書き込み
-        items[i].innerHTML = `${i + 1}. ${items[i].innerHTML}`;
-        // 質問のIDを順番に保存
-        let questionId = items[i].closest('li').getAttribute('data-question-id');
-        questionOrder.push({ id: questionId, order: i + 1 });
-    }
-
-    // 質問の順番をサーバーに送信
-    updateQuestionOrder(questionOrder);
+    UpdateOrder(e.target, "li div.qa__head div p", "data-question-id", '/dashboard/update-question-order');
 }
 
-function updateQuestionOrder(orderData) {
-    fetch('/dashboard/update-question-order', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ orderData: orderData })
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log('質問の順番を更新しました');
-                window.location.href = '/dashboard/question'; // リダイレクト先のURLを設定する
-            } else {
-                console.error('質問の順番更新に失敗しました');
-            }
-        })
-        .catch(error => {
-            console.error('エラー:', error);
-        });
-}
-
+// 【順番更新】回答
 function onSortEventAnswer(e){
-    console.log("onSort!!");
-    // 並び替え後のエレメントを確認
-    const items = e.target.querySelectorAll("aside p");
-    let answerOrder = [];
-    for(let i = 0; i < items.length; i++){
-        let str = items[i].innerHTML;
-        // 旧番号と"."を削除
-        items[i].innerHTML = str.slice(2);
-        // 並び替えた最新の番号を書き込み
-        items[i].innerHTML = `${i + 1}. ${items[i].innerHTML}`;
-        // 回答のIDを順番に保存
-        let answerId = items[i].closest('aside').getAttribute('data-answer-id');
-        answerOrder.push({ id: answerId, order: i + 1 });
-    }
-    console.log(answerOrder)
-    // 回答の順番をサーバーに送信
-    updateAnswerOrder(answerOrder);
+    UpdateOrder(e.target, "aside p", "data-answer-id", '/dashboard/update-answer-order');
 }
 
-function updateAnswerOrder(orderData) {
-    fetch('/dashboard/update-answer-order', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ orderData: orderData })
-    })
-        .then(response => response.json())
+function UpdateOrder(target, selector, dataAttribute, url) {
+
+    const items = target.querySelectorAll(selector);
+
+    let orderData = [];
+
+    for (let i = 0; i < items.length; i++) {
+        let str = items[i].innerHTML;
+
+        // 旧番号と"."を削除
+        items[i].innerHTML = str.slice(2);
+
+        // 並び替えた最新の番号を書き込み
+        items[i].innerHTML = `${i + 1}. ${items[i].innerHTML}`;
+
+        // IDを順番に保存
+        let id = items[i].closest(`[${dataAttribute}]`).getAttribute(dataAttribute);
+        orderData.push({ id: id, order: i + 1 });
+    }
+    // 順番をサーバーに送信
+    UpdateOrderOnServer(url, orderData);
+}
+
+function UpdateOrderOnServer(url, orderData) {
+    FetchData(url, 'POST', true, JSON.stringify({
+        orderData: orderData,
+        accordionId:accordionId
+    }))
         .then(data => {
-            if (data.success) {
-                console.log('回答の順番を更新しました');
-                // window.location.href = '/dashboard/question'; // リダイレクト先のURLを設定する
-            } else {
-                console.error('回答の順番更新に失敗しました');
-            }
+            alert(data.message);
+            localStorage.setItem('accordionId', data.accordionId);
+            window.location.href = data.redirect;
         })
         .catch(error => {
-            console.error('エラー:', error);
+            alert(error.message);
         });
 }
+
 
 // リダイレクト時の処理
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -365,4 +286,29 @@ for (let i=0;i<questions.length;i++){
     });
 }
 
+function FetchData(url,method,headerData,bodyData) {
 
+    const headers = {
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    };
+
+    // headerDataがtrueであれば、既存のheadersにマージする
+    if (headerData) {
+        Object.assign(headers, {
+            'Content-Type': 'application/json'
+        });
+    }
+
+    return fetch(url, {
+        method: method,
+        headers: headers,
+        body: bodyData
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            throw new Error(error.message);
+        });
+}

@@ -74,6 +74,8 @@
                             </div>
                             <div class="editor flex flex-col py-4 border-b border-solid border-gray-200">
                                 <!-- Quillエディターの内容が入る -->
+                                <p class="text-xs md:text-base">5.商品詳細</p>
+                                <div id="editor{{$idx}}"></div>
                             </div>
                             <input type="hidden" name="quill_data" class="quillData" required>
                             <div class="flex justify-center mt-4">
@@ -113,7 +115,7 @@
                         <div class="flex flex-col md:flex-row md:items-center gap-4 border-y border-solid border-gray-200 py-4">
                             <x-required-title title="2.商品名" />
                             <div class="flex-1">
-                                <input name="name" class="w-full h-[35px] md:h-full border border-solid border-gray-400 rounded-md" required />
+                                <input id="new_product_name" name="name" class="w-full h-[35px] md:h-full border border-solid border-gray-400 rounded-md" required />
                             </div>
                         </div>
                         <div class="flex flex-col md:flex-row md:items-center gap-4 border-y border-solid border-gray-200 py-4">
@@ -138,7 +140,8 @@
                         </div>
                         {{--テキスト箇所--}}
                         <div class="editor flex flex-col border-b border-solid border-gray-200 py-4">
-
+                            <p class="text-xs md:text-base">5.商品詳細</p>
+                            <div id="new_editor"></div>
                         </div>
 
                         <!-- Hidden input to store Quill data -->

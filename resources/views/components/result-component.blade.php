@@ -9,19 +9,19 @@
 
             <!-- その他おすすめ画像の表示エリア -->
             <div class="absolute bottom-12 z-30 w-full flex justify-center gap-10 md:gap-32 my-6">
-                <div class="hidden" data-id="" id="result_first">
+                <div class="hidden" data-id="">
                     <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
                     <p>【第1位】</p>
                 </div>
-                <div class="other-img-container" data-id="" id="result_second">
+                <div class="other-img-container" data-id="" >
                     <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
                     <p>【第2位】</p>
                 </div>
-                <div class="other-img-container" data-id="" id="result_third">
+                <div class="other-img-container" data-id="">
                     <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
                     <p>【第3位】</p>
                 </div>
-                <div class="other-img-container" data-id="" id="result_fourth">
+                <div class="other-img-container" data-id="">
                     <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
                     <p>【第4位】</p>
                 </div>
@@ -42,7 +42,9 @@
 
                 {{--Quill表示エリア--}}
                 <div class="h-[450px] overflow-scroll" id="quill_view_container">
-
+                    <p class=""></p>
+                    <div id="viewer" class="bg-detail-bg p-6">
+                    </div>
                 </div>
 
                 {{--ボタン--}}

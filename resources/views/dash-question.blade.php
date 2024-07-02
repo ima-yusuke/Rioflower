@@ -96,7 +96,7 @@
             <h2 class="text-base pb-4 md:text-xl font-semibold text-gray-800">非表示質問一覧</h2>
         </div>
 
-        <div id="my_sortable" class="flex flex-col items-center w-full">
+        <div class="flex flex-col items-center w-full">
             @foreach($hiddenQuestions as $idx=>$value)
                 <div id="{{$idx}}" class="qa__item bg-white border border-solid border-gray-200 w-[80%] shrink-0 list-none">
                     {{-- 質問 --}}

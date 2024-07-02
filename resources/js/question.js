@@ -23,10 +23,6 @@ const RESULT_IMG = document.getElementById("result_img");
 const OPEN_MODAL_BTN = document.getElementById("open_modal_btn");
 let PRODUCT_NUM = document.getElementById("product-id");
 const SEND_BTN = document.getElementById("send-btn");
-const RESULT_FIRST = document.getElementById("result_first");
-const RESULT_SECOND = document.getElementById("result_second");
-const RESULT_THIRD = document.getElementById("result_third");
-const RESULT_FOURTH = document.getElementById("result_fourth");
 const BACK_START_BTN = document.getElementById("back-start-btn");
 let quill = null;// Quillインスタンスを保持する変数
 let purchaseProductId = null;
@@ -107,8 +103,6 @@ function ShowResult() {
     let productId = scoreArray[0]["product_id"];
     DisplayQuill(productId);
 }
-
-
 
 // --------------------------------------[質問画面/機能]--------------------------------------
 //選択肢作成
@@ -361,7 +355,7 @@ function CreateResult(scoreArray){
                 RESULT_IMG.src = otherProduct[0]["img"];
 
                 // Quill更新
-                DeleteQuill();
+                ResetQuill();
                 DisplayQuill(otherProduct[0]["id"]);
 
             });
@@ -390,15 +384,7 @@ OPEN_MODAL_BTN.addEventListener("click", function () {
 // Quill表示
 function DisplayQuill(productId){
 
-    // Quill表示エリアの作成
-    let quillDisplayArea = document.createElement("div");
-    quillDisplayArea.setAttribute("id", "viewer");
-    quillDisplayArea.classList.add("bg-detail-bg","p-6");
-    quillDisplayArea.style.backgroundColor = "rgb(255,248,248)";
-
-    let quillContainer = document.getElementById("quill_view_container");
-    quillContainer.appendChild(quillDisplayArea);
-
+    // Quill表示
     quill = new Quill("#viewer", {
         //ツールバー無デザイン
         readOnly: true
@@ -421,11 +407,8 @@ function DisplayQuill(productId){
 }
 
 // Quill削除
-function DeleteQuill(){
-    let quillContainer = document.getElementById("quill_view_container");
-    while(quillContainer.firstChild){
-        quillContainer.removeChild(quillContainer.firstChild)
-    }
+function ResetQuill(){
+    quill.setContents([]);
 }
 
 // ----------------------------------------[スコア計算]----------------------------------------
@@ -451,6 +434,8 @@ function CalMaxIdx(choiceId){
             // 一致するものがあればカウント
             if(some){
                 count++;
+                // countした属性を削除した配列を作成
+                // productAttributes = productAttributes.filter(product => !(product.product_id == products[i]["id"] && product.attribute_id == selectedChoiceAttributes[b].attribute_id));
             }
         }
 
@@ -472,7 +457,7 @@ function CalMaxIdx(choiceId){
     }
 
     SortScore(scoreArray);
-
+    // console.log(productAttributes)
     return scoreArray[0].product_id;
 }
 
@@ -492,6 +477,7 @@ function SortScore(scoreArray) {
         // 合計値で降順ソート
         return sumB - sumA;
     });
+    console.log(scoreArray)
     return scoreArray;
 }
 
@@ -539,11 +525,11 @@ SEND_BTN.addEventListener('click', function(event) {
     }
 
 
-    if (sessionStorage.getItem('test') !== null) {
-        let scoreArray = sessionStorage.getItem('test');
-        sessionStorage.setItem('test', scoreArray);
+    if (sessionStorage.getItem('scoreData') !== null) {
+        let scoreArray = sessionStorage.getItem('scoreData');
+        sessionStorage.setItem('scoreData', scoreArray);
     } else {
-        sessionStorage.setItem('test', JSON.stringify(scoreArray));
+        sessionStorage.setItem('scoreData', JSON.stringify(scoreArray));
     }
 
     // フォームデータを取得
@@ -570,7 +556,7 @@ SEND_BTN.addEventListener('click', function(event) {
 });
 
 BACK_START_BTN.addEventListener("click",function(){
-    sessionStorage.removeItem('test');
+    sessionStorage.removeItem('scoreData');
 });
 
 // 結果画面再表示
@@ -588,6 +574,7 @@ function ReShowResult(scoreData) {
 }
 
 window.ReShowResult = ReShowResult;
+
 
 window.addEventListener('unload', function() {
     fetch('/clear-session', {

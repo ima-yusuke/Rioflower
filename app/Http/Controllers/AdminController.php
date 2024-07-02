@@ -33,61 +33,56 @@ class AdminController extends Controller
     //[追加]商品
     public function AddProduct(Request $request)
     {
-
-        // アップロードされたファイル名を取得
-        $fileName = $request->file('img')->getClientOriginalName();
-
-        //商品情報の保存
-        $product = new Product();
-        $product->name = $request->name;
-        $product->img = 'storage/img/' . $fileName;
-        if ($request->priority == null) {
-            $product->priority = 0;
-        } else {
-            $product->priority = $request->priority;
-        }
-        $product->price = $request->price;
-        $product->is_enabled = 1;
-        $product->save();
-
-        //storageに画像ファイル保存（Laravelのデフォルト設定では、publicディスクは storage/app/public になっている）
-        $request->file('img')->storeAs('public/img/' . $product->id, $fileName);
-
-        // 画像パスを更新
-        $product->img = 'storage/img/' . $product->id . '/' . $fileName;
-        $product->save();
-
-        //Quillの保存
+        // トランザクションの開始
         DB::beginTransaction();
-        try {
-            $id = $product->id;
 
-            // レコードを削除
-            Detail::where("product_id", $id)->delete();
+        try {
+            // アップロードされたファイル名を取得
+            $fileName = $request->file('img')->getClientOriginalName();
+
+            // 商品情報の保存
+            $product = new Product();
+            $product->name = $request->name;
+            $product->img = 'storage/img/' . $fileName;
+            $product->priority = $request->priority ?? 0;
+            $product->price = $request->price;
+            $product->is_enabled = 1;
+            $product->save();
+
+            // storageに画像ファイル保存
+            $request->file('img')->storeAs('public/img/' . $product->id, $fileName);
+
+            // 画像パスを更新
+            $product->img = 'storage/img/' . $product->id . '/' . $fileName;
+            $product->save();
+
+            // Quillの保存
+            Detail::where("product_id", $product->id)->delete(); // 既存のデータを削除
 
             $quillData = json_decode($request->quill_data, true);
             foreach ($quillData["ops"] as $value) {
                 $detail = new Detail();
-                $detail->product_id = $id;
+                $detail->product_id = $product->id;
                 $detail->insert = $value["insert"];
-                if (isset($value["attributes"])) {
-                    $detail->attributes = json_encode($value["attributes"]);
-                } else {
-                    $detail->attributes = null;
-                }
+                $detail->attributes = isset($value["attributes"]) ? json_encode($value["attributes"]) : null;
                 $detail->save();
-            };
+            }
 
+            // トランザクションのコミット
             DB::commit();
+
+            // 成功レスポンスを返す
             return response()->json([
                 'message' => '商品が正常に追加されました',
                 'redirect' => route('ShowProduct')
             ], 200);
-
         } catch (\Exception $e) {
+            // トランザクションのロールバック
             DB::rollback();
+
+            // エラーレスポンスを返す
             return response()->json([
-                'message' => '商品追加に失敗しました!!!',
+                'message' => '商品追加に失敗しました',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -96,59 +91,49 @@ class AdminController extends Controller
     //[更新]商品
     public function UpdateProduct(Request $request, $id)
     {
-
+        // 商品を取得
         $product = Product::find($id);
-        $fileName = null;
 
+        // 画像の更新処理
         if ($request->hasFile('img')) {
             $fileName = $request->file('img')->getClientOriginalName();
+            $newImgPath = 'public/img/' . $product->id;
 
-            // 以前に保存された画像ファイルのパスを取得
-            $previousImgPath = str_replace('storage/img/', '', $product->img);
-
-            // 以前の画像ディレクトリを削除
+            // 以前の画像を削除
             Storage::disk('public')->deleteDirectory('img/' . $product->id);
 
-            $request->file('img')->storeAs('public/img/' . $product->id, $fileName);
-
-            $fileName = 'storage/img/' . $product->id . '/' . $fileName;
-        } else {
-            $fileName = $product->img;
+            // 新しい画像を保存
+            $request->file('img')->storeAs($newImgPath, $fileName);
+            $product->img = 'storage/img/' . $product->id . '/' . $fileName;
         }
 
-        $product->update([
-            "name" => $request->name,
-            "price" => $request->price,
-            "priority" => $request->priority,
-            "img" => $fileName
-        ]);
+        // 商品情報の更新
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->priority = $request->priority;
+        $product->save();
 
-        // Quillの保存
+        // Quillデータの保存
         DB::beginTransaction();
         try {
-            $id = $product->id;
-
-            // レコードを削除
+            // Detailレコードを削除
             Detail::where("product_id", $id)->delete();
 
+            // 新しいQuillデータを保存
             $quillData = json_decode($request->quill_data, true);
             foreach ($quillData["ops"] as $value) {
                 $detail = new Detail();
                 $detail->product_id = $id;
                 $detail->insert = $value["insert"];
-                if (isset($value["attributes"])) {
-                    $detail->attributes = json_encode($value["attributes"]);
-                } else {
-                    $detail->attributes = null;
-                }
+                $detail->attributes = isset($value["attributes"]) ? json_encode($value["attributes"]) : null;
                 $detail->save();
             }
+
             DB::commit();
             return response()->json([
                 'message' => '商品が正常に更新されました',
                 'redirect' => route('ShowProduct')
             ], 200);
-
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
@@ -158,47 +143,70 @@ class AdminController extends Controller
         }
     }
 
-
     //[削除]商品
     public function DeleteProduct(Request $request)
     {
-        // 商品テーブルから指定のIDのレコード1件を取得
-        $product = Product::find($request->id);
+        try {
+            // 商品テーブルから指定のIDのレコード1件を取得
+            $product = Product::find($request->id);
 
-        if ($product) {
+            if (!$product) {
+                return response()->json([
+                    'message' => '削除対象の商品が見つかりませんでした',
+                ], 404);
+            }
 
             // ディレクトリを削除
-            Storage::disk('public')->deleteDirectory('img/' . $product->id);
+            $directoryPath = 'img/' . $product->id;
+            if (Storage::disk('public')->exists($directoryPath)) {
+                Storage::disk('public')->deleteDirectory($directoryPath);
+            }
 
             // レコードを削除
             $product->delete();
 
             // JSONレスポンスを返す
-            return response()->json(['message' => '削除が完了しました']);
-        } else {
-            return response()->json(['message' => '商品が見つかりませんでした'], 404);
+            return response()->json([
+                'message' => '商品が正常に削除されました',
+                'redirect' => route('ShowProduct')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => '商品の削除に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
-
 
     //[表示設定]商品
     public function ToggleProduct(Request $request)
     {
-        // 商品テーブルから指定のIDのレコード1件を取得
-        $product = Product::find($request->id);
+        try {
+            // 商品テーブルから指定のIDのレコード1件を取得
+            $product = Product::find($request->id);
 
-        if ($product) {
+            if (!$product) {
+                return response()->json(['message' => '対象商品が見つかりませんでした'], 404);
+            }
+
             // レコードを更新
-            $product->update([
-                "is_enabled" => $request->is_enabled
-            ]);
+            $product->is_enabled = $request->is_enabled;
+            $product->save();
 
             // JSONレスポンスを返す
-            return response()->json(['message' => '表示設定が完了しました']);
-        } else {
-            return response()->json(['message' => '商品が見つかりませんでした'], 404);
+            return response()->json([
+                'message' => '表示設定の変更が完了しました',
+                'redirect' => route('ShowProduct')
+            ]);
+        } catch (\Exception $e) {
+            // エラーが発生した場合の処理
+            return response()->json([
+                'message' => '表示設定の変更に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
+
 
     //[ページ遷移]質問
     public function ShowQuestion()
@@ -218,7 +226,6 @@ class AdminController extends Controller
 
         return view("dash-question", compact("questions", "hiddenQuestions"));
     }
-
 
     //【追加】質問
     public function AddQuestion(Request $request)
@@ -302,8 +309,9 @@ class AdminController extends Controller
             $question->delete();
 
             return response()->json([
-                'message' => '質問とそれに対応する回答が正常に削除されました'
-            ], 200);
+                    'message' => '質問とそれに対応する回答が正常に削除されました',
+                    'redirect' => route('ShowQuestion')
+                ], 200);
         } catch (\Exception $e) {
             Log::error('質問の削除に失敗しました: ' . $e->getMessage());
 
@@ -322,7 +330,8 @@ class AdminController extends Controller
             $choice->delete();
 
             return response()->json([
-                'message' => ' 回答とそれに対応する回答が正常に削除されました',
+                'message' => ' 回答が正常に削除されました',
+                'redirect' => route('ShowQuestion'),
                 'accordionId'=>$request->accordionId
             ], 200);
         } catch (\Exception $e) {
@@ -347,7 +356,10 @@ class AdminController extends Controller
                 $question->save();
             }
             DB::commit();
-            return response()->json(['success' => true]);
+            return response()->json([
+                'message' => ' 質問の順番が正常に更新されました',
+                'redirect' => route('ShowQuestion')
+            ]);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['success' => false, 'error' => $e->getMessage()]);
@@ -367,7 +379,11 @@ class AdminController extends Controller
                 $choice->save();
             }
             DB::commit();
-            return response()->json(['success' => true]);
+            return response()->json([
+                'message' => ' 回答の順番が正常に更新されました',
+                'accordionId'=>$request->accordionId,
+                'redirect' => route('ShowQuestion')
+            ]);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['success' => false, 'error' => $e->getMessage()]);
