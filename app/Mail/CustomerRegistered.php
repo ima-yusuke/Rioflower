@@ -37,6 +37,8 @@ class CustomerRegistered extends Mailable
      */
     public function build()
     {
+        $showLinkArea = true;
+
         return $this->subject('購入リンクのお知らせ')
             ->view('check')
             ->with([
@@ -48,6 +50,7 @@ class CustomerRegistered extends Mailable
                 'details' => $this->details,
                 'word' => $this->words,
                 'link' => $this->links,
+                'showLinkArea' => $showLinkArea,
             ]);
     }
 }

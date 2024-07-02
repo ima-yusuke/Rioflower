@@ -11,26 +11,38 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>購入情報確認</title>
     @vite(['resources/css/app.css'])
-    <title>購入情報確認</title>
 </head>
-<body>
-    <p>{{ $name }}様</p>
-    <p>{!! nl2br(e($word['top'])) !!}</p>
-    <p class="underline">購入者情報</p>
-    <p>氏名：<span id="customer-name">{{ $name }}</span></p>
-    <p>住所：<span id="customer-address">{{ $address }}</span></p>
-    <p>メールアドレス：<span id="customer-mail">{{ $email }}</span></p>
-    <p class="hidden">商品ID：<span id="product-id">{{ $product_id }}</span></p>
-    <p class="underline">商品情報</p>
-    <p>商品名：{{ $product->name }}</p>
-    <p>商品詳細</p>
-    <p>ここに商品詳細が入ります</p>
-    <p class="underline">商品リンク</p>
-    店舗受取リンク：<a href="{{ $link->pickup_link }}">{{ $link->pickup_link }}</a>
-    <br>
-    配送リンク：<a href="{{ $link->delivery_link }}">{{ $link->delivery_link }}</a>
-    <p>{!! nl2br(e($word['bottom'])) !!}</p>
-    <button type="button" onclick="location.href='{{ route('ShowQuestionPage') }}'" id="back-btn" class="pink-btn">やり直す</button>
-    <button data-id="" type="button" id="mail-btn" class="mail-btn pink-btn text-sm px-5 py-2.5 text-center">送信</button>
+<body class="bg-main-bg">
+    <div class="flex flex-col w-full md:w-1/2 mx-auto my-10 rounded-xl justify-center bg-white">
+        <div class="m-5">
+            <p class="text-2xl font-bold my-3">{{ $name }}様</p>
+            <p class="mt-5 mb-10">{!! nl2br(e($word['top'])) !!}</p>
+            <p class="underline mt-8 mb-2">お客様情報</p>
+            <p class="py-1">【氏名】<span id="customer-name">{{ $name }}</span></p>
+            <p class="py-1">【住所】<span id="customer-address">{{ $address }}</span></p>
+            <p class="py-1">【メールアドレス】<span id="customer-mail">{{ $email }}</span></p>
+            <p class="underline mt-8 mb-2">商品情報</p>
+            <p class="hidden">商品ID：<span id="product-id">{{ $product_id }}</span></p>
+            <p class="py-1">【商品名】{{ $product->name }}</p>
+            <p class="py-1">【商品詳細】</p>
+            <p id="detail"></p>
+            <div id="link-area" class="{{ $showLinkArea ? 'flex' : 'hidden' }} flex-col mt-8">
+                <p class="underline mb-2">商品リンク</p>
+                <div class="link-display flex py-1">
+                    <a class="link-btn mx-3" href="{{ $link->pickup_link }}">店舗受取は<br>こちら</a>
+                    <a class="link-btn mx-3" href="{{ $link->delivery_link }}">郵送受取は<br>こちら</a>
+                </div>
+            </div>
+            <p class="mt-10">{!! nl2br(e($word['bottom'])) !!}</p>
+            <div id="mail-area" class="{{ $showLinkArea ? 'hidden' : 'flex' }}  justify-center mt-10">
+                <button type="button" onclick="location.href='{{ route('ShowQuestionPage') }}'" id="back-btn" class="pink-btn mx-3 text-center">やり直す</button>
+                <button data-id="" type="button" id="mail-btn" class="mail-btn pink-btn mx-3 text-center">メール送信</button>
+            </div>
+        </div>
+    </div>
 </body>
+<script>
+    let details = @json($details);
+</script>
+
 @vite('resources/js/check.js')

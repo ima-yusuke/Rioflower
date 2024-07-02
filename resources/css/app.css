@@ -212,6 +212,28 @@
     left: -30%;
 }
 
+.link-display {
+    @media (max-width: 767px) {
+        flex-direction: column;
+    }
+}
+
+.link-btn {
+    background-color: rgb(254,135,185);
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    width: 200px;
+    @media (max-width: 767px) {
+        margin: 0.75rem 0 0.75rem 0;
+    }
+}
+
 /*その他画像親div*/
 .other-img-container{
     display: flex;

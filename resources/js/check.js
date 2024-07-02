@@ -1,6 +1,11 @@
 import "flowbite"
+import Quill from "quill";
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
 
 const SEND_BTN = document.getElementById("mail-btn");
+const PRODUCT_ID = document.getElementById("product-id").textContent;
+let quill = null;// Quillインスタンスを保持する変数
 
 // 顧客情報追加
 SEND_BTN.addEventListener("click",function(){
@@ -56,6 +61,36 @@ SEND_BTN.addEventListener("click",function(){
         });
 });
 
+// quill表示
+function DisplayQuill(){
+
+    // Quill表示
+    quill = new Quill("#detail", {
+        //ツールバー無デザイン
+        readOnly: true
+    });
+
+    let detail = details;
+
+    let setData = [];
+
+    if(detail.length>0){
+        detail.forEach((value) => {
+            // DBから取得したので文字列からJSON形式に戻す
+            setData.push({"insert": JSON.parse(value["insert"]), "attributes": JSON.parse(value["attributes"])})
+        })
+    }
+
+    //Quillデータをエディター内に表示
+    quill.setContents(setData)
+}
+
+// ページ読み込み時に実行
+window.onload = function(){
+    DisplayQuill(PRODUCT_ID);
+}
+
+// セッションクリア
 window.addEventListener('unload', function() {
     fetch('/clear-session', {
         method: 'POST',

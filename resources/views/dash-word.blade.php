@@ -34,20 +34,23 @@
                         <div class="mb-4 text-red-600">〇〇様</div>
                         <div id="preview-top" class="mb-4">{!! nl2br(e($word['top'])) !!}</div>
                         <div class="mb-4 text-red-600">
-                            <span class="underline">購入者情報</span><br>
-                            氏名：〇〇様<br>
-                            住所：〇〇県〇〇市〇〇町〇〇丁目〇〇番地<br>
-                            メールアドレス：example@example.com<br>
+                            <span class="underline">お客様情報</span><br>
+                            【氏名】〇〇様<br>
+                            【住所】〇〇県〇〇市〇〇町〇〇丁目〇〇番地<br>
+                            【メールアドレス】example@example.com<br>
                             <br>
                             <span class="underline">商品情報<br></span>
-                            商品名：〇〇〇〇<br>
-                            商品詳細<br>
+                            【商品名】〇〇〇〇<br>
+                            【商品詳細】<br>
                             〇〇〇〇〇〇〇〇<br>
                             〇〇〇〇〇〇〇〇<br>
                             〇〇〇〇〇〇〇〇<br>
                             <br>
                             <span class="underline">商品リンク<br></span>
-                            https://www.example.com/〇〇〇〇<br>
+                            <div class="flex py-1">
+                                <div class="link-btn mx-3 my-2">店舗受取は<br>こちら</div>
+                                <div class="link-btn mx-3 my-2">郵送受取は<br>こちら</div>
+                            </div>
                         </div>
                         <div id="preview-bottom">{!! nl2br(e($word['bottom'])) !!}</div>
                     </div>

@@ -56,8 +56,9 @@ class MainController extends Controller
         $details = Detail::where('product_id', $product_id)->get();
         $word = Word::first();
         $link = Link::where('id', $product->price)->first();
+        $showLinkArea = false;
 
-        return view('check', compact('name', 'address', 'email', 'product_id', 'product', 'details', 'word', 'link'));
+        return view('check', compact('name', 'address', 'email', 'product_id', 'product', 'details', 'word', 'link', 'showLinkArea'));
     }
 
     // フォーム送信

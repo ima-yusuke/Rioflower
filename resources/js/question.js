@@ -94,11 +94,11 @@ function ShowConfirm(){
 SHOW_RESULT_BTN.addEventListener("click",ShowResult);
 
 function ShowResult() {
-    if (sessionStorage.getItem('test') !== null) {
-        let scoreArray = sessionStorage.getItem('test');
-        sessionStorage.setItem('test', scoreArray);
+    if (sessionStorage.getItem('scoreData') !== null) {
+        let scoreArray = sessionStorage.getItem('scoreData');
+        sessionStorage.setItem('scoreData', scoreArray);
     } else {
-        sessionStorage.setItem('test', JSON.stringify(scoreArray));
+        sessionStorage.setItem('scoreData', JSON.stringify(scoreArray));
     }
 
     CONFIRM_CONTAINER.classList.add('hide');
