@@ -94,6 +94,12 @@ function ShowConfirm(){
 SHOW_RESULT_BTN.addEventListener("click",ShowResult);
 
 function ShowResult() {
+    if (sessionStorage.getItem('test') !== null) {
+        let scoreArray = sessionStorage.getItem('test');
+        sessionStorage.setItem('test', scoreArray);
+    } else {
+        sessionStorage.setItem('test', JSON.stringify(scoreArray));
+    }
 
     CONFIRM_CONTAINER.classList.add('hide');
     RESULT_CONTAINER.classList.remove('hide');
@@ -522,14 +528,6 @@ SEND_BTN.addEventListener('click', function(event) {
         alert(errorMessages.join("\n"));
         event.preventDefault(); // フォーム送信を中止
         return;
-    }
-
-
-    if (sessionStorage.getItem('scoreData') !== null) {
-        let scoreArray = sessionStorage.getItem('scoreData');
-        sessionStorage.setItem('scoreData', scoreArray);
-    } else {
-        sessionStorage.setItem('scoreData', JSON.stringify(scoreArray));
     }
 
     // フォームデータを取得
