@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::get("/dashboard/attribute/question",[AdminController::class,"ShowAttributeQuestion"])->name("ShowAttributeQuestion");
     Route::post("/dashboard/attribute/question",[AdminController::class,"AddAttributeQuestion"])->name("AddAttributeQuestion");
     Route::delete("/dashboard/attribute/question/{id}",[AdminController::class,"DeleteAttributeQuestion"])->name("DeleteAttributeQuestion");
+    Route::delete("/dashboard/attribute/delete-attributes/{id}",[AdminController::class,"DeleteALLAttributeQuestion"])->name("DeleteAllAttributeQuestion");
 
     //メール
     Route::get("/dashboard/word",[AdminController::class,"ShowWord"])->name("ShowWord");
