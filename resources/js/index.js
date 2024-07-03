@@ -1,4 +1,4 @@
-window.addEventListener('beforeunload', function() {
+window.addEventListener('unload', function() {
     fetch('/clear-session', {
         method: 'POST',
         headers: {
