@@ -390,34 +390,34 @@ class AdminController extends Controller
         }
     }
 
-
     //[表示設定]質問
     public function ToggleQuestion(Request $request)
     {
-        // 質問テーブルから指定のIDのレコード1件を取得
-        $question = Question::find($request->id);
+        try {
+            // 商品テーブルから指定のIDのレコード1件を取得
+            $question = Question::find($request->id);
 
-        if($question){
-
-            $num = null;
-
-            if($question->is_enabled==0){
-                $num =1;
-            }else{
-                $num =0;
+            if (!$question) {
+                return response()->json(['message' => '対象質問が見つかりませんでした'], 404);
             }
+
             // レコードを更新
-            $question->update([
-                "is_enabled"=>$num
+            $question->is_enabled = $request->is_enabled;
+            $question->save();
+
+            // JSONレスポンスを返す
+            return response()->json([
+                'message' => '表示設定の変更が完了しました',
+                'redirect' => route('ShowQuestion')
             ]);
-
-            return response()->json(['message' => '質問の表示設定の変更が完了しました']);
-        } else {
-            return response()->json(['message' => '質問が見つかりませんでした'], 404);
+        } catch (\Exception $e) {
+            // エラーが発生した場合の処理
+            return response()->json([
+                'message' => '表示設定の変更に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
     }
-
 
     //[ページ遷移]リンク
     public function ShowLink() {
