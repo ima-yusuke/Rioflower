@@ -298,6 +298,13 @@ function CreateResult(scoreArray){
         // 表示商品の入れ替え
         otherImages[i].parentNode.addEventListener("click",function(){
 
+            // // トランジション中のクリックを防ぐ
+            if (document.body.classList.contains('transition-active')) {
+                return;
+            }
+
+            document.body.classList.add('transition-active');
+
             const insertImgTop = RESULT_IMG.getBoundingClientRect().top;
             const insertImgLeft = RESULT_IMG.getBoundingClientRect().left;
             const insertImgWidth = RESULT_IMG.getBoundingClientRect().width;
@@ -367,6 +374,8 @@ function CreateResult(scoreArray){
                 ResetQuill();
                 DisplayQuill(otherProduct[0]["id"]);
 
+                // トランジション完了後、クリックを再度有効にする
+                document.body.classList.remove('transition-active');
             });
 
             // 購入商品のidを更新
