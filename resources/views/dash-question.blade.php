@@ -18,7 +18,7 @@
                         <aside>
                             <label class="inline-flex items-center cursor-pointer mr-4">
                                 <span class="ms-3 text-xs md:text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">非表示</span>
-                                <input onclick="ToggleQuestion({{$value['id']}})" type="checkbox" value="" class="sr-only peer" checked>
+                                <input type="checkbox" value="{{$value['id']}}" class="toggleBtn sr-only peer" checked>
                                 <div class="relative w-7 h-4 sm:w-11 sm:h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 sm:after:h-5 sm:after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 <span class="ms-3 text-xs md:text-sm font-medium text-gray-900 dark:text-gray-300">表示</span>
                             </label>
@@ -29,7 +29,7 @@
 
                     {{-- 回答（最初非表示） --}}
                     <div class="qa__body flex flex-col gap-8">
-                        <div class="answer_sortable flex flex-col gap-4">
+                        <div class="answer-sortable flex flex-col gap-4">
                             @foreach($value->choices as $key=>$choice)
                                 <aside  data-answer-id="{{ $choice['id'] }}" id="{{$key}}" class="flex justify-between items-center w-full md:w-[60%] h-[35px] md:h-[45px]">
                                     <p class="select-btn flex-1 flex items-center py-1 pl-2 mr-2 rounded-lg h-full">{{$key+1}}.{{$choice["text"]}}</p>
@@ -107,7 +107,7 @@
                         <aside>
                             <label class="inline-flex items-center cursor-pointer mr-4">
                                 <span class="ms-3 text-xs md:text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">非表示</span>
-                                <input onclick="ToggleQuestion({{$value['id']}})" type="checkbox" value="" class="sr-only peer">
+                                <input type="checkbox" value="{{$value['id']}}" class="toggleBtn sr-only peer">
                                 <div class="relative w-7 h-4 sm:w-11 sm:h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 sm:after:h-5 sm:after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 <span class="ms-3 text-xs md:text-sm font-medium text-gray-900 dark:text-gray-300">表示</span>
                             </label>
@@ -122,36 +122,3 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     @vite(['resources/js/admin/dash-question.js'])
 </x-app-layout>
-<script>
-    {{--// 表示設定--}}
-    function ToggleQuestion(id) {
-
-        // Ajaxリクエストを送信して更新処理を行う
-        fetch('{{route('ToggleQuestion')}}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ id: id })
-        })
-            .then(response => {
-                if (response.ok) {
-                    // 更新が成功したらページをリロードするなどの処理を行う
-                    location.reload();
-                    console.log("更新完了")
-                } else {
-                    // エラーメッセージを表示するなどの処理を行う
-                    console.error('更新に失敗しました');
-                }
-            })
-            .catch(error => {
-                console.error('更新に失敗しました:', error);
-            });
-    }
-
-    let div = document.querySelectorAll("body > div")[0];
-    div.classList.remove("h-[100dvh]"); // 100dvh を削除
-    div.classList.add("h-full"); // h-full を追加
-    div.style.minHeight = "100vh"; // 最低でも画面の高さになるように設定
-</script>

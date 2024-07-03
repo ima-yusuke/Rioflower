@@ -3,6 +3,7 @@ const ADD_QUESTION_BTN  =document.getElementById("add_btn");
 const DELETE_QUESTION_BUTTONS = document.querySelectorAll('.deleteBtn');//削除ボタン
 const ADD_ANSWER_BUTTONS = document.querySelectorAll('.add-answer-btn');//回答追加ボタン
 const DELETE_ANSWER_BUTTONS = document.querySelectorAll('.delete-answer');//回答削除ボタン
+const TOGGLE_INPUT = document.querySelectorAll('.toggleBtn');//toggle input
 let accordionId =null;
 
 //アコーディオンの開閉
@@ -281,15 +282,39 @@ document.addEventListener('DOMContentLoaded', (event) => {
 let questions = document.getElementsByClassName("qa__item");
 
 for (let i=0;i<questions.length;i++){
-    const elem = document.getElementsByClassName("answer_sortable");
-    Sortable.create(elem[i], {
-        animation: 150,
-        onStart:  onStartEvent,  // 2-1, ドラッグ開始時
-        onEnd:    onEndEvent,    // 2-2, ドラッグ終了時
-        onChange: onChangeEvent, // 2-3, ドラッグ変化時
-        onSort:   onSortEventAnswer   // 2-4, 並び替え終了時
+    const elem = document.getElementsByClassName("answer-sortable")[i];
+    if(elem){
+        Sortable.create(elem, {
+            animation: 150,
+            onStart:  onStartEvent,  // 2-1, ドラッグ開始時
+            onEnd:    onEndEvent,    // 2-2, ドラッグ終了時
+            onChange: onChangeEvent, // 2-3, ドラッグ変化時
+            onSort:   onSortEventAnswer   // 2-4, 並び替え終了時
+        });
+    }
+
+}
+
+//表示設定
+for (let i = 0; i < TOGGLE_INPUT.length; i++) {
+    TOGGLE_INPUT[i].addEventListener('change', function () {
+        ToggleQuestion(TOGGLE_INPUT[i]);
     });
 }
+function ToggleQuestion(btn) {
+
+    let id = btn.value;
+    let is_enabled = btn.checked ? 1 : 0; // チェックボックスがチェックされているかどうかでis_enabledを設定
+
+    FetchData('/dashboard/toggle-question', 'POST',true,JSON.stringify({ id: id, is_enabled: is_enabled }))
+        .then(data => {
+            window.location.href = data.redirect;
+        })
+        .catch(error => {
+            alert(error.message);
+        });
+}
+
 
 function FetchData(url,method,headerData,bodyData) {
 
