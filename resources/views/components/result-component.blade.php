@@ -1,31 +1,15 @@
 <div id="result_container" class="relative flex flex-col justify-center items-center hide gap-8 w-full">
-    {{--１位商品詳細--}}
+
     <div class="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 h-full md:w-full w-full">
         {{--左側詳細--}}
         <div class="w-full md:w-[50%] relative md:mt-8 flex flex-col md:flex-row md:gap-0">
+            {{--１位商品詳細--}}
             <div id="big_ball" class="big-ball w-[450px] md:w-[90vh] h-[450px] md:h-[90vh] bg-main-brown rounded-full">
                 <img id="result_img" class="result-img w-[300px] md:w-[350px] h-[300px] md:h-[350px]">
             </div>
 
             <!-- その他おすすめ画像の表示エリア -->
-            <div class="md:absolute md:bottom-12 z-30 w-full flex justify-center gap-x-12 md:gap-32 md:mt-6">
-                <div class="hidden" data-id="">
-                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
-                    <p>【第1位】</p>
-                </div>
-                <div class="other-img-container" data-id="" >
-                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
-                    <p>【第2位】</p>
-                </div>
-                <div class="other-img-container" data-id="">
-                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
-                    <p>【第3位】</p>
-                </div>
-                <div class="other-img-container" data-id="">
-                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">
-                    <p>【第4位】</p>
-                </div>
-            </div>
+            <div id="other_images_container" class="md:absolute md:bottom-12 z-30 w-full flex justify-center gap-x-12 md:gap-32 md:mt-6"></div>
         </div>
 
         {{--右側詳細--}}
@@ -41,9 +25,9 @@
                 </div>
 
                 {{--Quill表示エリア--}}
-                <div class="md:h-[450px] h-[400xx] mx-4 md:mx-0 overflow-scroll" id="quill_view_container">
+                <div class="md:h-[450px] h-[400px] mx-4 md:mx-0" id="quill_view_container">
                     <p class=""></p>
-                    <div id="viewer" class="bg-detail-bg p-2.5 md:p-6">
+                    <div id="viewer" class="bg-detail-bg">
                     </div>
                 </div>
 

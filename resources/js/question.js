@@ -24,6 +24,7 @@ const OPEN_MODAL_BTN = document.getElementById("open_modal_btn");
 let PRODUCT_NUM = document.getElementById("product-id");
 const SEND_BTN = document.getElementById("send-btn");
 const BACK_START_BTN = document.getElementById("back-start-btn");
+const OTHER_IMG_CONTAINER = document.getElementById("other_images_container");
 let quill = null;// Quillインスタンスを保持する変数
 let purchaseProductId = null;
 
@@ -79,7 +80,7 @@ function SelectAnswer(idx,choiceId) {
         ShowCurrentQstNum()
         ShowQuestion(choiceId)
     } else {
-        CalMaxIdx(choiceId);
+        CalScore(choiceId);
         ShowConfirm()
     }
 }
@@ -151,7 +152,7 @@ function CreateAnswers(){
 function CreateMaxImg(choiceId){
 
     // 最適な商品のIDを取得
-    let maxProductId = CalMaxIdx(choiceId)
+    let maxProductId = CalScore(choiceId)
 
     // 現在の画像を削除
     DeleteQuestionImage();
@@ -282,11 +283,13 @@ function CreateResult(scoreArray){
     // 1位の商品（トップ）
     DisplayTopProduct(scoreArray);
 
+    // 2位以下の商品作成
+    CreateOtherImages(scoreArray);
 
     // 1~4位の商品（下3つの小さい画像）
     let otherImages = document.getElementsByClassName("otherImg");
 
-    for(let i=0;i<otherImages.length;i++) {
+    for(let i=0;i<scoreArray.length;i++) {
 
         // スコア高い順に下の画像にsrcを付与
         let otherProduct = products.filter(product => product.id === scoreArray[i]["product_id"]);
@@ -372,7 +375,6 @@ function CreateResult(scoreArray){
     }
 }
 
-
 // 1位の商品（トップ）を表示
 function DisplayTopProduct(scoreArray){
     let maxProduct = products.filter(product => product.id === scoreArray[0]["product_id"]);
@@ -386,6 +388,38 @@ OPEN_MODAL_BTN.addEventListener("click", function () {
     // console.log(purchaseProductId)
     PRODUCT_NUM.setAttribute("value", purchaseProductId);
 });
+
+// 2位以下の画像作成
+function CreateOtherImages(scoreArray) {
+    const ranks = ['第1位', '第2位', '第3位', '第4位'];
+
+    for (let i=0; i<scoreArray.length; i++) {
+
+        const div = document.createElement('div');
+
+        if(i===0){
+            div.classList.add('hidden');
+        }else{
+            div.classList.add('other-img-container');
+        }
+        div.setAttribute('data-id', '');
+
+        // img 要素を作成
+        const img = document.createElement('img');
+        img.classList.add('otherImg', 'object-cover', 'rounded-full', 'w-[70px]', 'md:w-[100px]', 'h-[70px]', 'md:h-[100px]');
+
+        // p 要素を作成
+        const p = document.createElement('p');
+        p.textContent = `【${ranks[i]}】`;
+
+        // div に img と p を追加
+        div.appendChild(img);
+        div.appendChild(p);
+
+        // コンテナに div を追加
+        OTHER_IMG_CONTAINER.appendChild(div);
+    }
+}
 
 // Quill表示
 function DisplayQuill(productId){
@@ -419,8 +453,8 @@ function ResetQuill(){
 
 // ----------------------------------------[スコア計算]----------------------------------------
 
-// 修正必要！！！
-function CalMaxIdx(choiceId){
+// スコア計算（プライオリティなし）
+function CalScore(choiceId){
 
     // 選択した選択肢の属性を取得
     let selectedChoiceAttributes = choiceAttributes.filter(choice => choice.choice_id === choiceId);
@@ -483,7 +517,6 @@ function SortScore(scoreArray) {
         // 合計値で降順ソート
         return sumB - sumA;
     });
-    console.log(scoreArray)
     return scoreArray;
 }
 
@@ -572,7 +605,6 @@ function ReShowResult(scoreData) {
 }
 
 window.ReShowResult = ReShowResult;
-
 
 window.addEventListener('unload', function() {
     fetch('/clear-session', {
