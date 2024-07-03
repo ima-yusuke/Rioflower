@@ -16,7 +16,7 @@
     <div class="flex flex-col w-11/12 md:w-1/2 md:mx-auto mx-3 my-10 rounded-xl justify-center bg-white">
         <div class="m-5">
             <p class="text-2xl font-bold my-3">{{ $name }}様</p>
-            <p class="mt-5 mb-10">{!! nl2br(e($word['top'])) !!}</p>
+            <p class="mt-5 mb-10 {{ $showLinkArea ? 'flex' : 'hidden' }}">{!! nl2br(e($word['top'])) !!}</p>
             <p class="underline mt-8 mb-2">お客様情報</p>
             <p class="py-1">【氏名】<span id="customer-name">{{ $name }}</span></p>
             <p class="py-1">【住所】<span id="customer-address">{{ $address }}</span></p>
@@ -33,8 +33,8 @@
                     <a class="link-btn mx-3" href="{{ $link->delivery_link }}">郵送受取は<br>こちら</a>
                 </div>
             </div>
-            <p class="mt-10">{!! nl2br(e($word['bottom'])) !!}</p>
-            <div id="mail-area" class="{{ $showLinkArea ? 'hidden' : 'flex' }}  justify-center mt-10">
+            <p class="mt-10 {{ $showLinkArea ? 'flex' : 'hidden' }}">{!! nl2br(e($word['bottom'])) !!}</p>
+            <div id="mail-area" class="{{ $showLinkArea ? 'hidden' : 'flex' }} justify-center mt-10">
                 <button type="button" onclick="location.href='{{ route('ShowQuestionPage') }}'" id="back-btn" class="pink-btn mx-3 text-center">やり直す</button>
                 <button data-id="" type="button" id="mail-btn" class="mail-btn pink-btn mx-3 text-center">メール送信</button>
             </div>
