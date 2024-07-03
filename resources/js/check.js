@@ -91,7 +91,7 @@ window.onload = function(){
 }
 
 // セッションクリア
-window.addEventListener('unload', function() {
+window.addEventListener('beforeunload', function() {
     fetch('/clear-session', {
         method: 'POST',
         headers: {
