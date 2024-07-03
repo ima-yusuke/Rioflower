@@ -289,16 +289,16 @@ function CreateResult(scoreArray){
     // 1~4位の商品（下3つの小さい画像）
     let otherImages = document.getElementsByClassName("otherImg");
 
-    for(let i=0;i<scoreArray.length;i++) {
+    for (let i = 0; i < scoreArray.length; i++) {
 
         // スコア高い順に下の画像にsrcを付与
         let otherProduct = products.filter(product => product.id === scoreArray[i]["product_id"]);
         otherImages[i].src = otherProduct[0]["img"];
 
         // 表示商品の入れ替え
-        otherImages[i].parentNode.addEventListener("click",function(){
+        otherImages[i].parentNode.addEventListener("click", function () {
 
-            // // トランジション中のクリックを防ぐ
+            // トランジション中のクリックを防ぐ
             if (document.body.classList.contains('transition-active')) {
                 return;
             }
@@ -309,7 +309,6 @@ function CreateResult(scoreArray){
             const insertImgLeft = RESULT_IMG.getBoundingClientRect().left;
             const insertImgWidth = RESULT_IMG.getBoundingClientRect().width;
             const insertImgHeight = RESULT_IMG.getBoundingClientRect().height;
-
 
             let clickedImg = otherImages[i];
 
@@ -322,17 +321,17 @@ function CreateResult(scoreArray){
             const clickedImgWidth = clickedImg.getBoundingClientRect().width;
             const clickedImgHeight = clickedImg.getBoundingClientRect().height;
 
-            //最初非表示の画像
+            // 最初非表示の画像
             let hiddenElement = Array.from(otherImages).filter(image => image.parentNode.classList.contains('hidden'))[0];
 
             // クリックした画像をトップに移動
-            clickedImg.style.transform = `translate(${(insertImgLeft-clickedImgLeft)+ ((insertImgWidth - clickedImgWidth)/2)}px,${(insertImgTop-clickedImgTop)+ ((insertImgHeight - clickedImgHeight)/2)}px) scale(${insertImgWidth/clickedImgWidth},${insertImgHeight/clickedImgHeight})`;
+            clickedImg.style.transform = `translate(${(insertImgLeft - clickedImgLeft) + ((insertImgWidth - clickedImgWidth) / 2)}px, ${(insertImgTop - clickedImgTop) + ((insertImgHeight - clickedImgHeight) / 2)}px) scale(${insertImgWidth / clickedImgWidth}, ${insertImgHeight / clickedImgHeight})`;
 
             // transformが完了したら下記実行
-            clickedImg.addEventListener('transitionend', function onTransitionEnd(){
+            clickedImg.addEventListener('transitionend', function onTransitionEnd1() {
 
-                // transformを一度だけ実行
-                clickedImg.removeEventListener('transitionend', onTransitionEnd);
+                // // transformを一度だけ実行
+                clickedImg.removeEventListener('transitionend', onTransitionEnd1);
 
                 hiddenElement.parentNode.classList.remove("hidden");
 
@@ -342,21 +341,21 @@ function CreateResult(scoreArray){
                 clickedImg.style.transform = "translate(0,0)";
                 clickedImg.classList.remove("transition");
 
-               // 新しく表示する画像の位置を取得
+                // 新しく表示する画像の位置を取得
                 const hiddenElementTop = hiddenElement.getBoundingClientRect().top;
                 const hiddenElementLeft = hiddenElement.getBoundingClientRect().left;
                 const hiddenElementWidth = hiddenElement.getBoundingClientRect().width;
                 const hiddenElementHeight = hiddenElement.getBoundingClientRect().height;
 
                 // 移動と縮小設定
-                let moveY = (insertImgTop-hiddenElementTop) + ((insertImgHeight - hiddenElementHeight)/2)
-                let moveX = (insertImgLeft-hiddenElementLeft) + ((insertImgWidth - hiddenElementWidth)/2)
-                let moveWidth =insertImgWidth/hiddenElementWidth;
-                let moveHeight = insertImgHeight/hiddenElementHeight;
+                let moveY = (insertImgTop - hiddenElementTop) + ((insertImgHeight - hiddenElementHeight) / 2);
+                let moveX = (insertImgLeft - hiddenElementLeft) + ((insertImgWidth - hiddenElementWidth) / 2);
+                let moveWidth = insertImgWidth / hiddenElementWidth;
+                let moveHeight = insertImgHeight / hiddenElementHeight;
 
                 // 要素をトップに移動
                 hiddenElement.classList.add("transition-quick");
-                hiddenElement.style.transform = `translate(${moveX}px, ${moveY}px) scale(${moveWidth},${moveHeight}`;
+                hiddenElement.style.transform = `translate(${moveX}px, ${moveY}px) scale(${moveWidth}, ${moveHeight})`;
                 hiddenElement.classList.remove("transition-quick");
 
                 // トップから要素を降ろす
@@ -364,7 +363,7 @@ function CreateResult(scoreArray){
                     hiddenElement.classList.add("transition");
                     hiddenElement.parentNode.classList.add('other-img-container');
                     hiddenElement.style.transform = `translate(0px, 0px)`;
-                },50)
+                }, 50);
 
                 // クリックした商品をトップへ表示
                 RESULT_P_NAME.innerText = otherProduct[0]["name"];
@@ -374,14 +373,19 @@ function CreateResult(scoreArray){
                 ResetQuill();
                 DisplayQuill(otherProduct[0]["id"]);
 
-                // トランジション完了後、クリックを再度有効にする
-                document.body.classList.remove('transition-active');
+                // トランジション完了後、クリックを再度有効にするためにhiddenElementのtransitionendイベントを監視
+                hiddenElement.addEventListener('transitionend', function onTransitionEnd2() {
+                    // ここで削除しておかないと再度hiddenElementをクリックした時に前回のイベントも残ったままで実装されてしまう
+                    hiddenElement.removeEventListener('transitionend', onTransitionEnd2);
+                    document.body.classList.remove('transition-active');
+                });
             });
 
             // 購入商品のidを更新
             purchaseProductId = otherProduct[0]["id"];
         });
     }
+
 }
 
 // 1位の商品（トップ）を表示
