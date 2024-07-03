@@ -1,7 +1,12 @@
 @import "bootstrap-icons/font/bootstrap-icons.css";
+@import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#test{
+    font-family: 'Caveat', cursive;
+}
 
 * {
     font-family: sans-serif;
@@ -27,6 +32,16 @@
     font-size: 1rem;
     padding: 0.5rem 1rem;
     text-align: center;
+}
+
+
+#back_btn{
+    border-radius: 50%;
+}
+
+#back_btn:hover{
+    background-color: white;
+    color: rgb(191,158,116);
 }
 
 .hide {
@@ -59,6 +74,26 @@
     justify-content: space-between;
     align-items: center;
     text-align: left;
+}
+
+.answer-btn2 {
+    width: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.8s ease, transform 0.8s ease; /* アニメーションの設定 */
+    border: 2px solid white;
+}
+
+.answer-btn2:hover {
+    background-color: rgb(191,158,116);
+    color: white;
+    border: 2px solid white;
 }
 
 .answer-btn span{
@@ -97,7 +132,6 @@
 
 /*質問横のimg*/
 .question-img{
-    border-radius: 1.5rem; /* 16px */
     width: 100%;
     height: 100%;
     object-fit: cover;

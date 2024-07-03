@@ -22,7 +22,10 @@ export default {
                 "main-brown":"rgb(191,158,116)",
                 "answers-container-border":"rgb(217,217,217)",
                 "detail-bg":"rgb(255,248,248)"
-            }
+            },
+            boxShadow: {
+                'custom-dark': '0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.2)',
+            },
         },
     },
 

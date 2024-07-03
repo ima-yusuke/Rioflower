@@ -61,6 +61,8 @@ function ShowQuestion(choiceId) {
     // 2問目以降、最適な画像を表示
     if(currentQuestionIdx>0&&choiceId!=null){
         CreateMaxImg(choiceId);
+    }else if(currentQuestionIdx>0){
+        CreateMaxImg();
     }
 }
 // ---------------------------------------[④回答選択]---------------------------------------
@@ -123,23 +125,28 @@ function CreateAnswers(){
 
         const ANSWER_BTN = document.createElement('button')
         const NUM_TEXT_CONTAINER = document.createElement('div')
-        const ANSWER_NUM = document.createElement('span')
+        // const ANSWER_NUM = document.createElement('span')
         const ANSWER_TEXT = document.createElement('span')
         const ARROW_TEXT = document.createElement('span')
 
-        ANSWER_NUM.innerText = idx+1;
-        ANSWER_NUM.classList.add("answer-num-white")
+        // ANSWER_NUM.innerText = idx+1;
+        // ANSWER_NUM.classList.add("answer-num-white")
         ANSWER_TEXT.innerText = choice["text"];
 
-        NUM_TEXT_CONTAINER.appendChild(ANSWER_NUM);
+        // NUM_TEXT_CONTAINER.appendChild(ANSWER_NUM);
         NUM_TEXT_CONTAINER.appendChild(ANSWER_TEXT)
 
         ARROW_TEXT.innerText = "▶";
         ANSWER_BTN.appendChild(NUM_TEXT_CONTAINER)
         ANSWER_BTN.appendChild(ARROW_TEXT);
-        ANSWER_BTN.classList.add("answer-btn")
+        ANSWER_BTN.classList.add("answer-btn2")
 
         QUESTION_ANSWERS_CONTAINER.appendChild(ANSWER_BTN)
+
+        setTimeout(() => {
+            ANSWER_BTN.style.opacity = '1';
+            ANSWER_BTN.style.transform = 'translateY(0)';
+        }, idx * 300);
 
         // 選択肢をクリックをする
         ANSWER_BTN.addEventListener('click', ()=>{
@@ -163,6 +170,18 @@ function CreateMaxImg(choiceId){
     newImage.src = maxProduct[0]["img"];
     newImage.classList.add("question-img")
     QUESTION_IMG_CONTAINER.appendChild(newImage)
+
+    AddFadeinAnimation(newImage);
+}
+
+// 質問横の画像にアニメーション追加
+function AddFadeinAnimation(element) {
+    element.style.opacity = '0'; // 初期状態で不透明度を0に設定
+
+    setTimeout(() => {
+        element.style.opacity = '1';
+        element.style.transition = 'opacity 2s ease'; // アニメーションの設定
+    }, 50); // 50ミリ秒の遅延を設定
 }
 
 // 2問目以降、前の質問に戻るボタンの表示
@@ -398,7 +417,6 @@ function DisplayTopProduct(scoreArray){
 
 // 送信ボタンに購入商品のidを付与
 OPEN_MODAL_BTN.addEventListener("click", function () {
-    // console.log(purchaseProductId)
     PRODUCT_NUM.setAttribute("value", purchaseProductId);
 });
 
