@@ -9,7 +9,24 @@
             </div>
 
             <!-- その他おすすめ画像の表示エリア -->
-            <div id="other_images_container" class="md:absolute md:bottom-12 z-30 w-full flex justify-center gap-x-12 md:gap-32 md:mt-6"></div>
+            <div id="other_images_container" class="md:absolute md:bottom-12 z-30 w-full flex justify-center gap-x-12 md:gap-32 md:mt-6">
+{{--                <div class="hidden" data-id="">--}}
+{{--                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
+{{--                    <p>【第1位】</p>--}}
+{{--                </div>--}}
+{{--                <div class="other-img-container" data-id="" >--}}
+{{--                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
+{{--                    <p>【第2位】</p>--}}
+{{--                </div>--}}
+{{--                <div class="other-img-container" data-id="">--}}
+{{--                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
+{{--                    <p>【第3位】</p>--}}
+{{--                </div>--}}
+{{--                <div class="other-img-container" data-id="">--}}
+{{--                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
+{{--                    <p>【第4位】</p>--}}
+{{--                </div>--}}
+            </div>
         </div>
 
         {{--右側詳細--}}

@@ -95,11 +95,6 @@
     }
 }
 
-/*戻るボタンコンテイナー*/
-.back-btn-container{
-    width: 90px;
-}
-
 /*質問横のimg*/
 .question-img{
     border-radius: 1.5rem; /* 16px */
