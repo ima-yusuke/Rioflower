@@ -21,10 +21,11 @@ export default {
                 "main-bg":"rgb(237,230,215)",
                 "main-brown":"rgb(191,158,116)",
                 "answers-container-border":"rgb(217,217,217)",
-                "detail-bg":"rgb(255,248,248)"
+                "detail-bg":"rgb(255,248,248)",
+                "main-gray":"rgb(209,209,209)"
             },
             boxShadow: {
-                'custom-dark': '0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.2)',
+                'back-btn-shadow': '0 3px 5px rgba(0, 0, 0, 0.3)',
             },
         },
     },

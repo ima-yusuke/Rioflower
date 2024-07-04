@@ -10,6 +10,8 @@ const QUESTION_TEXT = document.getElementById('question_text');
 const QUESTION_ANSWERS_CONTAINER = document.getElementById('question_answers_container');
 const BACK_BTN = document.getElementById("back_btn");
 let currentQuestionIdx = 0;// 現在の質問番目
+let oldSrc = null
+let flag = true;
 
 // 確認画面
 const CONFIRM_CONTAINER = document.getElementById("confirm_container");
@@ -48,6 +50,7 @@ function ShowCurrentQstNum(){
     let questionLength = questions.length;
     let currentQuestionNum = document.getElementById("question_num");
     currentQuestionNum.innerText =  Number(currentQuestionIdx+1)+"問目/"+questionLength+"問中";
+    oldSrc =QUESTION_IMG_CONTAINER.querySelector('img.back').src;
 }
 // -------------------------------------[③質問&回答作成]-------------------------------------
 function ShowQuestion(choiceId) {
@@ -124,22 +127,15 @@ function CreateAnswers(){
     choicesArray.forEach((choice,idx) => {
 
         const ANSWER_BTN = document.createElement('button')
-        const NUM_TEXT_CONTAINER = document.createElement('div')
-        // const ANSWER_NUM = document.createElement('span')
         const ANSWER_TEXT = document.createElement('span')
         const ARROW_TEXT = document.createElement('span')
 
-        // ANSWER_NUM.innerText = idx+1;
-        // ANSWER_NUM.classList.add("answer-num-white")
         ANSWER_TEXT.innerText = choice["text"];
-
-        // NUM_TEXT_CONTAINER.appendChild(ANSWER_NUM);
-        NUM_TEXT_CONTAINER.appendChild(ANSWER_TEXT)
-
         ARROW_TEXT.innerText = "▶";
-        ANSWER_BTN.appendChild(NUM_TEXT_CONTAINER)
+
+        ANSWER_BTN.appendChild(ANSWER_TEXT)
         ANSWER_BTN.appendChild(ARROW_TEXT);
-        ANSWER_BTN.classList.add("answer-btn2")
+        ANSWER_BTN.classList.add("answer-btn")
 
         QUESTION_ANSWERS_CONTAINER.appendChild(ANSWER_BTN)
 
@@ -161,26 +157,43 @@ function CreateMaxImg(choiceId){
     // 最適な商品のIDを取得
     let maxProductId = CalScore(choiceId)
 
+    // 現在の表画像を保存
+    if(currentQuestionIdx===1) {
+        oldSrc = QUESTION_IMG_CONTAINER.querySelector('img.back').src;
+    }else{
+        oldSrc = QUESTION_IMG_CONTAINER.querySelector('img.front').src;
+    }
+
     // 現在の画像を削除
     DeleteQuestionImage();
 
-    // 新規画像を作成
-    let newImage = document.createElement("img");
-    let maxProduct = products.filter(product => product.id === maxProductId);
-    newImage.src = maxProduct[0]["img"];
-    newImage.classList.add("question-img")
-    QUESTION_IMG_CONTAINER.appendChild(newImage)
-
-    AddFadeinAnimation(newImage);
+    // 画像にアニメーション付与
+    AddFlipAnimation(maxProductId);
 }
 
 // 質問横の画像にアニメーション追加
-function AddFadeinAnimation(element) {
-    element.style.opacity = '0'; // 初期状態で不透明度を0に設定
+function AddFlipAnimation(maxProductId) {
+    let maxProduct = products.filter(product => product.id === maxProductId);
 
+    // 新規画像を作成
+    let backImg = document.createElement("img");
+    backImg.classList.add("back");
+    backImg.classList.add("question-img");
+    backImg.src = oldSrc;
+
+    let frontImg = document.createElement("img");
+    frontImg.classList.add("front");
+    frontImg.classList.add("question-img");
+    frontImg.src = maxProduct[0]["img"];
+
+    QUESTION_IMG_CONTAINER.appendChild(backImg);
+    QUESTION_IMG_CONTAINER.appendChild(frontImg);
+    QUESTION_IMG_CONTAINER.classList.add("content");
+
+    // 描画時にクラスを追加してアニメーションをトリガー
     setTimeout(() => {
-        element.style.opacity = '1';
-        element.style.transition = 'opacity 2s ease'; // アニメーションの設定
+        backImg.classList.add("flip");
+        frontImg.classList.add("flip");
     }, 50); // 50ミリ秒の遅延を設定
 }
 
@@ -202,6 +215,7 @@ function ShowBackBtn(){
 
 // 戻るボタンクリック時の処理
 function HandleBackButtonClick() {
+
     currentQuestionIdx--;
     selectedAnswersArray.pop(); // 配列の末尾を削除
     for (let i = 0; i < scoreArray.length; i++) {
@@ -210,6 +224,14 @@ function HandleBackButtonClick() {
     DeleteQuestionAnswers();
     ShowCurrentQstNum();
     ShowQuestion();
+
+    let frontImg = QUESTION_IMG_CONTAINER.querySelector('img.front');
+    let backImg = QUESTION_IMG_CONTAINER.querySelector('img.back');
+
+    setTimeout(() => {
+        frontImg.style.transform = "rotateY(-180deg)";
+        backImg.style.transform = "rotateY(0deg)";
+    }, 50); // 50ミリ秒の遅延を設定
 }
 
 // 現在表示している回答を全て削除
@@ -230,37 +252,36 @@ function DeleteQuestionImage(){
 
 // 選択内容確認画面
 function CreateConfirmContainer(){
+
+    // タイトル作成
+    CreateConfirmTitle();
+
+    // 選択した回答と質問を表示
     for(let i=0;i<questions.length;i++){
 
         const CONFIRM_ANSWER_CONTAINER = document.createElement('div')
 
         // 質問
         const CONFIRM_QUESTION_TEXT = document.createElement("p");
-        const CONFIRM_QUESTION_NUM = document.createElement("span");
 
         // 回答
         const CONFIRM_ANSWER_BTN = document.createElement('button')
-        const CONFIRM_NUM_TEXT_CONTAINER = document.createElement('div')
-        const CONFIRM_ANSWER_NUM = document.createElement('span')
         const CONFIRM_ANSWER_TEXT = document.createElement('span')
         const CONFIRM_ARROW_TEXT = document.createElement("p");
 
         // 質問文と番号
-        CONFIRM_QUESTION_NUM.innerText = i+1+"問目";
-        CONFIRM_QUESTION_NUM.classList.add("confirm-question-num");
-        CONFIRM_QUESTION_TEXT.innerText = questions[i]["text"];
-        CONFIRM_QUESTION_TEXT.insertBefore(CONFIRM_QUESTION_NUM,CONFIRM_QUESTION_TEXT.firstChild)
+        if(i<10){
+            CONFIRM_QUESTION_TEXT.innerText = "0"+(i+1)+"."+ questions[i]["text"];
+        }else{
+            CONFIRM_QUESTION_TEXT.innerText = (i+1)+"."+ questions[i]["text"];
+        }
+        CONFIRM_QUESTION_TEXT.style.color = "white";
 
         // 回答
-        CONFIRM_ANSWER_NUM.innerText = selectedAnswersArray[i]+1;
-        CONFIRM_ANSWER_NUM.classList.add("confirm-answer-num")
         CONFIRM_ANSWER_TEXT.innerText = questions[i].choices[selectedAnswersArray[i]]["text"];
-        CONFIRM_ANSWER_TEXT.style.color = "rgb(191,158,116)"
-        CONFIRM_NUM_TEXT_CONTAINER.appendChild(CONFIRM_ANSWER_NUM);
-        CONFIRM_NUM_TEXT_CONTAINER.appendChild(CONFIRM_ANSWER_TEXT)
         CONFIRM_ARROW_TEXT.innerText = "▶"
         CONFIRM_ANSWER_BTN.classList.add("confirm-answer");
-        CONFIRM_ANSWER_BTN.appendChild(CONFIRM_NUM_TEXT_CONTAINER)
+        CONFIRM_ANSWER_BTN.appendChild(CONFIRM_ANSWER_TEXT)
         CONFIRM_ANSWER_BTN.appendChild(CONFIRM_ARROW_TEXT);
 
         // 質問と回答をひとまとめに
@@ -282,6 +303,27 @@ function CreateConfirmContainer(){
             BACK_BTN.parentNode.classList.add("back-btn-container"); // ボタンの表示時にスペースを確保
         })
     }
+}
+
+function CreateConfirmTitle(){
+    const confirmTitle = document.createElement('p');
+    confirmTitle.classList.add('text-center', 'text-2xl', 'text-top-white');
+    confirmTitle.id = 'test';
+    confirmTitle.textContent = 'Confirm';
+
+    // 境界線を含むdivの作成
+    const borderContainer = document.createElement('div');
+    borderContainer.classList.add('flex', 'justify-center', 'text-center');
+
+    // 下線を追加するためのpタグの作成
+    const borderElement = document.createElement('p');
+    borderElement.classList.add('border-t', 'border-top-white', 'w-[50px]', 'mb-4');
+
+    // pタグをdivに追加
+    borderContainer.appendChild(borderElement);
+
+    CONFIRM_ANSWERS_CONTAINER.appendChild(confirmTitle);
+    CONFIRM_ANSWERS_CONTAINER.appendChild(borderContainer);
 }
 
 // 現在表示している質問＆回答を全て削除（回答修正した場合に対応するため）
