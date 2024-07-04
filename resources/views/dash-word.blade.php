@@ -33,6 +33,7 @@
                             </div>
                             <p class="py-1">【商品名】〇〇セット</p>
                             <p class="py-1">【商品詳細】</p>
+                            <p class="ms-2">ここに商品詳細が入ります。<br>ここに商品詳細が入ります。<br>ここに商品詳細が入ります。<br>ここに商品詳細が入ります。<br>ここに商品詳細が入ります。<br>ここに商品詳細が入ります。<br></p>
                             <div class="mt-8 flex justify-center">
                                 <img class="md:w-2/3 w-full rounded-3xl" src="{{ asset('img/top2.png') }}" alt="product">
                             </div>
