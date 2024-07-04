@@ -219,7 +219,7 @@ ALL_DELETE_BUTTON.addEventListener("click", function() {
     if (!confirm('属性を全て削除しますか？')) {
         return;
     }
-    fetch(`/dashboard/attribute/product/${productId}`, {
+    fetch(`/dashboard/all-attribute/product/${productId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
