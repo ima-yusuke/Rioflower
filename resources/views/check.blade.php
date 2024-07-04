@@ -16,7 +16,7 @@
         <div class="m-5">
             <p class="show text-2xl md:text-3xl font-bold my-3 mx-auto text-center">入力情報をご確認ください</p>
             <p class="mail hidden text-2xl font-bold my-3">{{ $name }}様</p>
-            <p class="mail hidden mt-5 mb-10">{!! nl2br(e($word['top'])) !!}</p>
+            <p class="mail hidden mt-5 mb-10 ms-2">{!! nl2br(e($word['top'])) !!}</p>
             <div class="flex w-full mt-8 mb-3">
                 <div class="px-2" style="background-color: rgb(140, 130, 115)">
 
@@ -57,7 +57,7 @@
                     <a class="link-btn mx-3" href="{{ $link->delivery_link }}">郵送受取は<br>こちら</a>
                 </div>
             </div>
-            <p class="mail hidden mt-10">{!! nl2br(e($word['bottom'])) !!}</p>
+            <p class="mail hidden mt-10 ms-2">{!! nl2br(e($word['bottom'])) !!}</p>
             <div id="mail-area" class="show flex justify-center mt-10">
                 <button type="button" onclick="location.href='{{ route('ShowQuestionPage') }}'" id="back-btn" class="check-btn mx-3 text-center">やり直す</button>
                 <button data-id="" type="button" id="mail-btn" class="mail-btn check-btn mx-3 text-center">メール送信</button>

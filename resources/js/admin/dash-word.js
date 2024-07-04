@@ -15,6 +15,25 @@ function updatePreview() {
     PREVIEW_BOTTOM.innerHTML = nl2br(BOTTOM_INPUT.value);
 }
 
+// メールプレビューを表示する関数
+document.getElementById('preview-btn').addEventListener('click', function() {
+    const TOP = document.getElementById('top');
+    const BOTTOM = document.getElementById('bottom');
+    if (TOP.classList.contains('hidden') && BOTTOM.classList.contains('hidden')) {
+        document.querySelectorAll('.mail-preview').forEach((element) => {
+            element.classList.add('hidden');
+        });
+        document.getElementById('top').classList.remove('hidden');
+        document.getElementById('bottom').classList.remove('hidden');
+    } else {
+        document.querySelectorAll('.mail-preview').forEach((element) => {
+            element.classList.remove('hidden');
+        });
+        document.getElementById('top').classList.add('hidden');
+        document.getElementById('bottom').classList.add('hidden');
+    }
+});
+
 // イベントリスナーを追加して、入力が変更されたときにプレビューを更新
 TOP_INPUT.addEventListener('input', updatePreview);
 BOTTOM_INPUT.addEventListener('input', updatePreview);
