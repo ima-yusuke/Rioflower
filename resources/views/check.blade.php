@@ -57,10 +57,10 @@
                     <a class="link-btn mx-3" href="{{ $link->delivery_link }}">郵送受取は<br>こちら</a>
                 </div>
             </div>
-            <p class="mail hidden mt-10 ms-2">{!! nl2br(e($word['bottom'])) !!}</p>
-            <div id="mail-area" class="show flex justify-center mt-10">
-                <button type="button" onclick="location.href='{{ route('ShowQuestionPage') }}'" id="back-btn" class="check-btn mx-3 text-center">やり直す</button>
-                <button data-id="" type="button" id="mail-btn" class="mail-btn check-btn mx-3 text-center">メール送信</button>
+            <p class="mail hidden mt-14 mb-8 ms-2">{!! nl2br(e($word['bottom'])) !!}</p>
+            <div id="mail-area" class="show flex justify-center mt-24">
+                <button type="button" onclick="location.href='{{ route('ShowQuestionPage') }}'" id="back-btn" class="check-back-btn mx-3 text-center">やり直す</button>
+                <button data-id="" type="button" id="mail-btn" class="mail-btn check-btn mx-3 text-center hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100">メール送信</button>
             </div>
         </div>
     </div>

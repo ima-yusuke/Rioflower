@@ -50,9 +50,7 @@
 
                 {{--ボタン--}}
                 <aside class="flex justify-center gap-4 mx-6 md:mx-0">
-                    <button id="back-start-btn" class="back-start-btn">
-                        <a href="{{route('Index')}}">初めからやり直す</a>
-                    </button>
+                    <button id="back-start-btn" class="back-start-btn border hover:bg-gray-700 hover:text-white hover:border-white" onclick="location.href='{{ route('Index') }}'">初めからやり直す</button>
 
                     {{--modal open button--}}
                     <button data-modal-target="default-modal1" data-modal-toggle="default-modal1" id="open_modal_btn" class="open-modal pink-btn block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
@@ -80,8 +78,7 @@
                 @csrf
                 <div class="p-4 md:p-5 space-y-4">
                     <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                        メールアドレスを入力して『送信』ボタンを押してください。<br>
-                        ご入力頂いたメールアドレスに購入先リンクをお送り致します。
+                        必要事項を入力して『確認画面へ』ボタンを押してください。<br>
                     </p>
                     <p class="text-sm font-semibold text-gray-900 dark:text-white">氏名</p>
                     <input type="text" name="customer-name" id="customer-name" placeholder="氏名" value="{{ session()->has('name') ? session('name') : '' }}" class="w-full rounded-md">
@@ -94,7 +91,7 @@
                 <!-- Modal footer -->
                 <div class="flex items-center justify-between p-4 md:p-5 border-t border-gray-200 rounded-b">
                     <button data-modal-hide="default-modal1" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">閉じる</button>
-                    <button data-modal-hide="default-modal1" type="submit" id="send-btn" class="mail-btn text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">送信</button>
+                    <button data-modal-hide="default-modal1" type="submit" id="send-btn" class="mail-btn text-white bg-top-button-pink hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">確認画面へ</button>
                 </div>
             </form>
         </div>
