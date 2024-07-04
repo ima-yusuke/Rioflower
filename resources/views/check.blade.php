@@ -14,12 +14,9 @@
 <body>
     <div class="flex flex-col w-11/12 md:w-1/2 md:mx-auto mx-3 my-10 rounded-xl justify-center bg-main-bg">
         <div class="m-5">
-            @if($showLinkArea === false)
-                <p class="text-2xl md:text-3xl font-bold my-3 mx-auto text-center">入力情報をご確認ください</p>
-            @else
-                <p class="text-2xl font-bold my-3">{{ $name }}様</p>
-            @endif
-            <p class="mt-5 mb-10 {{ $showLinkArea ? 'flex' : 'hidden' }}">{!! nl2br(e($word['top'])) !!}</p>
+            <p class="show text-2xl md:text-3xl font-bold my-3 mx-auto text-center">入力情報をご確認ください</p>
+            <p class="mail hidden text-2xl font-bold my-3">{{ $name }}様</p>
+            <p class="mail hidden mt-5 mb-10">{!! nl2br(e($word['top'])) !!}</p>
             <div class="flex w-full mt-8 mb-3">
                 <div class="px-2" style="background-color: rgb(140, 130, 115)">
 
@@ -46,7 +43,7 @@
             <div class="mt-8 flex justify-center">
                 <img class="md:w-2/3 w-full rounded-3xl" src="{{ asset($product->img) }}" alt="product">
             </div>
-            <div id="link-area" class="{{ $showLinkArea ? 'flex' : 'hidden' }} flex-col mt-8">
+            <div id="link-area" class="mail hidden flex-col mt-8">
                 <div class="flex w-full mt-8 mb-8">
                     <div class="px-2" style="background-color: rgb(140, 130, 115)">
 
@@ -60,8 +57,8 @@
                     <a class="link-btn mx-3" href="{{ $link->delivery_link }}">郵送受取は<br>こちら</a>
                 </div>
             </div>
-            <p class="mt-10 {{ $showLinkArea ? 'flex' : 'hidden' }}">{!! nl2br(e($word['bottom'])) !!}</p>
-            <div id="mail-area" class="{{ $showLinkArea ? 'hidden' : 'flex' }} justify-center mt-10">
+            <p class="mail hidden mt-10">{!! nl2br(e($word['bottom'])) !!}</p>
+            <div id="mail-area" class="show flex justify-center mt-10">
                 <button type="button" onclick="location.href='{{ route('ShowQuestionPage') }}'" id="back-btn" class="check-btn mx-3 text-center">やり直す</button>
                 <button data-id="" type="button" id="mail-btn" class="mail-btn check-btn mx-3 text-center">メール送信</button>
             </div>

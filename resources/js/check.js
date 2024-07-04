@@ -15,8 +15,16 @@ SEND_BTN.addEventListener("click",function(){
     const EMAIL = document.getElementById("customer-mail").textContent;
     const ID = document.getElementById("product-id").textContent;
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    initializeQuillViewer('#detail', details);
 
+    document.querySelectorAll('.show').forEach((element) => {
+        element.classList.add('hidden');
+    });
+    document.querySelectorAll('.mail').forEach((element) => {
+        element.classList.remove('hidden');
+    });
+
+    // Quillの内容を取得
+    initializeQuillViewer('#detail', details);
 
     setTimeout(() => {
         const htmlContents = document.documentElement.outerHTML;
