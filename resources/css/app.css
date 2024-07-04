@@ -73,8 +73,8 @@
 }
 
 #back_btn:hover{
-    background-color: white;
-    color: rgb(191,158,116);
+    background-color: rgb(191,158,116);
+    color: white;
 }
 
 /*質問横のimg*/
@@ -114,10 +114,12 @@
     backface-visibility: hidden;
 }
 
+/*初期値で後ろに移動しており、flipクラスがつくと0まで戻り表示される*/
 .content .front {
     transform: rotateY(180deg);
 }
 
+/*元々表示されていたがflipクラスがつくと後ろに移動し非表示へ*/
 .back.flip {
     transform: rotateY(-180deg);
 }
