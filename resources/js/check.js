@@ -2,6 +2,7 @@ import "flowbite"
 import Quill from "quill";
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
 
 const SEND_BTN = document.getElementById("mail-btn");
 const PRODUCT_ID = document.getElementById("product-id").textContent;
@@ -14,52 +15,75 @@ SEND_BTN.addEventListener("click",function(){
     const EMAIL = document.getElementById("customer-mail").textContent;
     const ID = document.getElementById("product-id").textContent;
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    initializeQuillViewer('#detail', details);
 
-    fetch('/check', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-        body: JSON.stringify({
-            name: NAME,
-            address: ADDRESS,
-            email: EMAIL,
-            product_id: ID,
+
+    setTimeout(() => {
+        const htmlContents = document.documentElement.outerHTML;
+        fetch('/check', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+                name: NAME,
+                address: ADDRESS,
+                email: EMAIL,
+                product_id: ID,
+                html: htmlContents,
+            })
         })
-    })
-        .then(response => {
-            if (!response.ok) {
-                if (response.status === 422) {
-                    return response.json().then(data => {
-                        throw { validationErrors: data.errors };
-                    });
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 422) {
+                        return response.json().then(data => {
+                            throw { validationErrors: data.errors };
+                        });
+                    }
+                    throw new Error('Network response was not ok');
                 }
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.redirect) {
-                window.alert('顧客情報を追加しました');
-            } else if (data.message) {
-                alert(data.message);
-                window.location.href = '/question';
-            }
-        })
-        .catch(error => {
-            if (error.validationErrors) {
-                let errorMessage = '';
-                for (const field in error.validationErrors) {
-                    errorMessage += `${error.validationErrors[field].join('\n')}\n`;
+                return response.json();
+            })
+            .then(data => {
+                if (data.redirect) {
+                    window.alert('顧客情報を追加しました');
+                } else if (data.message) {
+                    alert(data.message);
+                    window.location.href = '/question';
                 }
-                window.alert(errorMessage);
-            } else {
-                console.error('Error:', error);
-                window.alert('顧客情報の追加に失敗しました');
-            }
-        });
+            })
+            .catch(error => {
+                if (error.validationErrors) {
+                    let errorMessage = '';
+                    for (const field in error.validationErrors) {
+                        errorMessage += `${error.validationErrors[field].join('\n')}\n`;
+                    }
+                    window.alert(errorMessage);
+                } else {
+                    console.error('Error:', error);
+                    window.alert('顧客情報の追加に失敗しました');
+                }
+            });
+    });
 });
+
+const initializeQuillViewer = (selector, contents) => {
+    const quill = new Quill(selector, {
+        modules: {
+            toolbar: false
+        },
+        theme: 'bubble',
+        readOnly: true,
+    });
+
+    // contentsをJSON文字列に変換する前に、正しい形式に整形する必要があります
+    let setData = contents.map(item => ({
+        insert: JSON.parse(item.insert),
+        attributes: item.attributes ? JSON.parse(item.attributes) : null
+    }));
+    quill.setContents({ ops: setData });
+}
 
 // quill表示
 function DisplayQuill(){

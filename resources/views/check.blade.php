@@ -2,8 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="/favicon.ico">
@@ -44,7 +43,9 @@
             <p class="py-1">【商品名】{{ $product->name }}</p>
             <p class="py-1">【商品詳細】</p>
             <p id="detail"></p>
-            <img class="md:w-2/3 w-full rounded-3xl mt-8" src="{{ asset($product->img) }}" alt="product">
+            <div class="mt-8 flex justify-center">
+                <img class="md:w-2/3 w-full rounded-3xl" src="{{ asset($product->img) }}" alt="product">
+            </div>
             <div id="link-area" class="{{ $showLinkArea ? 'flex' : 'hidden' }} flex-col mt-8">
                 <div class="flex w-full mt-8 mb-8">
                     <div class="px-2" style="background-color: rgb(140, 130, 115)">
@@ -69,6 +70,8 @@
 </body>
 <script>
     let details = @json($details);
+    window.Laravel = {};
+    window.Laravel.csrfToken = "{{ csrf_token() }}";
 </script>
-
 @vite('resources/js/check.js')
+</html>

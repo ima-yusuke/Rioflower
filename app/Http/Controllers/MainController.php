@@ -91,23 +91,26 @@ class MainController extends Controller
             $customer->save();
 
             // 追加データの取得
-            $product = Product::find($request->product_id);
-            $details = Detail::where('product_id', $request->product_id)->get();
-            $word = Word::first();
-            $link = Link::where('id', $product->price)->first();
+//            $product = Product::find($request->product_id);
+//            $details = Detail::where('product_id', $request->product_id)->get();
+//            $word = Word::first();
+//            $link = Link::where('id', $product->price)->first();
 
             DB::commit();
 
             // メール送信
-            $mail = new CustomerRegistered($customer, $product, $details, $word, $link);
-            Mail::to($customer->email)
-                ->bcc('bcc@example.com') // BCCに追加のアドレス
-                ->send($mail);
+//            $mail = new CustomerRegistered($customer, $product, $details, $word, $link);
+//            Mail::to($customer->email)
+//                ->bcc('bcc@example.com') // BCCに追加のアドレス
+//                ->send($mail);
 
-            return response()->json([
-                'message' => '登録が完了しました。',
-                'customer' => $customer
-            ], 200);
+            Mail::send('emails.customer_registered', ['html' => $request->html], function ($message) use ($request) {
+                $message->to($request->email);
+                $message->subject('購入リンクのお知らせ');
+                $message->from('test@test');
+            });
+
+            return ['message' => 'メールを送信しました。', 'result' => $request->all()];
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('登録に失敗しました。' . $e->getMessage());
