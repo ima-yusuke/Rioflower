@@ -1,5 +1,5 @@
 <x-template title="診断ページ" css="app.css">
-    <div class="bg-main-bg flex flex-col justify-center items-center w-full md:h-[calc(100vh-1.5rem-85px)]">
+    <div class="bg-main-bg flex flex-col justify-center items-center w-full md:h-[calc(100dvh-1rem-110px)]">
         {{--質問画面--}}
         <x-question-component></x-question-component>
 

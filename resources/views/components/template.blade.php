@@ -6,7 +6,7 @@
     @endif
     @vite(['resources/css/'.$css])
 </x-head>
-<div class="flex flex-col justify-between h-[100dvh]">
+<div class="flex flex-col h-[100dvh]">
     <x-header>
 
     </x-header>

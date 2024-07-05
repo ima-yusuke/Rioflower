@@ -2,7 +2,7 @@
 
     <div class="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 h-full md:w-full w-full">
         {{--左側詳細--}}
-        <div class="w-full md:w-[50%] relative md:mt-8 flex flex-col md:flex-row md:gap-0">
+        <div class="w-full md:w-[50%] relative flex flex-col md:flex-row md:gap-0">
             {{--１位商品詳細--}}
             <div id="big_ball" class="big-ball w-[450px] md:w-[90vh] h-[450px] md:h-[90vh] bg-main-brown rounded-full">
                 <img id="result_img" class="result-img w-[300px] md:w-[350px] h-[300px] md:h-[350px]">
