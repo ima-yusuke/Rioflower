@@ -14,6 +14,8 @@ const BACK_BTN = document.getElementById("back_btn");
 let currentQuestionIdx = 0;// 現在の質問番目
 let oldSrcArray = [QUESTION_IMG_CONTAINER.querySelector('img.back').src];
 let flag = true;
+let screenCenterX = window.innerWidth / 2; // 画面全体の中心のx座標
+let questionBoxCenterX = 0;//質問コンテナのx座標を保存
 
 // 確認画面
 const CONFIRM_CONTAINER = document.getElementById("confirm_container");
@@ -59,18 +61,40 @@ function ShowQuestion(choiceId) {
     // 質問作成
     QUESTION_TEXT.innerText = questions[currentQuestionIdx]["text"]
 
-    // 回答選択肢作成
-    CreateAnswers()
+    // 質問コンテナをフェードイン
+    fadeIn(QUESTION_BOX, 2);
+    // 画像コンテナをフェードイン
+    fadeIn(QUESTION_IMG_CONTAINER, 2);
 
-    //最適な画像を表示
-    if(currentQuestionIdx>0&&choiceId!=null){
-        ShowMaxImg(choiceId);
-    }else if(currentQuestionIdx>0){
-        ShowMaxImg();
-    } else if(currentQuestionIdx===0&&flag===false){
-        ShowMaxImg();
-    }
+    // フェードインが終わった後に次の処理を行う
+    setTimeout(() => {
+        // transitionスタイルをリセット
+        QUESTION_BOX.style.transition = '';
+        QUESTION_IMG_CONTAINER.style.transition = '';
+
+        // 回答選択肢作成
+        CreateAnswers();
+
+        // 最適な画像を表示
+        if (currentQuestionIdx > 0 && choiceId != null) {
+            ShowMaxImg(choiceId);
+        } else if (currentQuestionIdx > 0) {
+            ShowMaxImg();
+        } else if (currentQuestionIdx === 0 && flag === false) {
+            ShowMaxImg();
+        }
+    }, 1000);
+
 }
+
+function fadeIn(element, duration) {
+    element.style.opacity = '0';
+    element.style.transition = `opacity ${duration}s ease`;
+    setTimeout(() => {
+        element.style.opacity = '1';
+    }, 50);
+}
+
 // ---------------------------------------[④回答選択]---------------------------------------
 function SelectAnswer(idx,choiceId) {
 
@@ -115,8 +139,7 @@ function ShowConfirm(){
     setTimeout(() => {
 
         //x座標取得
-        let screenCenterX = window.innerWidth / 2; // 画面全体の中心のx座標
-        let questionBoxCenterX = QUESTION_BOX.getBoundingClientRect().left + QUESTION_BOX.offsetWidth / 2;//質問コンテナの中心のx座標
+        questionBoxCenterX = QUESTION_BOX.getBoundingClientRect().left + QUESTION_BOX.offsetWidth / 2;//質問コンテナの中心のx座標
         let translateX = screenCenterX - questionBoxCenterX; // 差分を計算
 
         //③質問コンテナを中心に移動
@@ -136,8 +159,8 @@ function ShowConfirm(){
                 BACK_BTN.style.opacity = '1';
                 QUESTION_INDEX.style.opacity = '1';
                 QUESTION_IMG_CONTAINER.style.opacity = "";
-                QUESTION_BOX.style.transform = "";
                 QUESTION_BOX.style.opacity = "";
+                QUESTION_BOX.style.transform = "";
 
                 QUESTION_CONTAINER.classList.add('hide');
 
@@ -359,10 +382,8 @@ function ShowBackBtn(){
     // 戻るボタンの表示・非表示切替
     if(currentQuestionIdx>0){
         BACK_BTN.classList.remove("hide");
-        BACK_BTN.parentNode.classList.remove("back-btn-container");
     }else{
         BACK_BTN.classList.add("hide");
-        BACK_BTN.parentNode.classList.add("back-btn-container"); // ボタンの表示時にスペースを確保
     }
 
     // 既存のイベントリスナーを削除してから追加する
@@ -434,16 +455,41 @@ function CreateConfirmContainer(){
         CONFIRM_ANSWERS_CONTAINER.appendChild(CONFIRM_ANSWER_CONTAINER);
 
         CONFIRM_ANSWER_BTN.addEventListener("click",function (){
-            CONFIRM_CONTAINER.classList.add("hide");
-            QUESTION_CONTAINER.classList.remove('hide');
             currentQuestionIdx = i;
-            DeleteQuestionAnswers()
-            ShowCurrentQstNum()
-            ShowQuestion()
-            BACK_BTN.classList.add("hide");
-            BACK_BTN.parentNode.classList.add("back-btn-container"); // ボタンの表示時にスペースを確保
+            OnBackToQuestion();
         })
     }
+}
+
+//[ON] 確認画面→質問画面へ戻るアニメーション&&機能
+function OnBackToQuestion(){
+
+    let moveX = questionBoxCenterX - screenCenterX;
+    CONFIRM_CONTAINER.style.transform = `translateX(${moveX}px)`;
+    CONFIRM_CONTAINER.style.transition = 'transform 1.5s ease, opacity 2s ease'; // 移動に1.5秒かけて中心に移動、フェードアウトに2秒
+    SHOW_RESULT_BTN.style.opacity = '0';
+
+    // 移動が終わった後、フェードアウトを開始
+    setTimeout(() => {
+        CONFIRM_CONTAINER.style.opacity = "0";
+
+        // 再度1.6s秒後に次の処理を実行するためのタイマーを設定
+        setTimeout(() => {
+            // 位置と透明度のリセット
+            CONFIRM_CONTAINER.style.transform = '';
+            CONFIRM_CONTAINER.style.transition = ''; // トランジションもリセット
+            CONFIRM_CONTAINER.style.opacity = '';
+            SHOW_RESULT_BTN.style.opacity = '1';
+
+            CONFIRM_CONTAINER.classList.add("hide");
+            QUESTION_CONTAINER.classList.remove('hide');
+            DeleteQuestionAnswers();
+            ShowCurrentQstNum();
+            ShowQuestion();
+            BACK_BTN.style.opacity = '0';
+            BACK_BTN.classList.add("hide");
+        }, 1600);
+    }, 1500);
 }
 
 //[DELETE] 現在表示している質問＆回答を全て削除（回答修正に対応するため）
