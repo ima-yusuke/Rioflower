@@ -1,5 +1,5 @@
 <div id="result_container" class="relative flex flex-col justify-center items-center hide gap-8 w-full">
-
+    <x-nav-menu />
     <div class="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 h-full md:w-full w-full">
         {{--左側詳細--}}
         <div class="w-full md:w-[50%] relative flex flex-col md:flex-row md:gap-0">
@@ -97,5 +97,3 @@
         </div>
     </div>
 </div>
-
-

@@ -186,6 +186,16 @@
 
 /*[結果画面]*/
 
+/*ナビゲーションバー*/
+.non-active {
+    left: -310px;
+}
+
+.nav-text {
+    writing-mode: vertical-rl;
+    text-orientation: sideways;
+}
+
 /*初めからやり直すボタン*/
 .back-start-btn {
     background-color:white;

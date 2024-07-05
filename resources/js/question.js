@@ -731,3 +731,36 @@ window.addEventListener('unload', function() {
             console.error('エラー:', error);
         });
 });
+
+// ナビゲーションバー
+const NAV_TOGGLE_BUTTON = document.getElementById('navToggleButton');
+const TOGGLE_HIDE = document.getElementById('toggleHide');
+const TOGGLE_SHOW = document.getElementById('toggleShow');
+const MENU_OVERLAY = document.getElementById('menuOverlay');
+const NAV_MENU = document.getElementById('nav-menu');
+
+if (NAV_TOGGLE_BUTTON && MENU_OVERLAY) {
+    NAV_TOGGLE_BUTTON.addEventListener('click', () => {
+        NAV_MENU.classList.toggle('non-active');
+        TOGGLE_HIDE.classList.toggle('hidden');
+        TOGGLE_SHOW.classList.toggle('hidden');
+        MENU_OVERLAY.classList.toggle('hidden');
+    });
+
+    MENU_OVERLAY.addEventListener('click', () => {
+        NAV_MENU.classList.add('non-active');
+        TOGGLE_HIDE.classList.add('hidden');
+        TOGGLE_SHOW.classList.remove('hidden');
+        MENU_OVERLAY.classList.add('hidden');
+    });
+}
+
+// メニュー以外の場所をクリックした時にメニューを閉じる
+document.addEventListener('click', (event) => {
+    if (!NAV_MENU.contains(event.target) && !NAV_TOGGLE_BUTTON.contains(event.target)) {
+        NAV_MENU.classList.add('non-active');
+        TOGGLE_HIDE.classList.add('hidden');
+        TOGGLE_SHOW.classList.remove('hidden');
+        MENU_OVERLAY.classList.add('hidden');
+    }
+});
