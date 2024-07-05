@@ -5,6 +5,8 @@ import 'quill/dist/quill.snow.css';
 
 // 質問画面
 const QUESTION_CONTAINER = document.getElementById('question_container');
+const QUESTION_BOX = document.getElementById('question');
+const QUESTION_INDEX = document.getElementById('question_num');
 const QUESTION_IMG_CONTAINER = document.getElementById("question_img");
 const QUESTION_TEXT = document.getElementById('question_text');
 const QUESTION_ANSWERS_CONTAINER = document.getElementById('question_answers_container');
@@ -15,7 +17,7 @@ let flag = true;
 
 // 確認画面
 const CONFIRM_CONTAINER = document.getElementById("confirm_container");
-const CONFIRM_ANSWERS_CONTAINER = document.getElementById("confirm_answers_container");
+const CONFIRM_ANSWERS_CONTAINER = document.getElementById("confirm_box");
 const SHOW_RESULT_BTN = document.getElementById("show_result_btn");
 
 // 結果画面
@@ -87,15 +89,134 @@ function SelectAnswer(idx,choiceId) {
         ShowQuestion(choiceId)
     } else {
         OnCalScore(choiceId);
-        ShowConfirm()
+
+        // デバイスによりアニメーションを変更
+        if(window.innerWidth < 768){
+            PhoneShowConfirm();
+            CONFIRM_CONTAINER.classList.add("min-h-screen")
+        }else{
+            if (CONFIRM_CONTAINER.classList.contains("min-h-screen")) {
+                CONFIRM_CONTAINER.classList.remove("min-h-screen")
+            }
+            ShowConfirm()
+        }
     }
 }
 // -------------------------------------[⑤確認画面の表示]-------------------------------------
 function ShowConfirm(){
-    CONFIRM_CONTAINER.classList.remove("hide");
-    QUESTION_CONTAINER.classList.add('hide');
-    DeleteConfirmContainer();
-    CreateConfirmContainer()
+
+    //①画像のフェードアウト
+    QUESTION_IMG_CONTAINER.style.opacity = '0';
+    QUESTION_IMG_CONTAINER.style.transition = 'opacity 2s ease'; // 2秒でフェードアウト
+    BACK_BTN.style.opacity = '0';
+    QUESTION_INDEX.style.opacity = '0';
+
+    //②画像が完全にフェードアウトするのを待つ
+    setTimeout(() => {
+
+        //x座標取得
+        let screenCenterX = window.innerWidth / 2; // 画面全体の中心のx座標
+        let questionBoxCenterX = QUESTION_BOX.getBoundingClientRect().left + QUESTION_BOX.offsetWidth / 2;//質問コンテナの中心のx座標
+        let translateX = screenCenterX - questionBoxCenterX; // 差分を計算
+
+        //③質問コンテナを中心に移動
+        QUESTION_BOX.style.transform = `translateX(${translateX}px)`;
+        QUESTION_BOX.style.transition = 'transform 1.5s ease, opacity 2s ease'; // 移動に1.5秒かけて中心に移動、フェードアウトに2秒
+
+        //④質問コンテナが中心に移動するのを待つ(1.5ｓ）
+        setTimeout(() => {
+
+            //⑤フェードアウト開始（2s/初期値opacity1）
+            QUESTION_BOX.style.opacity = "0"//
+
+            //⑥フェードアウト処理を待つ(1.6sかけて）
+            setTimeout(() => {
+
+                //初期値にリセット
+                BACK_BTN.style.opacity = '1';
+                QUESTION_INDEX.style.opacity = '1';
+                QUESTION_IMG_CONTAINER.style.opacity = "";
+                QUESTION_BOX.style.transform = "";
+                QUESTION_BOX.style.opacity = "";
+
+                QUESTION_CONTAINER.classList.add('hide');
+
+                // 確認画面表示アニメーション準備
+                CONFIRM_CONTAINER.classList.remove("hide");
+                CONFIRM_CONTAINER.style.opacity = "0";
+                CONFIRM_CONTAINER.style.transition = 'opacity 2s ease'; // 2秒でフェードイン
+
+                DeleteConfirmContainer();
+                CreateConfirmContainer();
+
+                //⑦確認画面アニメーションで表示
+                setTimeout(()=>{
+                    CONFIRM_CONTAINER.style.opacity = "1";
+                },50)
+
+            }, 1600); //QUESTION_BOXフェードアウトと同時に CONFIRM_CONTAINERフェードイン
+
+        }, 1500);
+
+    }, 2000);
+}
+
+function PhoneShowConfirm(){
+
+    //①画像のフェードアウト
+    QUESTION_IMG_CONTAINER.style.opacity = '0';
+    QUESTION_IMG_CONTAINER.style.transition = 'opacity 2s ease'; // 2秒でフェードアウト
+    BACK_BTN.style.opacity = '0';
+    QUESTION_INDEX.style.opacity = '0';
+
+    //②画像が完全にフェードアウトするのを待つ
+    setTimeout(() => {
+
+        //Y座標取得
+        let screenCenterY = window.innerHeight / 2; // 画面全体の中心のY座標
+        let questionBoxCenterY = QUESTION_BOX.getBoundingClientRect().top + QUESTION_BOX.offsetHeight / 2;//質問コンテナの中心のY座標
+        let translateY = screenCenterY - questionBoxCenterY; // 差分を計算
+
+        //③質問コンテナを中心に移動
+        QUESTION_BOX.style.transform = `translateY(${translateY}px)`;
+        QUESTION_BOX.style.transition = 'transform 1.5s ease, opacity 2s ease'; // 移動に1.5秒かけて中心に移動、フェードアウトに2秒
+
+        //④質問コンテナが中心に移動するのを待つ(1.5ｓ）
+        setTimeout(() => {
+
+            //⑤フェードアウト開始（2s/初期値opacity1）
+            QUESTION_BOX.style.opacity = "0"//
+
+            //⑥フェードアウト処理を待つ(1.6sかけて）
+            setTimeout(() => {
+
+                //初期値にリセット
+                BACK_BTN.style.opacity = '1';
+                QUESTION_INDEX.style.opacity = '1';
+                QUESTION_IMG_CONTAINER.style.opacity = "";
+                QUESTION_BOX.style.transform = "";
+                QUESTION_BOX.style.opacity = "";
+
+                QUESTION_CONTAINER.classList.add('hide');
+
+                // 確認画面表示アニメーション準備
+                CONFIRM_CONTAINER.classList.remove("hide");
+                CONFIRM_CONTAINER.style.opacity = "0";
+                CONFIRM_CONTAINER.style.transition = 'opacity 2s ease'; // 2秒でフェードイン
+
+                DeleteConfirmContainer();
+                CreateConfirmContainer();
+
+                //⑦確認画面アニメーションで表示
+                setTimeout(()=>{
+                    CONFIRM_CONTAINER.style.opacity = "1";
+                },50)
+
+            }, 1600); //QUESTION_BOXフェードアウトと同時に CONFIRM_CONTAINERフェードイン
+
+        }, 1500);
+
+    }, 2000);
 }
 // ---------------------------------------[⑥結果の表示]---------------------------------------
 SHOW_RESULT_BTN.addEventListener("click",ShowResult);
@@ -281,23 +402,11 @@ function DeleteQuestionImage(){
 //[CREATE] 確認画面作成（選択した回答と質問）
 function CreateConfirmContainer(){
 
-    // タイトル作成
-    CreateConfirmTitle();
-
     // 選択した回答と質問を表示
     for(let i=0;i<questions.length;i++){
 
-        const CONFIRM_ANSWER_CONTAINER = document.createElement('div')
-
-        // 質問
+        // 質問と番号
         const CONFIRM_QUESTION_TEXT = document.createElement("p");
-
-        // 回答
-        const CONFIRM_ANSWER_BTN = document.createElement('button')
-        const CONFIRM_ANSWER_TEXT = document.createElement('span')
-        const CONFIRM_ARROW_TEXT = document.createElement("p");
-
-        // 質問文と番号
         if(i<10){
             CONFIRM_QUESTION_TEXT.innerText = "0"+(i+1)+"."+ questions[i]["text"];
         }else{
@@ -306,6 +415,9 @@ function CreateConfirmContainer(){
         CONFIRM_QUESTION_TEXT.style.color = "white";
 
         // 回答
+        const CONFIRM_ANSWER_BTN = document.createElement('button')
+        const CONFIRM_ANSWER_TEXT = document.createElement('span')
+        const CONFIRM_ARROW_TEXT = document.createElement("span");
         CONFIRM_ANSWER_TEXT.innerText = questions[i].choices[selectedAnswersArray[i]]["text"];
         CONFIRM_ARROW_TEXT.innerText = "▶"
         CONFIRM_ANSWER_BTN.classList.add("confirm-answer");
@@ -313,6 +425,7 @@ function CreateConfirmContainer(){
         CONFIRM_ANSWER_BTN.appendChild(CONFIRM_ARROW_TEXT);
 
         // 質問と回答をひとまとめに
+        const CONFIRM_ANSWER_CONTAINER = document.createElement('div')
         CONFIRM_ANSWER_CONTAINER.appendChild(CONFIRM_QUESTION_TEXT);
         CONFIRM_ANSWER_CONTAINER.appendChild(CONFIRM_ANSWER_BTN)
         CONFIRM_ANSWER_CONTAINER.classList.add("confirm-answers-container")
@@ -331,28 +444,6 @@ function CreateConfirmContainer(){
             BACK_BTN.parentNode.classList.add("back-btn-container"); // ボタンの表示時にスペースを確保
         })
     }
-}
-
-//[CREATE] タイトル作成
-function CreateConfirmTitle(){
-    const confirmTitle = document.createElement('p');
-    confirmTitle.classList.add('text-center', 'text-2xl', 'text-top-white');
-    confirmTitle.id = 'test';
-    confirmTitle.textContent = 'Confirm';
-
-    // 境界線を含むdivの作成
-    const borderContainer = document.createElement('div');
-    borderContainer.classList.add('flex', 'justify-center', 'text-center');
-
-    // 下線を追加するためのpタグの作成
-    const borderElement = document.createElement('p');
-    borderElement.classList.add('border-t', 'border-top-white', 'w-[50px]', 'mb-4');
-
-    // pタグをdivに追加
-    borderContainer.appendChild(borderElement);
-
-    CONFIRM_ANSWERS_CONTAINER.appendChild(confirmTitle);
-    CONFIRM_ANSWERS_CONTAINER.appendChild(borderContainer);
 }
 
 //[DELETE] 現在表示している質問＆回答を全て削除（回答修正に対応するため）

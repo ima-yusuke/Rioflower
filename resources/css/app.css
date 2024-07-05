@@ -50,12 +50,13 @@
 .answer-btn {
     width: 100%;
     background-color: white;
+    color: black;
     display: flex;
+    opacity: 0;
     justify-content: space-between;
     align-items: center;
     text-align: left;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.1);
-    opacity: 0;
     transform: translateY(-10px);
     transition: opacity 0.8s ease, transform 0.8s ease; /* アニメーションの設定 */
     border: 2px solid white;
@@ -133,32 +134,29 @@
 
 /*[確認画面]*/
 
+.confirm-container.visible {
+    opacity: 1;
+}
+
 /*各質問・回答セット*/
 .confirm-answers-container{
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     row-gap: 15px;
-}
-
-/*各質問番号*/
-.confirm-question-num{
-    background-color: white;
-    color:rgb(191,158,116);
-    margin-right: 5px;
-    padding: 5px;
-    border-radius: 5px;
+    width: 100%;
 }
 
 /*各回答（span)*/
 .confirm-answer{
-    width:300px;
+    width:90%;
+    color: black;
     background-color:white; /* 背景色を適宜指定 */
     display: flex;
     justify-content:space-between;
     align-items: center;
     text-align: left;
-    padding: 6px 10px;
-    margin-top: 5px;
     border-radius: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.1);
     border: 2px solid white;
@@ -170,7 +168,7 @@
     border: 2px solid white;
 }
 
-/** デスクトップサイズ以上 *!*/
+/** デスクトップサイズ以上 */
 @media (min-width: 1024px) {
     .confirm-answer {
         width: 450px;
