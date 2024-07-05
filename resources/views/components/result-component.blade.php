@@ -51,7 +51,7 @@
                     <p class=""></p>
                     <div id="viewer" class="bg-detail-bg">
                     </div>
-                    <div id="viewer-wrapper" class="absolute top-0 left-0 h-full w-full bg-white opacity-0"></div>
+                    <div id="viewer-wrapper" class="absolute top-0 left-0 h-full w-full bg-white opacity-0 -z-10"></div>
                 </div>
 
                 {{--ボタン--}}

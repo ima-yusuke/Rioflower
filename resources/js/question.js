@@ -466,6 +466,7 @@ function OnSwapImg(scoreArray) {
 
             // フェードアウト
             RESULT_IMG.classList.add('fade-out');
+            VIEWER.classList.remove('-z-10');
             VIEWER.classList.add('fade-in');
             RECOMMEND.classList.add('fade-in');
 
@@ -497,6 +498,7 @@ function OnSwapImg(scoreArray) {
                 RESULT_IMG.addEventListener('transitionend', function onTransitionEnd2() {
                     RESULT_IMG.removeEventListener('transitionend', onTransitionEnd2);
                     RESULT_IMG.classList.remove('fade-in');
+                    VIEWER.classList.add('-z-10');
                     VIEWER.classList.remove('fade-out');
                     RECOMMEND.classList.remove('fade-out');
                 });
