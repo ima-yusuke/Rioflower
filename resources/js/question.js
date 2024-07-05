@@ -396,7 +396,7 @@ function CreateOtherImages(scoreArray) {
 
         // img 要素を作成
         const img = document.createElement('img');
-        img.classList.add('otherImg', 'object-cover', 'rounded-full', 'w-[70px]', 'md:w-[100px]', 'h-[70px]', 'md:h-[100px]');
+        img.classList.add('otherImg', 'object-cover', 'rounded-full');
 
         // p 要素を作成
         const p = document.createElement('p');
@@ -444,10 +444,13 @@ function ShowQuill(productId){
     quill.setContents(setData)
 }
 
-//[ON] 画像入れ替え
+// [ON] 画像入れ替え
 function OnSwapImg(scoreArray) {
     // 1~4位の商品（下3つの小さい画像）
     let otherImages = document.getElementsByClassName("otherImg");
+    // フェード用wrapper
+    let VIEWER = document.getElementById("viewer-wrapper");
+    let RECOMMEND = document.getElementById("recommend-wrapper");
 
     for (let i = 0; i < scoreArray.length; i++) {
 
@@ -457,92 +460,56 @@ function OnSwapImg(scoreArray) {
 
         // 表示商品の入れ替え
         otherImages[i].parentNode.addEventListener("click", function () {
-
-            // トランジション中のクリックを防ぐ
-            if (document.body.classList.contains('transition-active')) {
-                return;
-            }
-
-            document.body.classList.add('transition-active');
-
-            const insertImgTop = RESULT_IMG.getBoundingClientRect().top;
-            const insertImgLeft = RESULT_IMG.getBoundingClientRect().left;
-            const insertImgWidth = RESULT_IMG.getBoundingClientRect().width;
-            const insertImgHeight = RESULT_IMG.getBoundingClientRect().height;
-
             let clickedImg = otherImages[i];
 
-            // Add transition class for smooth animation
-            clickedImg.classList.add("transition");
-
-            // クリックした画像
-            const clickedImgTop = clickedImg.getBoundingClientRect().top;
-            const clickedImgLeft = clickedImg.getBoundingClientRect().left;
-            const clickedImgWidth = clickedImg.getBoundingClientRect().width;
-            const clickedImgHeight = clickedImg.getBoundingClientRect().height;
-
-            // 最初非表示の画像
             let hiddenElement = Array.from(otherImages).filter(image => image.parentNode.classList.contains('hidden'))[0];
 
-            // クリックした画像をトップに移動
-            clickedImg.style.transform = `translate(${(insertImgLeft - clickedImgLeft) + ((insertImgWidth - clickedImgWidth) / 2)}px, ${(insertImgTop - clickedImgTop) + ((insertImgHeight - clickedImgHeight) / 2)}px) scale(${insertImgWidth / clickedImgWidth}, ${insertImgHeight / clickedImgHeight})`;
+            // フェードアウト
+            RESULT_IMG.classList.add('fade-out');
+            VIEWER.classList.add('fade-in');
+            RECOMMEND.classList.add('fade-in');
 
-            // transformが完了したら下記実行
-            clickedImg.addEventListener('transitionend', function onTransitionEnd1() {
-
-                // // transformを一度だけ実行
-                clickedImg.removeEventListener('transitionend', onTransitionEnd1);
+            // フェードアウト完了後に画像を変更
+            RESULT_IMG.addEventListener('transitionend', function onTransitionEnd1() {
+                RESULT_IMG.removeEventListener('transitionend', onTransitionEnd1);
 
                 hiddenElement.parentNode.classList.remove("hidden");
+                hiddenElement.parentNode.classList.add("other-img-container");
 
-                // クリックした要素を非表示に
                 clickedImg.parentNode.classList.add("hidden");
                 clickedImg.parentNode.classList.remove("other-img-container");
-                clickedImg.style.transform = "translate(0,0)";
-                clickedImg.classList.remove("transition");
 
-                // 新しく表示する画像の位置を取得
-                const hiddenElementTop = hiddenElement.getBoundingClientRect().top;
-                const hiddenElementLeft = hiddenElement.getBoundingClientRect().left;
-                const hiddenElementWidth = hiddenElement.getBoundingClientRect().width;
-                const hiddenElementHeight = hiddenElement.getBoundingClientRect().height;
-
-                // 移動と縮小設定
-                let moveY = (insertImgTop - hiddenElementTop) + ((insertImgHeight - hiddenElementHeight) / 2);
-                let moveX = (insertImgLeft - hiddenElementLeft) + ((insertImgWidth - hiddenElementWidth) / 2);
-                let moveWidth = insertImgWidth / hiddenElementWidth;
-                let moveHeight = insertImgHeight / hiddenElementHeight;
-
-                // 要素をトップに移動
-                hiddenElement.classList.add("transition-quick");
-                hiddenElement.style.transform = `translate(${moveX}px, ${moveY}px) scale(${moveWidth}, ${moveHeight})`;
-                hiddenElement.classList.remove("transition-quick");
-
-                // トップから要素を降ろす
-                setTimeout(() => {
-                    hiddenElement.classList.add("transition");
-                    hiddenElement.parentNode.classList.add('other-img-container');
-                    hiddenElement.style.transform = `translate(0px, 0px)`;
-                }, 50);
-
-                // クリックした商品をトップへ表示
-                RESULT_P_NAME.innerText = otherProduct[0]["name"];
-                RESULT_IMG.src = otherProduct[0]["img"];
-
-                // Quill更新
                 DeleteQuill();
                 ShowQuill(otherProduct[0]["id"]);
 
-                // トランジション完了後、クリックを再度有効にするためにhiddenElementのtransitionendイベントを監視
-                hiddenElement.addEventListener('transitionend', function onTransitionEnd2() {
-                    // ここで削除しておかないと再度hiddenElementをクリックした時に前回のイベントも残ったままで実装されてしまう
-                    hiddenElement.removeEventListener('transitionend', onTransitionEnd2);
-                    document.body.classList.remove('transition-active');
+                RESULT_P_NAME.innerText = otherProduct[0]["name"];
+                RESULT_IMG.src = otherProduct[0]["img"];
+
+                // フェードイン
+                RESULT_IMG.classList.remove('fade-out');
+                RESULT_IMG.classList.add('fade-in');
+                VIEWER.classList.remove('fade-in');
+                VIEWER.classList.add('fade-out');
+                RECOMMEND.classList.remove('fade-in');
+                RECOMMEND.classList.add('fade-out');
+
+                // フェードイン完了後にクラスを削除
+                RESULT_IMG.addEventListener('transitionend', function onTransitionEnd2() {
+                    RESULT_IMG.removeEventListener('transitionend', onTransitionEnd2);
+                    RESULT_IMG.classList.remove('fade-in');
+                    VIEWER.classList.remove('fade-out');
+                    RECOMMEND.classList.remove('fade-out');
                 });
             });
 
             // 購入商品のidを更新
             purchaseProductId = otherProduct[0]["id"];
+
+            // メニューを閉じる
+            NAV_MENU.classList.add('non-active');
+            TOGGLE_HIDE.classList.add('hidden');
+            TOGGLE_SHOW.classList.remove('hidden');
+            MENU_OVERLAY.classList.add('hidden');
         });
     }
 }
