@@ -29,8 +29,8 @@
     </div>
 
     {{--戻るボタン--}}
-    <button id="back_btn" class="md:absolute md:bottom-16 md:left-4 text-white bg-main-brown rounded-full shadow-back-btn-shadow flex justify-center items-center  h-[40px] w-[40px] md:h-[60px] md:w-[60px] ml-4 mt-4 font-bold hide">
-        <i class="fa-solid fa-arrow-left text-xl md:text-4xl"></i>
+    <button id="back_btn" class="md:absolute md:bottom-16 md:left-4 text-main-brown bg-white rounded-full shadow-back-btn-shadow flex justify-center items-center h-[60px] w-[60px] ml-4 mt-4 font-bold hide">
+       <span class="text-sm">戻る</span>
     </button>
 
 </div>

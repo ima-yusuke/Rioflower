@@ -10,7 +10,7 @@ const QUESTION_TEXT = document.getElementById('question_text');
 const QUESTION_ANSWERS_CONTAINER = document.getElementById('question_answers_container');
 const BACK_BTN = document.getElementById("back_btn");
 let currentQuestionIdx = 0;// 現在の質問番目
-let oldSrc = null
+let oldSrcArray = [QUESTION_IMG_CONTAINER.querySelector('img.back').src];
 let flag = true;
 
 // 確認画面
@@ -50,7 +50,6 @@ function ShowCurrentQstNum(){
     let questionLength = questions.length;
     let currentQuestionNum = document.getElementById("question_num");
     currentQuestionNum.innerText =  Number(currentQuestionIdx+1)+"問目/"+questionLength+"問中";
-    oldSrc =QUESTION_IMG_CONTAINER.querySelector('img.back').src;
 }
 // -------------------------------------[③質問&回答作成]-------------------------------------
 function ShowQuestion(choiceId) {
@@ -61,11 +60,13 @@ function ShowQuestion(choiceId) {
     // 回答選択肢作成
     CreateAnswers()
 
-    // 2問目以降、最適な画像を表示
+    //最適な画像を表示
     if(currentQuestionIdx>0&&choiceId!=null){
-        CreateMaxImg(choiceId);
+        ShowMaxImg(choiceId);
     }else if(currentQuestionIdx>0){
-        CreateMaxImg();
+        ShowMaxImg();
+    } else if(currentQuestionIdx===0&&flag===false){
+        ShowMaxImg();
     }
 }
 // ---------------------------------------[④回答選択]---------------------------------------
@@ -85,7 +86,7 @@ function SelectAnswer(idx,choiceId) {
         ShowCurrentQstNum()
         ShowQuestion(choiceId)
     } else {
-        CalScore(choiceId);
+        OnCalScore(choiceId);
         ShowConfirm()
     }
 }
@@ -113,11 +114,11 @@ function ShowResult() {
     CreateResult(scoreArray)
 
     let productId = scoreArray[0]["product_id"];
-    DisplayQuill(productId);
+    ShowQuill(productId);
 }
 
 // --------------------------------------[質問画面/機能]--------------------------------------
-//選択肢作成
+//[CREATE] 回答作成
 function CreateAnswers(){
 
     ShowBackBtn();
@@ -151,53 +152,88 @@ function CreateAnswers(){
     })
 }
 
-// 2問目以降、質問横に最適な画像を表示
-function CreateMaxImg(choiceId){
+//[CREATE] 画像作成 & flipアニメーション（回答選択時）
+function CreateFlipImg(maxProductId) {
 
-    // 最適な商品のIDを取得
-    let maxProductId = CalScore(choiceId)
+    // 最適な商品を取得
+    let maxProduct = products.filter(product => product.id === maxProductId);
 
-    // 現在の表画像を保存
-    if(currentQuestionIdx===1) {
-        oldSrc = QUESTION_IMG_CONTAINER.querySelector('img.back').src;
+    // 現在新しく表示する画像のsrcを配列に保存
+    oldSrcArray.push(maxProduct[0]["img"]);
+
+    // 表 → 裏になる画像
+    const BACK_IMAGE = document.createElement("img");
+    BACK_IMAGE.classList.add("back");
+    BACK_IMAGE.classList.add("question-img");
+    BACK_IMAGE.src = oldSrcArray[currentQuestionIdx-1];
+
+    // 裏 → 表になる画像
+    const FRONT_IMAGE = document.createElement("img");
+    FRONT_IMAGE.classList.add("front");
+    FRONT_IMAGE.classList.add("question-img");
+    FRONT_IMAGE.src = maxProduct[0]["img"];
+
+    QUESTION_IMG_CONTAINER.appendChild(BACK_IMAGE);
+    QUESTION_IMG_CONTAINER.appendChild(FRONT_IMAGE);
+    QUESTION_IMG_CONTAINER.classList.add("content");
+
+    // 描画時にクラスを追加してアニメーションをトリガー
+    setTimeout(() => {
+        BACK_IMAGE.classList.add("flip");
+        FRONT_IMAGE.classList.add("flip");
+    }, 50); // 50ミリ秒の遅延を設定
+
+}
+
+//[CREATE] 画像作成 & flipアニメーション（戻るボタンクリック時）
+function CreateBackFlipImg() {
+
+    // 表 → 裏になる画像
+    const BACK_IMAGE = document.createElement("img");
+    BACK_IMAGE.classList.add("back");
+    BACK_IMAGE.classList.add("question-img");
+    BACK_IMAGE.src = oldSrcArray[currentQuestionIdx+1];
+
+    // 裏 → 表になる画像
+    const FRONT_IMAGE = document.createElement("img");
+    FRONT_IMAGE.classList.add("front");
+    FRONT_IMAGE.classList.add("question-img");
+    if(currentQuestionIdx===0){
+        FRONT_IMAGE.src = oldSrcArray[0];
     }else{
-        oldSrc = QUESTION_IMG_CONTAINER.querySelector('img.front').src;
+        FRONT_IMAGE.src = oldSrcArray[currentQuestionIdx];
     }
+
+    QUESTION_IMG_CONTAINER.appendChild(BACK_IMAGE);
+    QUESTION_IMG_CONTAINER.appendChild(FRONT_IMAGE);
+    QUESTION_IMG_CONTAINER.classList.add("content");
+
+    // 描画時にクラスを追加してアニメーションをトリガー
+    setTimeout(() => {
+        BACK_IMAGE.classList.add("flip");
+        FRONT_IMAGE.classList.add("flip");
+        oldSrcArray.pop();
+        flag = true;
+    }, 50); // 50ミリ秒の遅延を設定
+}
+
+//[SHOW] スコア計算後、画像を表示
+function ShowMaxImg(choiceId){
+    // 最適な商品のIDを取得
+    let maxProductId = OnCalScore(choiceId)
 
     // 現在の画像を削除
     DeleteQuestionImage();
 
     // 画像にアニメーション付与
-    AddFlipAnimation(maxProductId);
+    if (flag===true) {
+        CreateFlipImg(maxProductId);
+    }else{
+        CreateBackFlipImg();
+    }
 }
 
-// 質問横の画像にアニメーション追加
-function AddFlipAnimation(maxProductId) {
-    let maxProduct = products.filter(product => product.id === maxProductId);
-
-    // 新規画像を作成
-    let backImg = document.createElement("img");
-    backImg.classList.add("back");
-    backImg.classList.add("question-img");
-    backImg.src = oldSrc;
-
-    let frontImg = document.createElement("img");
-    frontImg.classList.add("front");
-    frontImg.classList.add("question-img");
-    frontImg.src = maxProduct[0]["img"];
-
-    QUESTION_IMG_CONTAINER.appendChild(backImg);
-    QUESTION_IMG_CONTAINER.appendChild(frontImg);
-    QUESTION_IMG_CONTAINER.classList.add("content");
-
-    // 描画時にクラスを追加してアニメーションをトリガー
-    setTimeout(() => {
-        backImg.classList.add("flip");
-        frontImg.classList.add("flip");
-    }, 50); // 50ミリ秒の遅延を設定
-}
-
-// 2問目以降、前の質問に戻るボタンの表示
+//[SHOW] 戻るボタンの表示
 function ShowBackBtn(){
     // 戻るボタンの表示・非表示切替
     if(currentQuestionIdx>0){
@@ -209,39 +245,32 @@ function ShowBackBtn(){
     }
 
     // 既存のイベントリスナーを削除してから追加する
-    BACK_BTN.removeEventListener("click", HandleBackButtonClick);
-    BACK_BTN.addEventListener("click", HandleBackButtonClick);
+    BACK_BTN.removeEventListener("click", OnBackBtn);
+    BACK_BTN.addEventListener("click", OnBackBtn);
 }
 
-// 戻るボタンクリック時の処理
-function HandleBackButtonClick() {
-
+//[ON] 戻るボタンクリック時の処理
+function OnBackBtn() {
+    flag = false;
     currentQuestionIdx--;
     selectedAnswersArray.pop(); // 配列の末尾を削除
     for (let i = 0; i < scoreArray.length; i++) {
         scoreArray[i].score.pop(); // スコア配列の末尾を削除
     }
+
     DeleteQuestionAnswers();
     ShowCurrentQstNum();
     ShowQuestion();
-
-    let frontImg = QUESTION_IMG_CONTAINER.querySelector('img.front');
-    let backImg = QUESTION_IMG_CONTAINER.querySelector('img.back');
-
-    setTimeout(() => {
-        frontImg.style.transform = "rotateY(-180deg)";
-        backImg.style.transform = "rotateY(0deg)";
-    }, 50); // 50ミリ秒の遅延を設定
 }
 
-// 現在表示している回答を全て削除
+//[DELETE] 現在表示している回答を全て削除
 function DeleteQuestionAnswers() {
     while (QUESTION_ANSWERS_CONTAINER.firstChild) {
         QUESTION_ANSWERS_CONTAINER.removeChild(QUESTION_ANSWERS_CONTAINER.firstChild)
     }
 }
 
-// 質問横の画像削除
+//[DELETE] 質問横の画像削除
 function DeleteQuestionImage(){
     while(QUESTION_IMG_CONTAINER.firstChild){
         QUESTION_IMG_CONTAINER.removeChild(QUESTION_IMG_CONTAINER.firstChild);
@@ -249,8 +278,7 @@ function DeleteQuestionImage(){
 }
 
 // --------------------------------------[確認画面/機能]--------------------------------------
-
-// 選択内容確認画面
+//[CREATE] 確認画面作成（選択した回答と質問）
 function CreateConfirmContainer(){
 
     // タイトル作成
@@ -305,6 +333,7 @@ function CreateConfirmContainer(){
     }
 }
 
+//[CREATE] タイトル作成
 function CreateConfirmTitle(){
     const confirmTitle = document.createElement('p');
     confirmTitle.classList.add('text-center', 'text-2xl', 'text-top-white');
@@ -326,7 +355,7 @@ function CreateConfirmTitle(){
     CONFIRM_ANSWERS_CONTAINER.appendChild(borderContainer);
 }
 
-// 現在表示している質問＆回答を全て削除（回答修正した場合に対応するため）
+//[DELETE] 現在表示している質問＆回答を全て削除（回答修正に対応するため）
 function DeleteConfirmContainer(){
     while(CONFIRM_ANSWERS_CONTAINER.firstChild){
         CONFIRM_ANSWERS_CONTAINER.removeChild(CONFIRM_ANSWERS_CONTAINER.firstChild);
@@ -334,19 +363,89 @@ function DeleteConfirmContainer(){
 }
 
 // --------------------------------------[結果画面/機能]--------------------------------------
-
-// 結果画面に最適な商品を表示
+//[CREATE] 結果画面作成
 function CreateResult(scoreArray){
 
     // プライオリティ計算
-    CalPriority(scoreArray);
+    OnCalPriority(scoreArray);
 
     // 1位の商品（トップ）
-    DisplayTopProduct(scoreArray);
+    ShowTopProduct(scoreArray);
 
     // 2位以下の商品作成
     CreateOtherImages(scoreArray);
 
+    // 画像入れ替え
+    OnSwapImg(scoreArray);
+}
+
+//[CREATE] 2位以下の画像作成
+function CreateOtherImages(scoreArray) {
+    const ranks = ['第1位', '第2位', '第3位', '第4位'];
+
+    for (let i=0; i<scoreArray.length; i++) {
+
+        const div = document.createElement('div');
+
+        if(i===0){
+            div.classList.add('hidden');
+        }else{
+            div.classList.add('other-img-container');
+        }
+        div.setAttribute('data-id', '');
+
+        // img 要素を作成
+        const img = document.createElement('img');
+        img.classList.add('otherImg', 'object-cover', 'rounded-full', 'w-[70px]', 'md:w-[100px]', 'h-[70px]', 'md:h-[100px]');
+
+        // p 要素を作成
+        const p = document.createElement('p');
+        p.textContent = `【${ranks[i]}】`;
+
+        // div に img と p を追加
+        div.appendChild(img);
+        div.appendChild(p);
+
+        // コンテナに div を追加
+        OTHER_IMG_CONTAINER.appendChild(div);
+    }
+}
+
+//[SHOW] 1位の商品を表示
+function ShowTopProduct(scoreArray){
+    let maxProduct = products.filter(product => product.id === scoreArray[0]["product_id"]);
+    RESULT_P_NAME.innerText = maxProduct[0]["name"]
+    RESULT_IMG.src = maxProduct[0]["img"];
+    purchaseProductId = maxProduct[0]["id"];
+}
+
+//[SHOW] Quill表示
+function ShowQuill(productId){
+
+    // Quill表示
+    quill = new Quill("#viewer", {
+        //ツールバー無デザイン
+        readOnly: true
+    });
+
+    let maxProduct = products.filter(product => product.id === productId);
+    let details =maxProduct[0]["details"];
+
+    let setData = [];
+
+    if(details.length>0){
+        details.forEach((value) => {
+            // DBから取得したので文字列からJSON形式に戻す
+            setData.push({"insert": JSON.parse(value["insert"]), "attributes": JSON.parse(value["attributes"])})
+        })
+    }
+
+    //Quillデータをエディター内に表示
+    quill.setContents(setData)
+}
+
+//[ON] 画像入れ替え
+function OnSwapImg(scoreArray) {
     // 1~4位の商品（下3つの小さい画像）
     let otherImages = document.getElementsByClassName("otherImg");
 
@@ -431,8 +530,8 @@ function CreateResult(scoreArray){
                 RESULT_IMG.src = otherProduct[0]["img"];
 
                 // Quill更新
-                ResetQuill();
-                DisplayQuill(otherProduct[0]["id"]);
+                DeleteQuill();
+                ShowQuill(otherProduct[0]["id"]);
 
                 // トランジション完了後、クリックを再度有効にするためにhiddenElementのtransitionendイベントを監視
                 hiddenElement.addEventListener('transitionend', function onTransitionEnd2() {
@@ -446,88 +545,21 @@ function CreateResult(scoreArray){
             purchaseProductId = otherProduct[0]["id"];
         });
     }
-
 }
 
-// 1位の商品（トップ）を表示
-function DisplayTopProduct(scoreArray){
-    let maxProduct = products.filter(product => product.id === scoreArray[0]["product_id"]);
-    RESULT_P_NAME.innerText = maxProduct[0]["name"]
-    RESULT_IMG.src = maxProduct[0]["img"];
-    purchaseProductId = maxProduct[0]["id"];
-}
-
-// 送信ボタンに購入商品のidを付与
+//[ON] 送信ボタンに購入商品のidを付与
 OPEN_MODAL_BTN.addEventListener("click", function () {
     PRODUCT_NUM.setAttribute("value", purchaseProductId);
 });
 
-// 2位以下の画像作成
-function CreateOtherImages(scoreArray) {
-    const ranks = ['第1位', '第2位', '第3位', '第4位'];
-
-    for (let i=0; i<scoreArray.length; i++) {
-
-        const div = document.createElement('div');
-
-        if(i===0){
-            div.classList.add('hidden');
-        }else{
-            div.classList.add('other-img-container');
-        }
-        div.setAttribute('data-id', '');
-
-        // img 要素を作成
-        const img = document.createElement('img');
-        img.classList.add('otherImg', 'object-cover', 'rounded-full', 'w-[70px]', 'md:w-[100px]', 'h-[70px]', 'md:h-[100px]');
-
-        // p 要素を作成
-        const p = document.createElement('p');
-        p.textContent = `【${ranks[i]}】`;
-
-        // div に img と p を追加
-        div.appendChild(img);
-        div.appendChild(p);
-
-        // コンテナに div を追加
-        OTHER_IMG_CONTAINER.appendChild(div);
-    }
-}
-
-// Quill表示
-function DisplayQuill(productId){
-
-    // Quill表示
-    quill = new Quill("#viewer", {
-        //ツールバー無デザイン
-        readOnly: true
-    });
-
-    let maxProduct = products.filter(product => product.id === productId);
-    let details =maxProduct[0]["details"];
-
-    let setData = [];
-
-    if(details.length>0){
-        details.forEach((value) => {
-            // DBから取得したので文字列からJSON形式に戻す
-            setData.push({"insert": JSON.parse(value["insert"]), "attributes": JSON.parse(value["attributes"])})
-        })
-    }
-
-    //Quillデータをエディター内に表示
-    quill.setContents(setData)
-}
-
-// Quill削除
-function ResetQuill(){
+//[DELETE] Quill削除
+function DeleteQuill(){
     quill.setContents([]);
 }
 
 // ----------------------------------------[スコア計算]----------------------------------------
-
-// スコア計算（プライオリティなし）
-function CalScore(choiceId){
+//[ON] スコア計算（プライオリティなし/質問画面でのみ使用/最適な商品のproduct_idをreturn）
+function OnCalScore(choiceId){
 
     // 選択した選択肢の属性を取得
     let selectedChoiceAttributes = choiceAttributes.filter(choice => choice.choice_id === choiceId);
@@ -569,13 +601,26 @@ function CalScore(choiceId){
         }
     }
 
-    SortScore(scoreArray);
+    OnSortScore(scoreArray);
     // console.log(productAttributes)
     return scoreArray[0].product_id;
 }
 
-// スコア高い順に並び替え
-function SortScore(scoreArray) {
+//[ON] スコア計算（プライオリティ込/結果画面でのみ使用）
+function OnCalPriority(scoreArray) {
+
+    // スコア配列にpriorityを追加
+    for (let i = 0; i < products.length; i++) {
+        let existingScoreObj = scoreArray.find(scoreObj => scoreObj.product_id === products[i]["id"]);
+        existingScoreObj.score.push(products[i]["priority"]);
+    }
+
+    // 再度合計計算し並び替え
+    OnSortScore(scoreArray);
+}
+
+//[ON] scoreArrayをスコア高い順に並び替え
+function OnSortScore(scoreArray) {
     scoreArray.sort((a, b) => {
 
         let sumA = 0
@@ -593,18 +638,6 @@ function SortScore(scoreArray) {
     return scoreArray;
 }
 
-// プライオリティ計算
-function CalPriority(scoreArray) {
-
-    // スコア配列にpriorityを追加
-    for (let i = 0; i < products.length; i++) {
-        let existingScoreObj = scoreArray.find(scoreObj => scoreObj.product_id === products[i]["id"]);
-        existingScoreObj.score.push(products[i]["priority"]);
-    }
-
-    // 再度合計計算し並び替え
-    SortScore(scoreArray);
-}
 
 SEND_BTN.addEventListener('click', function(event) {
     // バリデーションチェック
@@ -663,7 +696,7 @@ BACK_START_BTN.addEventListener("click",function(){
     sessionStorage.removeItem('scoreData');
 });
 
-// 結果画面再表示
+//[SHOW] 結果画面再表示
 function ReShowResult(scoreData) {
     let scoreArray = scoreData;
 
@@ -674,7 +707,7 @@ function ReShowResult(scoreData) {
     CreateResult(scoreArray)
 
     let productId = scoreArray[0]["product_id"];
-    DisplayQuill(productId);
+    ShowQuill(productId);
 }
 
 window.ReShowResult = ReShowResult;
