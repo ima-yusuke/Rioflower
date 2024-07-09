@@ -68,6 +68,21 @@
     border: 2px solid white;
 }
 
+@media (max-width: 767px) {
+    .answer-btn {
+        width: 90%;
+        font-size: 0.3rem;
+        border: 1px solid white;
+    }
+
+    .answer-btn:hover {
+        background-color: rgb(191,158,116);
+        color: white;
+        border: 1px solid white;
+    }
+
+}
+
 /*戻るボタン*/
 #back_btn{
     border-radius: 50%;
@@ -134,6 +149,10 @@
 
 /*[確認画面]*/
 
+.no-scroll {
+    overflow: hidden;
+}
+
 .confirm-container.visible {
     opacity: 1;
 }
@@ -168,12 +187,22 @@
     border: 2px solid white;
 }
 
-/** デスクトップサイズ以上 */
-@media (min-width: 1024px) {
+@media (max-width: 767px) {
     .confirm-answer {
-        width: 450px;
+        width: 90%;
+        font-size: 0.3rem;
+        border: 1px solid white;
     }
+
+    .confirm-answer:hover {
+        background-color: rgb(191,158,116);
+        color: white;
+        border: 1px solid white;
+    }
+
 }
+
+
 
 /*!*▶アイコン*!*/
 /*.confirm-answer p{*/

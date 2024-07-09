@@ -1,4 +1,4 @@
-<div id="question_container" class="question-container hide w-full">
+<div id="question_container" class="question-container hide w-full pb-4 md:pb-0">
 
     <div class="flex flex-col justify-center items-center gap-6 w-full">
         {{--残質問数--}}
@@ -16,13 +16,13 @@
                 <div id="bg" class="relative flex flex-col justify-center gap-6 py-4 md:py-8 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-main-brown rounded-3xl shadow-custom-dark">
                     <p class="text-center text-2xl text-top-white" id="test">Question</p>
                     <div class="flex justify-center text-center">
-                        <p class="border-t border-top-white w-[50px] mb-4"></p>
+                        <p class="border-t border-top-white w-[50px] mb-2 md:mb-4"></p>
                     </div>
 
                     {{--質問文--}}
                     <div id="question_text" class="font-bold text-top-white md:text-xl text-center"></div>
                     {{--選択肢--}}
-                    <div id="question_answers_container" class="flex flex-col overflow-y-auto gap-6 mx-4 md:mx-8 h-full"></div>
+                    <div id="question_answers_container" class="flex flex-col items-center overflow-y-auto gap-4 md:gap-6 mx-4 md:mx-8 h-full"></div>
                 </div>
             </div>
         </div>

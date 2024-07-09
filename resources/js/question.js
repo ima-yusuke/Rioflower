@@ -16,6 +16,8 @@ let oldSrcArray = [QUESTION_IMG_CONTAINER.querySelector('img.back').src];
 let flag = true;
 let screenCenterX = window.innerWidth / 2; // 画面全体の中心のx座標
 let questionBoxCenterX = 0;//質問コンテナのx座標を保存
+let screenCenterY = window.innerHeight / 2; // 画面全体の中心のY座標
+let questionBoxCenterY = 0//質問コンテナの中心のY座標
 
 // 確認画面
 const CONFIRM_CONTAINER = document.getElementById("confirm_container");
@@ -83,7 +85,7 @@ function ShowQuestion(choiceId) {
         } else if (currentQuestionIdx === 0 && flag === false) {
             ShowMaxImg();
         }
-    }, 1000);
+    }, 500);
 
 }
 
@@ -116,7 +118,7 @@ function SelectAnswer(idx,choiceId) {
 
         // デバイスによりアニメーションを変更
         if(window.innerWidth < 768){
-            PhoneShowConfirm();
+            ShowConfirm()
             CONFIRM_CONTAINER.classList.add("min-h-screen")
         }else{
             if (CONFIRM_CONTAINER.classList.contains("min-h-screen")) {
@@ -129,6 +131,12 @@ function SelectAnswer(idx,choiceId) {
 // -------------------------------------[⑤確認画面の表示]-------------------------------------
 function ShowConfirm(){
 
+    // スクロールを無効化
+    DisableScroll();
+
+    // クリックを無効化
+    DisableClicks();
+
     //①画像のフェードアウト
     QUESTION_IMG_CONTAINER.style.opacity = '0';
     QUESTION_IMG_CONTAINER.style.transition = 'opacity 2s ease'; // 2秒でフェードアウト
@@ -139,11 +147,19 @@ function ShowConfirm(){
     setTimeout(() => {
 
         //x座標取得
-        questionBoxCenterX = QUESTION_BOX.getBoundingClientRect().left + QUESTION_BOX.offsetWidth / 2;//質問コンテナの中心のx座標
-        let translateX = screenCenterX - questionBoxCenterX; // 差分を計算
+        if(window.innerWidth < 768){
+            questionBoxCenterY = QUESTION_BOX.getBoundingClientRect().top + QUESTION_BOX.offsetHeight / 2;//質問コンテナの中心のY座標
+            let translateY = screenCenterY - questionBoxCenterY; // 差分を計算
+
+            QUESTION_BOX.style.transform = `translateY(${translateY}px)`;
+        }else{
+            questionBoxCenterX = QUESTION_BOX.getBoundingClientRect().left + QUESTION_BOX.offsetWidth / 2;//質問コンテナの中心のx座標
+            let translateX = screenCenterX - questionBoxCenterX; // 差分を計算
+
+            QUESTION_BOX.style.transform = `translateX(${translateX}px)`;
+        }
 
         //③質問コンテナを中心に移動
-        QUESTION_BOX.style.transform = `translateX(${translateX}px)`;
         QUESTION_BOX.style.transition = 'transform 1.5s ease, opacity 2s ease'; // 移動に1.5秒かけて中心に移動、フェードアウトに2秒
 
         //④質問コンテナが中心に移動するのを待つ(1.5ｓ）
@@ -169,12 +185,19 @@ function ShowConfirm(){
                 CONFIRM_CONTAINER.style.opacity = "0";
                 CONFIRM_CONTAINER.style.transition = 'opacity 2s ease'; // 2秒でフェードイン
 
+                screenCenterY = window.innerHeight / 2; // 画面全体の中心のY座標更新
+
                 DeleteConfirmContainer();
                 CreateConfirmContainer();
 
                 //⑦確認画面アニメーションで表示
                 setTimeout(()=>{
                     CONFIRM_CONTAINER.style.opacity = "1";
+                    // クリックを有効化
+                    EnableClicks();
+
+                    // スクロールを有効化
+                    EnableScroll();
                 },50)
 
             }, 1600); //QUESTION_BOXフェードアウトと同時に CONFIRM_CONTAINERフェードイン
@@ -184,62 +207,24 @@ function ShowConfirm(){
     }, 2000);
 }
 
-function PhoneShowConfirm(){
+// クリックを無効化するための関数
+function DisableClicks() {
+    document.body.style.pointerEvents = 'none';
+}
 
-    //①画像のフェードアウト
-    QUESTION_IMG_CONTAINER.style.opacity = '0';
-    QUESTION_IMG_CONTAINER.style.transition = 'opacity 2s ease'; // 2秒でフェードアウト
-    BACK_BTN.style.opacity = '0';
-    QUESTION_INDEX.style.opacity = '0';
+// クリックを有効化するための関数
+function EnableClicks() {
+    document.body.style.pointerEvents = 'auto';
+}
 
-    //②画像が完全にフェードアウトするのを待つ
-    setTimeout(() => {
+// スクロールを無効化
+function DisableScroll() {
+    document.body.classList.add('no-scroll');
+}
 
-        //Y座標取得
-        let screenCenterY = window.innerHeight / 2; // 画面全体の中心のY座標
-        let questionBoxCenterY = QUESTION_BOX.getBoundingClientRect().top + QUESTION_BOX.offsetHeight / 2;//質問コンテナの中心のY座標
-        let translateY = screenCenterY - questionBoxCenterY; // 差分を計算
-
-        //③質問コンテナを中心に移動
-        QUESTION_BOX.style.transform = `translateY(${translateY}px)`;
-        QUESTION_BOX.style.transition = 'transform 1.5s ease, opacity 2s ease'; // 移動に1.5秒かけて中心に移動、フェードアウトに2秒
-
-        //④質問コンテナが中心に移動するのを待つ(1.5ｓ）
-        setTimeout(() => {
-
-            //⑤フェードアウト開始（2s/初期値opacity1）
-            QUESTION_BOX.style.opacity = "0"//
-
-            //⑥フェードアウト処理を待つ(1.6sかけて）
-            setTimeout(() => {
-
-                //初期値にリセット
-                BACK_BTN.style.opacity = '1';
-                QUESTION_INDEX.style.opacity = '1';
-                QUESTION_IMG_CONTAINER.style.opacity = "";
-                QUESTION_BOX.style.transform = "";
-                QUESTION_BOX.style.opacity = "";
-
-                QUESTION_CONTAINER.classList.add('hide');
-
-                // 確認画面表示アニメーション準備
-                CONFIRM_CONTAINER.classList.remove("hide");
-                CONFIRM_CONTAINER.style.opacity = "0";
-                CONFIRM_CONTAINER.style.transition = 'opacity 2s ease'; // 2秒でフェードイン
-
-                DeleteConfirmContainer();
-                CreateConfirmContainer();
-
-                //⑦確認画面アニメーションで表示
-                setTimeout(()=>{
-                    CONFIRM_CONTAINER.style.opacity = "1";
-                },50)
-
-            }, 1600); //QUESTION_BOXフェードアウトと同時に CONFIRM_CONTAINERフェードイン
-
-        }, 1500);
-
-    }, 2000);
+// スクロールを有効化
+function EnableScroll() {
+    document.body.classList.remove('no-scroll');
 }
 // ---------------------------------------[⑥結果の表示]---------------------------------------
 SHOW_RESULT_BTN.addEventListener("click",ShowResult);
@@ -464,8 +449,18 @@ function CreateConfirmContainer(){
 //[ON] 確認画面→質問画面へ戻るアニメーション&&機能
 function OnBackToQuestion(){
 
-    let moveX = questionBoxCenterX - screenCenterX;
-    CONFIRM_CONTAINER.style.transform = `translateX(${moveX}px)`;
+    // スクロールを無効化
+    DisableScroll();
+
+    DisableClicks();
+
+    if(window.innerWidth < 768){
+        let moveY = questionBoxCenterY - screenCenterY;
+        CONFIRM_CONTAINER.style.transform = `translateY(${moveY}px)`;
+    }else{
+        let moveX = questionBoxCenterX - screenCenterX;
+        CONFIRM_CONTAINER.style.transform = `translateX(${moveX}px)`;
+    }
     CONFIRM_CONTAINER.style.transition = 'transform 1.5s ease, opacity 2s ease'; // 移動に1.5秒かけて中心に移動、フェードアウトに2秒
     SHOW_RESULT_BTN.style.opacity = '0';
 
@@ -488,6 +483,10 @@ function OnBackToQuestion(){
             ShowQuestion();
             BACK_BTN.style.opacity = '0';
             BACK_BTN.classList.add("hide");
+
+            EnableScroll();
+            EnableClicks();
+
         }, 1600);
     }, 1500);
 }
