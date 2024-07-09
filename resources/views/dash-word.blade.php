@@ -10,7 +10,8 @@
                     <div class="flex flex-col w-full md:mx-auto mx-3 rounded-xl justify-center bg-main-bg">
                         <div class="m-5">
                             <p class="text-2xl font-bold my-3">〇〇様</p>
-                            <textarea id="top" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full my-5" rows="8">{{ $word['top'] }}</textarea>
+                            <p class="mail-description mt-5">※メール文章を入力してください</p>
+                            <textarea id="top" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full mb-5" rows="8">{{ $word['top'] }}</textarea>
                             <p id="preview-top" class="mail-preview hidden mt-10 ms-2">{!! nl2br(e($word['top'])) !!}</p>
                             <div class="flex w-full mt-8 mb-3">
                                 <div class="px-2" style="background-color: rgb(140, 130, 115)">
@@ -51,7 +52,8 @@
                                     <p class="link-btn mx-3">郵送受取は<br>こちら</p>
                                 </div>
                             </div>
-                            <textarea id="bottom" class="my-10 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" rows="8">{{ $word['bottom'] }}</textarea>
+                            <p class="mail-description mt-10">※メール文章を入力してください</p>
+                            <textarea id="bottom" class="mb-10 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" rows="8">{{ $word['bottom'] }}</textarea>
                             <p id="preview-bottom" class="mail-preview hidden pt-5 my-10 ms-2">{!! nl2br(e($word['bottom'])) !!}</p>
                         </div>
                     </div>

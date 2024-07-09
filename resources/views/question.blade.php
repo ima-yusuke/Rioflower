@@ -1,5 +1,5 @@
 <x-template title="診断ページ" css="app.css">
-    <div class="bg-main-bg flex flex-col justify-center items-center w-full md:h-[calc(100dvh-1rem-110px)]">
+    <div class="bg-main-bg flex flex-col justify-center items-center w-full md:h-[calc(100dvh-1rem-110px)] relative">
         {{--質問画面--}}
         <x-question-component></x-question-component>
 
@@ -8,6 +8,10 @@
 
         {{--結果画面--}}
         <x-result-component></x-result-component>
+
+        {{-- カーテン要素 --}}
+        <div id="curtain-left" class="curtain curtain-left hide"></div>
+        <div id="curtain-right" class="curtain curtain-right hide"></div>
     </div>
     @vite('resources/js/question.js')
     <script>

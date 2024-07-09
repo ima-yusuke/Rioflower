@@ -227,6 +227,9 @@ function EnableScroll() {
     document.body.classList.remove('no-scroll');
 }
 // ---------------------------------------[⑥結果の表示]---------------------------------------
+const CURTAIN_LEFT = document.getElementById('curtain-left');
+const CURTAIN_RIGHT = document.getElementById('curtain-right');
+
 SHOW_RESULT_BTN.addEventListener("click",ShowResult);
 
 function ShowResult() {
@@ -237,13 +240,43 @@ function ShowResult() {
         sessionStorage.setItem('scoreData', JSON.stringify(scoreArray));
     }
 
-    CONFIRM_CONTAINER.classList.add('hide');
-    RESULT_CONTAINER.classList.remove('hide');
+    CURTAIN_LEFT.classList.remove('hide');
+    CURTAIN_RIGHT.classList.remove('hide');
+    setTimeout(() => {
+        // カーテンを閉じる
+        CURTAIN_LEFT.classList.add('close-left');
+        CURTAIN_RIGHT.classList.add('close-right');
+        RESULT_CONTAINER.classList.add('curtain-fade-in');
+        document.body.classList.add('overflow-y-hidden');
+        // カーテンが閉じた後に画面を切り替え
+        setTimeout(() => {
+            CONFIRM_CONTAINER.classList.add('hide');
+            RESULT_CONTAINER.classList.remove('hide');
 
-    CreateResult(scoreArray)
+            CreateResult(scoreArray)
 
-    let productId = scoreArray[0]["product_id"];
-    ShowQuill(productId);
+            let productId = scoreArray[0]["product_id"];
+            ShowQuill(productId);
+
+            // カーテンのクラスをリセット
+            setTimeout(() => {
+                CURTAIN_LEFT.classList.remove('close-left', 'open-left');
+                CURTAIN_RIGHT.classList.remove('close-right', 'open-right');
+                CURTAIN_LEFT.classList.add('curtain-left');
+                CURTAIN_RIGHT.classList.add('curtain-right');
+            }, 1000);
+            setTimeout(() => {
+                RESULT_CONTAINER.classList.remove('curtain-fade-in');
+                RESULT_CONTAINER.classList.add('curtain-show');
+            }, 1000);
+            setTimeout(() => {
+                CURTAIN_LEFT.classList.add('hide');
+                CURTAIN_RIGHT.classList.add('hide');
+                document.body.classList.remove('overflow-x-hidden');
+                document.body.classList.remove('overflow-y-hidden');
+            }, 1500);
+        }, 1000);
+    }, 0);
 }
 
 // --------------------------------------[質問画面/機能]--------------------------------------
@@ -808,8 +841,8 @@ function ReShowResult(scoreData) {
     QUESTION_CONTAINER.classList.add('hide');
     CONFIRM_CONTAINER.classList.add('hide');
     RESULT_CONTAINER.classList.remove('hide');
-
-    CreateResult(scoreArray)
+    document.body.classList.remove('overflow-x-hidden');
+    CreateResult(scoreArray);
 
     let productId = scoreArray[0]["product_id"];
     ShowQuill(productId);
@@ -837,7 +870,7 @@ window.addEventListener('unload', function() {
         });
 });
 
-// ナビゲーションバー
+// [結果画面]ナビゲーションバー
 const NAV_TOGGLE_BUTTON = document.getElementById('navToggleButton');
 const TOGGLE_HIDE = document.getElementById('toggleHide');
 const TOGGLE_SHOW = document.getElementById('toggleShow');

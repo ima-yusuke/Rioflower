@@ -23,11 +23,17 @@ document.getElementById('preview-btn').addEventListener('click', function() {
         document.querySelectorAll('.mail-preview').forEach((element) => {
             element.classList.add('hidden');
         });
+        document.querySelectorAll('.mail-description').forEach((element) => {
+            element.classList.remove('hidden');
+        });
         document.getElementById('top').classList.remove('hidden');
         document.getElementById('bottom').classList.remove('hidden');
     } else {
         document.querySelectorAll('.mail-preview').forEach((element) => {
             element.classList.remove('hidden');
+        });
+        document.querySelectorAll('.mail-description').forEach((element) => {
+            element.classList.add('hidden');
         });
         document.getElementById('top').classList.add('hidden');
         document.getElementById('bottom').classList.add('hidden');
