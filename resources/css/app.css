@@ -282,7 +282,7 @@
 
 .curtain-show {
     opacity: 1;
-    transition: opacity 0.9s ease;
+    transition: opacity 1s ease;
 }
 
 /*[結果画面]*/
