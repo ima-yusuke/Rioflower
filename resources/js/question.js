@@ -842,6 +842,7 @@ function ReShowResult(scoreData) {
     CONFIRM_CONTAINER.classList.add('hide');
     RESULT_CONTAINER.classList.remove('hide');
     document.body.classList.remove('overflow-x-hidden');
+    document.body.classList.remove('overflow-y-hidden');
     CreateResult(scoreArray);
 
     let productId = scoreArray[0]["product_id"];
