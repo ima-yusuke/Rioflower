@@ -10,8 +10,8 @@
         <x-result-component></x-result-component>
 
         {{-- カーテン要素 --}}
-        <div id="curtain-left" class="curtain curtain-left hide"></div>
-        <div id="curtain-right" class="curtain curtain-right hide"></div>
+        <div id="curtain-left" class="curtain absolute top-0 left-0 w-0 h-full"></div>
+        <div id="curtain-right" class="curtain absolute top-0 right-0 w-0 h-full"></div>
     </div>
     @vite('resources/js/question.js')
     <script>

@@ -8,11 +8,14 @@
                     close
                 </span>
             </div>
-            <div id="toggleShow" class="">
+            <div id="toggleShow" class="relative">
                 <i class="bi bi-chevron-double-right"></i>
                 <span class="nav-text">
                     show
                 </span>
+                <div class="absolute flex justify-center items-center -top-28 left-10 w-[100px] h-[100px] bg-white">
+                    <p class="z-50 text-black">その他のおすすめは<br>こちら</p>
+                </div>
             </div>
         </button>
         <!-- その他おすすめ画像の表示エリア -->
