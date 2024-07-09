@@ -215,7 +215,12 @@
 .curtain {
     background: rgb(191,158,116);
     z-index: 1000;
-    transition: width 1s ease;
+    @media (min-width: 768px) {
+        transition: width 1s ease;
+    }
+    @media (max-width: 767px) {
+        transition: height 1s ease;
+    }
 }
 /* 画面のフェードイン */
 .curtain-fade-in {

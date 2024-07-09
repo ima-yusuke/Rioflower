@@ -240,10 +240,17 @@ function ShowResult() {
         sessionStorage.setItem('scoreData', JSON.stringify(scoreArray));
     }
     // カーテンを閉じる
-    CURTAIN_LEFT.classList.remove('w-0')
-    CURTAIN_RIGHT.classList.remove('w-0')
-    CURTAIN_LEFT.classList.add('w-1/2');
-    CURTAIN_RIGHT.classList.add('w-1/2');
+    if (window.innerWidth < 768) {
+        CURTAIN_LEFT.classList.remove('h-0')
+        CURTAIN_RIGHT.classList.remove('h-0')
+        CURTAIN_LEFT.classList.add('h-1/2');
+        CURTAIN_RIGHT.classList.add('h-1/2');
+    } else {
+        CURTAIN_LEFT.classList.remove('md:w-0')
+        CURTAIN_RIGHT.classList.remove('md:w-0')
+        CURTAIN_LEFT.classList.add('md:w-1/2');
+        CURTAIN_RIGHT.classList.add('md:w-1/2');
+    }
 
     // カーテンが閉じた後に画面を切り替え
     setTimeout(() => {
@@ -264,10 +271,17 @@ function ShowResult() {
 
         // カーテンのクラスをリセット
         setTimeout(() => {
-            CURTAIN_LEFT.classList.remove('w-1/2');
-            CURTAIN_RIGHT.classList.remove('w-1/2');
-            CURTAIN_RIGHT.classList.add('w-0');
-            CURTAIN_LEFT.classList.add('w-0');
+            if (window.innerWidth < 768) {
+                CURTAIN_LEFT.classList.remove('h-1/2');
+                CURTAIN_RIGHT.classList.remove('h-1/2');
+                CURTAIN_RIGHT.classList.add('h-0');
+                CURTAIN_LEFT.classList.add('h-0');
+            } else {
+                CURTAIN_LEFT.classList.remove('md:w-1/2');
+                CURTAIN_RIGHT.classList.remove('md:w-1/2');
+                CURTAIN_RIGHT.classList.add('md:w-0');
+                CURTAIN_LEFT.classList.add('md:w-0');
+            }
         }, 1000);
     }, 1000);
 }
