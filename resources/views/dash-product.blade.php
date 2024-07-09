@@ -9,19 +9,21 @@
             @foreach($products as $idx=>$value)
                 <div class="qa__item bg-white border border-solid border-gray-200 w-[80%] shrink-0">
                     {{--既存商品名--}}
-                    <div class="qa__head js-ac flex items-center justify-between gap-4 py-6 px-2 ml-4">
-                        <div class="product-title flex flex-col gap-2">
+                    <div class="qa__head js-ac flex flex-col md:flex-row items-start md:items-center justify-between gap-4 py-6 px-2 ml-4">
+                        <div class="product-title flex flex-col">
                             <p class="text-xs md:text-base lg:text-lg font-bold leading-6 opacity-90">{{$value["name"]}}</p>
                         </div>
-                        <aside>
-                            <label class="inline-flex items-center cursor-pointer mr-4">
+                        <aside class="flex gap-4 md:gap-6">
+                            <label class="inline-flex items-center cursor-pointer">
                                 <span class="text-xs ms-3 md:text-sm font-medium text-gray-900 mr-2">非表示</span>
                                 <input type="checkbox" value="{{$value['id']}}" class="toggleBtn sr-only peer" checked>
                                 <div class="relative w-7 h-4 sm:w-11 sm:h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 sm:after:h-5 sm:after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 <span class="text-xs ms-3 md:text-sm font-medium text-gray-900 dark:text-gray-300">表示</span>
                             </label>
-                            <a data-product-id="{{$value["id"]}}" class="editBtn text-xs md:text-base font-medium text-blue-600 hover:underline mr-4">編集</a>
-                            <a data-product-id="{{$value["id"]}}" class="deleteBtn text-xs md:text-base font-medium text-blue-600 hover:underline">削除</a>
+                            <div class="flex">
+                                <a data-product-id="{{$value["id"]}}" class="editBtn text-xs md:text-base font-medium text-blue-600 hover:underline mr-4">編集</a>
+                                <a data-product-id="{{$value["id"]}}" class="deleteBtn text-xs md:text-base font-medium text-blue-600 hover:underline">削除</a>
+                            </div>
                         </aside>
                     </div>
 
@@ -97,7 +99,9 @@
                         </p>
                     </div>
                     <aside>
-                        <a class="editBtn addProductBtn text-xs md:text-base font-medium text-blue-600 hover:underline">編集</a>
+                        <div>
+                            <a class="editBtn addProductBtn text-xs md:text-base font-medium text-blue-600 hover:underline">編集</a>
+                        </div>
                     </aside>
                 </div>
 
@@ -167,18 +171,20 @@
 
         @foreach($hiddenProducts as $idx=>$value)
             <div class="qa__item bg-white border border-solid border-gray-200 w-[80%] shrink-0">
-                <div class="qa__head js-ac flex items-center justify-between gap-4 py-6 px-2 ml-4">
+                <div class="qa__head js-ac flex flex-col md:flex-row items-start md:items-center justify-between gap-4 py-6 px-2 ml-4">
                     <div>
                         <p class="text-xs md:text-base lg:text-lg font-bold leading-6 opacity-90">{{$value["name"]}}</p>
                     </div>
-                    <aside>
-                        <label class="inline-flex items-center cursor-pointer mr-4">
+                    <aside class="flex gap-4 md:gap-6 mr-2">
+                        <label class="inline-flex items-center cursor-pointer">
                             <span class="ms-3 text-xs md:text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">非表示</span>
                             <input type="checkbox" value="{{$value['id']}}" class="toggleBtn sr-only peer">
                             <div class="relative w-7 h-4 sm:w-11 sm:h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 sm:after:h-5 sm:after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                             <span class="ms-3 text-xs md:text-sm font-medium text-gray-900 dark:text-gray-300">表示</span>
                         </label>
-                        <a data-product-id="{{$value["id"]}}" class="deleteBtn text-xs md:text-base font-medium text-blue-600 hover:underline">削除</a>
+                        <div class="flex justify-end">
+                            <a data-product-id="{{$value["id"]}}" class="deleteBtn text-xs md:text-base font-medium text-blue-600 hover:underline">削除</a>
+                        </div>
                     </aside>
                 </div>
             </div>
@@ -191,11 +197,5 @@
     // Quillデータの受け渡し
     window.Laravel = {};
     window.Laravel.data = @json($details);
-
-    let div = document.querySelectorAll("body > div")[0];
-    div.classList.remove("h-[100dvh]"); // 100dvh を削除
-    div.classList.add("h-full"); // h-full を追加
-    div.style.minHeight = "100vh"; // 最低でも画面の高さになるように設定
-
 </script>
 

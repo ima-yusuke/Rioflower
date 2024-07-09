@@ -23,7 +23,7 @@ EDIT_BUTTONS.forEach((btn,idx) => {
         currentIndex = idx;
         selectedId = this.getAttribute('data-product-id');
 
-        let selectedAccordion = btn.parentNode.parentNode.nextElementSibling;//アコーディオン中身
+        let selectedAccordion = btn.parentNode.parentNode.parentNode.nextElementSibling;//アコーディオン中身
 
         ToggleAccordion(selectedAccordion, btn);
 
@@ -66,15 +66,22 @@ function ToggleAccordion(selectedAccordion, btn) {
         selectedAccordion.classList.remove('visible');
         btn.innerHTML = "編集";
     } else {
+        // すべてのアコーディオンを閉じる
+        document.querySelectorAll('.qa__body').forEach(content => {
+            content.classList.remove('visible');
+        });
+
+        // すべてのボタンのテキストをリセット
         EDIT_BUTTONS.forEach(button => {
-            let tmpBody = button.parentNode.parentNode.nextElementSibling;
-            tmpBody.classList.remove('visible');
             button.innerHTML = "編集";
         });
+
+        // 選択されたアコーディオンを開く
         selectedAccordion.classList.add('visible');
         btn.innerHTML = "閉じる";
     }
 }
+
 
 
 // [Quill作成]
@@ -226,32 +233,34 @@ for(let  i =0;i<SUBMIT_BUTTONS.length;i++){
 
 // ---------------------------------------------------
 //商品追加
-ADD_BUTTON.addEventListener('click', function() {
-    const formData = new FormData(FORM_ELEMENT);
-    const imgInput = document.getElementById('img');
-    const nameInput = document.getElementById('new_product_name');
+if(ADD_BUTTON!==null){
+    ADD_BUTTON.addEventListener('click', function() {
+        const formData = new FormData(FORM_ELEMENT);
+        const imgInput = document.getElementById('img');
+        const nameInput = document.getElementById('new_product_name');
 
-    // バリデーション
-    if (!imgInput.files.length) {
-        alert('商品画像を選択してください。');
-        return;
-    }
+        // バリデーション
+        if (!imgInput.files.length) {
+            alert('商品画像を選択してください。');
+            return;
+        }
 
-    // バリデーション
-    if (nameInput.value.trim() === "") {
-        alert('商品名を入力してください。');
-        return;
-    }
+        // バリデーション
+        if (nameInput.value.trim() === "") {
+            alert('商品名を入力してください。');
+            return;
+        }
 
-    FetchData('/dashboard/product', 'POST',null, formData)
-        .then(data => {
-            alert(data.message);
-            window.location.href = data.redirect;
-        })
-        .catch(error => {
-            alert(error.message);
-        });
-});
+        FetchData('/dashboard/product', 'POST',null, formData)
+            .then(data => {
+                alert(data.message);
+                window.location.href = data.redirect;
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+    });
+}
 
 
 //商品更新
