@@ -13,8 +13,8 @@
                 <span class="nav-text">
                     show
                 </span>
-                <div class="absolute flex justify-center items-center -top-28 left-10 w-[100px] h-[100px] bg-white">
-                    <p class="z-50 text-black">その他のおすすめは<br>こちら</p>
+                <div class="absolute md:-top-28 top-10 md:left-10 left-8 md:w-28 w-20 md:h-24 h-20 flex justify-center items-center recommend-img">
+                    <div>その他の<br>おすすめ</div>
                 </div>
             </div>
         </button>

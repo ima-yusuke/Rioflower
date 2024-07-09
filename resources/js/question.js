@@ -244,6 +244,7 @@ function ShowResult() {
     CURTAIN_RIGHT.classList.remove('w-0')
     CURTAIN_LEFT.classList.add('w-1/2');
     CURTAIN_RIGHT.classList.add('w-1/2');
+
     // カーテンが閉じた後に画面を切り替え
     setTimeout(() => {
         CONFIRM_CONTAINER.classList.add('hide');
@@ -256,6 +257,7 @@ function ShowResult() {
             RESULT_CONTAINER.classList.add('curtain-show');
         }, 1000);
 
+        // 結果画面作成
         CreateResult(scoreArray)
         let productId = scoreArray[0]["product_id"];
         ShowQuill(productId);
