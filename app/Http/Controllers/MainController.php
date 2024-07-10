@@ -13,7 +13,6 @@ use App\Models\Product_attributes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Mail\CustomerRegistered;
 use Illuminate\Support\Facades\Mail;
 
 class MainController extends Controller
@@ -90,19 +89,7 @@ class MainController extends Controller
             $customer->product_id = $request->product_id;
             $customer->save();
 
-            // 追加データの取得
-//            $product = Product::find($request->product_id);
-//            $details = Detail::where('product_id', $request->product_id)->get();
-//            $word = Word::first();
-//            $link = Link::where('id', $product->price)->first();
-
             DB::commit();
-
-            // メール送信
-//            $mail = new CustomerRegistered($customer, $product, $details, $word, $link);
-//            Mail::to($customer->email)
-//                ->bcc('bcc@example.com') // BCCに追加のアドレス
-//                ->send($mail);
 
             Mail::send('emails.customer_registered', ['html' => $request->html], function ($message) use ($request) {
                 $message->to($request->email);

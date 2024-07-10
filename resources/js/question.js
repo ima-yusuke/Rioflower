@@ -44,6 +44,24 @@ let selectedAnswersArray = [];
 // スコア
 let scoreArray =[];
 
+// --------------------------------------[⓪ロード画面]--------------------------------------
+if (sessionStorage.getItem('scoreData') == null) {
+    document.addEventListener("DOMContentLoaded", function() {
+        const LOADING = document.getElementById('loading');
+        const QUESTION_CONTENT = document.getElementById('question-content');
+        setTimeout(() => {
+            LOADING.classList.add('hide'); // ローディング画面を非表示
+            QUESTION_CONTENT.classList.remove('hide'); // 質問画面を表示
+        }, 1500);
+    });
+} else {
+    // ロード画面を非表示
+    const LOADING = document.getElementById('loading');
+    const QUESTION_CONTENT = document.getElementById('question-content');
+    LOADING.classList.add('hide');
+    QUESTION_CONTENT.classList.remove('hide');
+}
+
 // --------------------------------------[①質問開始]--------------------------------------
 function StartQuiz() {
     RESULT_CONTAINER.classList.add('hide')
@@ -323,10 +341,19 @@ function CreateAnswers(){
 
         QUESTION_ANSWERS_CONTAINER.appendChild(ANSWER_BTN)
 
-        setTimeout(() => {
-            ANSWER_BTN.style.opacity = '1';
-            ANSWER_BTN.style.transform = 'translateY(0)';
-        }, idx * 300);
+        if (currentQuestionIdx === 0) {
+            setTimeout(() => {
+                setTimeout(() => {
+                    ANSWER_BTN.style.opacity = '1';
+                    ANSWER_BTN.style.transform = 'translateY(0)';
+                }, idx * 300);
+            }, 1500);
+        } else {
+            setTimeout(() => {
+                ANSWER_BTN.style.opacity = '1';
+                ANSWER_BTN.style.transform = 'translateY(0)';
+            }, idx * 300);
+        }
 
         // 選択肢をクリックをする
         ANSWER_BTN.addEventListener('click', ()=>{
