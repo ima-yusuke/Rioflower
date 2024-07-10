@@ -7,7 +7,7 @@
         {{--画像と質問--}}
         <div class="flex flex-col items-center justify-center md:flex-row gap-6 md:gap-28 w-full">
             {{--左側コンテンツ（画像）--}}
-            <div id="question_img" class="w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-3xl">
+            <div id="question_img" class="w-[120px] h-[120px] md:w-[500px] md:h-[500px] rounded-full md:rounded-3xl">
                 <img src="{{ asset('storage/img/botanical.jpg') }}" class="question-img back">
             </div>
 
@@ -29,7 +29,7 @@
     </div>
 
     {{--戻るボタン--}}
-    <button id="back_btn" class="md:absolute md:bottom-16 md:left-4 text-main-brown bg-white rounded-full shadow-back-btn-shadow flex justify-center items-center h-[60px] w-[60px] ml-4 mt-4 font-bold hide">
+    <button id="back_btn" class="absolute md:bottom-16 md:left-4 text-main-brown bg-white rounded-full shadow-back-btn-shadow flex justify-center items-center h-[60px] w-[60px] ml-4 md:mt-4 font-bold hide">
        <span class="text-sm">戻る</span>
     </button>
 

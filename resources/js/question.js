@@ -18,9 +18,11 @@ let screenCenterX = window.innerWidth / 2; // 画面全体の中心のx座標
 let questionBoxCenterX = 0;//質問コンテナのx座標を保存
 let screenCenterY = window.innerHeight / 2; // 画面全体の中心のY座標
 let questionBoxCenterY = 0//質問コンテナの中心のY座標
+let testY = 0;
 
 // 確認画面
 const CONFIRM_CONTAINER = document.getElementById("confirm_container");
+const CONFIRM_BOX = document.getElementById("confirm");
 const CONFIRM_ANSWERS_CONTAINER = document.getElementById("confirm_box");
 const SHOW_RESULT_BTN = document.getElementById("show_result_btn");
 
@@ -119,10 +121,10 @@ function SelectAnswer(idx,choiceId) {
         // デバイスによりアニメーションを変更
         if(window.innerWidth < 768){
             ShowConfirm()
-            CONFIRM_CONTAINER.classList.add("min-h-screen")
+            // CONFIRM_CONTAINER.classList.add("min-h-screen")
         }else{
             if (CONFIRM_CONTAINER.classList.contains("min-h-screen")) {
-                CONFIRM_CONTAINER.classList.remove("min-h-screen")
+                // CONFIRM_CONTAINER.classList.remove("min-h-screen")
             }
             ShowConfirm()
         }
@@ -193,11 +195,23 @@ function ShowConfirm(){
                 //⑦確認画面アニメーションで表示
                 setTimeout(()=>{
                     CONFIRM_CONTAINER.style.opacity = "1";
+
+                    if(window.innerWidth < 768) {
+                        let confirmCenterY = CONFIRM_BOX.getBoundingClientRect().top + CONFIRM_BOX.offsetHeight / 2; // 確認画面の中心のY座標取得
+                        let translateY = screenCenterY - confirmCenterY; // 中心に移動するための差分を計算
+                        CONFIRM_BOX.style.transform = `translateY(${translateY}px)`;
+                        testY = translateY;
+                    }else{
+                        let confirmCenterX = CONFIRM_BOX.getBoundingClientRect().left + CONFIRM_BOX.offsetWidth / 2; // 確認画面の中心のX座標取得
+                        let translateX = screenCenterX - confirmCenterX; // 中心に移動するための差分を計算
+                        CONFIRM_BOX.style.transform = `translateX(${translateX}px)`;
+                    }
                     // クリックを有効化
                     EnableClicks();
 
                     // スクロールを有効化
                     EnableScroll();
+
                 },50)
 
             }, 1600); //QUESTION_BOXフェードアウトと同時に CONFIRM_CONTAINERフェードイン
@@ -487,49 +501,63 @@ function CreateConfirmContainer(){
 }
 
 //[ON] 確認画面→質問画面へ戻るアニメーション&&機能
-function OnBackToQuestion(){
-
+function OnBackToQuestion() {
     // スクロールを無効化
     DisableScroll();
-
     DisableClicks();
 
-    if(window.innerWidth < 768){
-        let moveY = questionBoxCenterY - screenCenterY;
-        CONFIRM_CONTAINER.style.transform = `translateY(${moveY}px)`;
-    }else{
-        let moveX = questionBoxCenterX - screenCenterX;
-        CONFIRM_CONTAINER.style.transform = `translateX(${moveX}px)`;
-    }
-    CONFIRM_CONTAINER.style.transition = 'transform 1.5s ease, opacity 2s ease'; // 移動に1.5秒かけて中心に移動、フェードアウトに2秒
-    SHOW_RESULT_BTN.style.opacity = '0';
+    SHOW_RESULT_BTN.style.display = 'none';
 
-    // 移動が終わった後、フェードアウトを開始
+    // 既存の transform をリセット
+    // CONFIRM_BOX.style.transform = "";
+    CONFIRM_BOX.style.transition = 'none';
+
+    // 強制的にリフローを行う（ブラウザの再描画を強制）
+    CONFIRM_BOX.offsetHeight;
+
+    // トランジションを再度有効化
+    CONFIRM_BOX.style.transition = 'transform 1.5s ease, opacity 2s ease';
+
+    // 新しい transform を適用
     setTimeout(() => {
-        CONFIRM_CONTAINER.style.opacity = "0";
+        let currentRect = CONFIRM_BOX.getBoundingClientRect();
 
-        // 再度1.6s秒後に次の処理を実行するためのタイマーを設定
+        if (window.innerWidth < 768) {
+            let moveY = (questionBoxCenterY - (currentRect.top + currentRect.height / 2) )+ testY
+            CONFIRM_BOX.style.transform = `translateY(${moveY}px)`;
+        } else {
+            let moveX = questionBoxCenterX - (currentRect.left + currentRect.width / 2);
+            CONFIRM_BOX.style.transform = `translateX(${moveX}px)`;
+        }
+
+        // 移動が終わった後、フェードアウトを開始
         setTimeout(() => {
-            // 位置と透明度のリセット
-            CONFIRM_CONTAINER.style.transform = '';
-            CONFIRM_CONTAINER.style.transition = ''; // トランジションもリセット
-            CONFIRM_CONTAINER.style.opacity = '';
-            SHOW_RESULT_BTN.style.opacity = '1';
+            CONFIRM_CONTAINER.style.opacity = "0";
 
-            CONFIRM_CONTAINER.classList.add("hide");
-            QUESTION_CONTAINER.classList.remove('hide');
-            DeleteQuestionAnswers();
-            ShowCurrentQstNum();
-            ShowQuestion();
-            BACK_BTN.style.opacity = '0';
-            BACK_BTN.classList.add("hide");
+            // 再度1.6秒後に次の処理を実行するためのタイマーを設定
+            setTimeout(() => {
+                // 位置と透明度のリセット
+                CONFIRM_BOX.style.transform = '';
+                CONFIRM_BOX.style.transition = ''; // トランジションもリセット
+                CONFIRM_CONTAINER.style.opacity = '';
+                SHOW_RESULT_BTN.style.display = 'block';
 
-            EnableScroll();
-            EnableClicks();
+                CONFIRM_CONTAINER.classList.add("hide");
+                QUESTION_CONTAINER.classList.remove('hide');
+                DeleteQuestionAnswers();
+                ShowCurrentQstNum();
+                ShowQuestion();
+                BACK_BTN.style.opacity = '0';
+                BACK_BTN.classList.add("hide");
 
-        }, 1600);
-    }, 1500);
+                EnableScroll();
+                EnableClicks();
+
+            }, 1600);
+        }, 1500);
+    }, 50); // 少し待ってから適用することでリセット後の新しいtransformを適用
 }
+
 
 //[DELETE] 現在表示している質問＆回答を全て削除（回答修正に対応するため）
 function DeleteConfirmContainer(){

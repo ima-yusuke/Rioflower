@@ -1,5 +1,5 @@
 <x-template title="診断ページ" css="app.css">
-    <div class="bg-main-bg flex flex-col justify-center items-center w-full md:h-[calc(100dvh-1rem-110px)] relative">
+    <div class="bg-main-bg flex flex-col justify-center items-center w-full md:h-[calc(100dvh-1rem-110px)] h-full relative">
         {{--質問画面--}}
         <x-question-component></x-question-component>
 
@@ -11,7 +11,7 @@
 
         {{-- カーテン要素 --}}
         <div id="curtain-left" class="curtain absolute top-0 left-0 md:w-0 w-full md:h-full h-0"></div>
-        <div id="curtain-right" class="curtain absolute md:top-0 bottom-0 left-0 md:w-0 w-full md:h-full h-0"></div>
+        <div id="curtain-right" class="curtain absolute md:top-0 bottom-0 right-0 md:w-0 w-full md:h-full h-0"></div>
     </div>
     @vite('resources/js/question.js')
     <script>
