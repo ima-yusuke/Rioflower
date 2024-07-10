@@ -8,7 +8,7 @@
                     close
                 </span>
             </div>
-            <div id="toggleShow" class="relative flex flex-col justify-center items-center">
+            <div id="toggleShow" class="pt-1 md:pt-3">
                 <i class="bi bi-chevron-double-right"></i>
                 <span class="nav-text">
                     show
