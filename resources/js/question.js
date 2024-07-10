@@ -275,8 +275,8 @@ function ShowResult() {
     if (window.innerWidth < 768) {
         CURTAIN_LEFT.classList.remove('h-0')
         CURTAIN_RIGHT.classList.remove('h-0')
-        CURTAIN_LEFT.classList.add('h-1/2');
-        CURTAIN_RIGHT.classList.add('h-1/2');
+        CURTAIN_LEFT.style.height = '50%';
+        CURTAIN_RIGHT.style.height = '50%';
     } else {
         CURTAIN_LEFT.classList.remove('md:w-0')
         CURTAIN_RIGHT.classList.remove('md:w-0')
@@ -304,8 +304,8 @@ function ShowResult() {
         // カーテンのクラスをリセット
         setTimeout(() => {
             if (window.innerWidth < 768) {
-                CURTAIN_LEFT.classList.remove('h-1/2');
-                CURTAIN_RIGHT.classList.remove('h-1/2');
+                CURTAIN_LEFT.style.height = '';
+                CURTAIN_RIGHT.style.height = '';
                 CURTAIN_RIGHT.classList.add('h-0');
                 CURTAIN_LEFT.classList.add('h-0');
             } else {
