@@ -1,43 +1,26 @@
 <div id="result_container" class="relative flex flex-col justify-center items-center hide gap-8 w-full">
-    <x-nav-menu />
-    <div class="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 h-full md:w-full w-full">
-        {{--左側詳細--}}
-        <div class="w-full md:w-[50%] relative flex flex-col md:flex-row md:gap-0">
-            {{--１位商品詳細--}}
-            <div id="big_ball" class="big-ball w-[450px] md:w-[90vh] h-[450px] md:h-[90vh] bg-main-brown rounded-full">
-                <img id="result_img" class="result-img w-2/3 h-2/3">
-            </div>
 
-            <!-- その他おすすめ画像の表示エリア -->
-{{--            <div id="other_images_container" class="md:absolute md:bottom-12 z-30 w-full flex justify-center gap-x-12 md:gap-32 md:mt-6">--}}
-{{--                <div class="hidden" data-id="">--}}
-{{--                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
-{{--                    <p>【第1位】</p>--}}
-{{--                </div>--}}
-{{--                <div class="other-img-container" data-id="" >--}}
-{{--                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
-{{--                    <p>【第2位】</p>--}}
-{{--                </div>--}}
-{{--                <div class="other-img-container" data-id="">--}}
-{{--                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
-{{--                    <p>【第3位】</p>--}}
-{{--                </div>--}}
-{{--                <div class="other-img-container" data-id="">--}}
-{{--                    <img class="otherImg object-cover rounded-full w-[70px] md:w-[100px] h-[70px] md:h-[100px]">--}}
-{{--                    <p>【第4位】</p>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+    <x-nav-menu />
+
+    {{--1位画像--}}
+    <img id="result_img" class="result-img left-[50%] top-6 md:left-[10%] md:top-[50%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] shadow-back-btn-shadow">
+
+    <div class="flex flex-col md:flex-row justify-between items-center h-full md:w-full w-full">
+        {{--左側詳細--}}
+        <div class="w-full md:w-[50%] md:relative flex flex-col md:flex-row md:gap-0">
+            {{--茶色ボール--}}
+            <div id="big_ball" class="big-ball md:relative w-[450px] md:w-[95vh] h-[450px] md:h-[95vh] bg-main-brown rounded-full"></div>
         </div>
 
         {{--右側詳細--}}
         <div class="flex flex-col justify-center items-center gap-4 md:w-[50%] mx-10 w-full mb-3">
             <div class="flex flex-col gap-4 w-full">
                 {{--タイトル--}}
-                <div class="font-bold flex flex-col gap-2">
-                    <p class="text-center">あなたにおすすめなのは</p>
+                <div class="font-bold flex flex-col md:items-start items-center gap-2 md:ml-4">
+                    <p class="text-center">あなたにおすすめなのは商品名:</p>
                     <div class="relative">
                         <aside class="flex justify-center items-center md:items-end gap-2">
-                            <h2 class="text-2xl md:text-4xl">商品名:<span id="result_p_name"></span></h2>
+                            <h2 class="text-2xl md:text-4xl text-main-brown"><span id="result_p_name"></span></h2>
                             <p>です！</p>
                         </aside>
                         <div id="recommend-wrapper" class="absolute top-0 left-0 w-full h-full bg-main-bg opacity-0">
@@ -49,8 +32,7 @@
                 {{--Quill表示エリア--}}
                 <div class="relative md:h-[450px] h-[400px] mx-4 md:mx-0" id="quill_view_container">
                     <p class=""></p>
-                    <div id="viewer" class="bg-detail-bg">
-                    </div>
+                    <div id="viewer" class="quill-bg"></div>
                     <div id="viewer-wrapper" class="absolute top-0 left-0 h-full w-full bg-white opacity-0 -z-10"></div>
                 </div>
 
@@ -67,6 +49,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- 購入 modal -->
 <div id="default-modal1" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
