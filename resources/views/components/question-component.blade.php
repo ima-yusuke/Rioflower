@@ -8,7 +8,7 @@
         <div class="flex flex-col items-center justify-center md:flex-row gap-6 md:gap-28 w-full">
             {{--左側コンテンツ（画像）--}}
             <div id="question_img" class="w-[120px] h-[120px] md:w-[500px] md:h-[500px] rounded-full md:rounded-3xl">
-                <img src="{{ asset('storage/img/botanical.jpg') }}" class="question-img back">
+                <img src="{{ asset('storage/img/botanical.jpg') }}" class="question-img back" draggable="false">
             </div>
 
             {{--右側コンテンツ（質問＆選択肢）--}}

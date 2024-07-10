@@ -336,15 +336,6 @@ html{
     left: -310px;
 }
 
-.recommend-img {
-    color: black;
-    border-radius: 35% 35% 35% 3%;
-    @media (max-width: 767px) {
-        border-radius: 5% 35% 35% 35%;
-    }
-    background-color: rgb(237 230 215);
-}
-
 .nav-text {
     writing-mode: vertical-rl;
     text-orientation: sideways;
@@ -697,3 +688,19 @@ html{
     background: #000;
 }
 /*interact.js終了*/
+
+/*[nav]*/
+#toggleShow {
+    line-height: 2rem;
+    height: 100%;
+    background-position: right center;
+    background-size: 200% auto;
+    -webkit-animation: pulse 2s infinite;
+    animation: ripple 1.5s infinite;
+}
+
+@keyframes ripple {
+    0% {box-shadow: 0 0 0 0 rgb(254,135,185);}
+    70% {box-shadow: 0 0 0 20px rgb(254 135 185 / 0%);}
+    100% {box-shadow: 0 0 0 0 rgb(254 135 185 / 0%);}
+}

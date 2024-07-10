@@ -41,7 +41,7 @@
             <p class="py-1">【商品詳細】</p>
             <p class="ms-2" id="detail"></p>
             <div class="mt-8 flex justify-center">
-                <img class="md:w-2/3 w-full rounded-3xl" src="{{ asset($product->img) }}" alt="product">
+                <img class="md:w-2/3 w-full rounded-3xl" src="{{ asset($product->img) }}" alt="product" draggable="false">
             </div>
             <div id="link-area" class="mail hidden flex-col mt-8">
                 <div class="flex w-full mt-8 mb-8">

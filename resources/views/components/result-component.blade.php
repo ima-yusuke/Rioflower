@@ -3,7 +3,7 @@
     <x-nav-menu />
 
     {{--1位画像--}}
-    <img id="result_img" class="result-img left-[50%] top-6 md:left-[10%] md:top-[50%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] shadow-back-btn-shadow">
+    <img id="result_img" class="result-img left-[50%] top-6 md:left-[10%] md:top-[50%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] shadow-back-btn-shadow" draggable="false">
 
     <div class="flex flex-col md:flex-row justify-between items-center h-full md:w-full w-full">
         {{--左側詳細--}}
@@ -32,7 +32,7 @@
                 <div class="relative md:h-[450px] h-[400px] mx-4 md:mx-0" id="quill_view_container">
                     <p class=""></p>
                     <div id="viewer" class="quill-bg"></div>
-                    <div id="viewer-wrapper" class="absolute top-0 left-0 h-full w-full bg-white opacity-0 -z-10"></div>
+                    <div id="viewer-wrapper" class="absolute top-0 left-0 h-full w-full opacity-0 -z-10" style="background-color: rgb(237,230,215)"></div>
                 </div>
 
                 {{--ボタン--}}

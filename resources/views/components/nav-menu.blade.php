@@ -8,14 +8,11 @@
                     close
                 </span>
             </div>
-            <div id="toggleShow" class="relative">
+            <div id="toggleShow" class="relative flex flex-col justify-center items-center">
                 <i class="bi bi-chevron-double-right"></i>
                 <span class="nav-text">
                     show
                 </span>
-                <div class="absolute md:-top-28 top-10 md:left-10 left-8 md:w-28 w-20 md:h-24 h-20 flex justify-center items-center recommend-img">
-                    <div>その他の<br>おすすめ</div>
-                </div>
             </div>
         </button>
         <!-- その他おすすめ画像の表示エリア -->

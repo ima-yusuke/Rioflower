@@ -10,7 +10,7 @@
             <span>Loading</span>
         </div>
     </div>
-    <div id="question-content" class="bg-main-bg flex flex-col justify-center items-center w-full md:h-[calc(100dvh-1rem-110px)] h-full relative hide">
+    <div id="question-content" class="bg-main-bg flex flex-col justify-start md:justify-center items-center w-full md:h-[calc(100dvh-1rem-110px)] h-full relative hide">
         {{--質問画面--}}
         <x-question-component></x-question-component>
 
