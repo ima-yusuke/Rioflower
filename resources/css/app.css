@@ -297,15 +297,6 @@ html{
 
 }
 
-
-
-/*!*▶アイコン*!*/
-/*.confirm-answer p{*/
-/*    color:rgb(191,158,116);*/
-/*    font-size: 10px;*/
-/*    margin-right: 5px;*/
-/*}*/
-
 /*[画面遷移]*/
 .curtain {
     background: rgb(191,158,116);
@@ -330,6 +321,7 @@ html{
 
 /*[結果画面]*/
 
+/*Quill背景色*/
 .quill-bg{
     background: rgba(255, 255, 255, 0.1);
     border-radius: 16px;
@@ -390,6 +382,12 @@ html{
     text-align: center;
     text-decoration: none;
     width: 250px;
+}
+
+@media (max-width: 767px) {
+    #result-right {
+        transform:translateY(-5em);
+    }
 }
 
 .big-ball{

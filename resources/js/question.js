@@ -506,7 +506,7 @@ function CreateConfirmContainer(){
         const CONFIRM_ANSWER_TEXT = document.createElement('span')
         const CONFIRM_ARROW_TEXT = document.createElement("span");
         CONFIRM_ANSWER_TEXT.innerText = questions[i].choices[selectedAnswersArray[i]]["text"];
-        CONFIRM_ARROW_TEXT.innerText = "▶"
+        CONFIRM_ARROW_TEXT.innerHTML = "<i class=\"fa-solid fa-arrow-rotate-left\"></i>"
         CONFIRM_ANSWER_BTN.classList.add("confirm-answer");
         CONFIRM_ANSWER_BTN.appendChild(CONFIRM_ANSWER_TEXT)
         CONFIRM_ANSWER_BTN.appendChild(CONFIRM_ARROW_TEXT);
@@ -645,7 +645,7 @@ function CreateOtherImages(scoreArray) {
 //[SHOW] 1位の商品を表示
 function ShowTopProduct(scoreArray){
     let maxProduct = products.filter(product => product.id === scoreArray[0]["product_id"]);
-    RESULT_P_NAME.innerText = maxProduct[0]["name"]
+    RESULT_P_NAME.innerText = maxProduct[0]["name"];
     RESULT_IMG.src = maxProduct[0]["img"];
     purchaseProductId = maxProduct[0]["id"];
 }

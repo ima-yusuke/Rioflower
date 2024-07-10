@@ -7,21 +7,20 @@
 
     <div class="flex flex-col md:flex-row justify-between items-center h-full md:w-full w-full">
         {{--左側詳細--}}
-        <div class="w-full md:w-[50%] md:relative flex flex-col md:flex-row md:gap-0">
+        <div class="w-full md:w-[50%] md:relative">
             {{--茶色ボール--}}
             <div id="big_ball" class="big-ball md:relative w-[450px] md:w-[95vh] h-[450px] md:h-[95vh] bg-main-brown rounded-full"></div>
         </div>
 
         {{--右側詳細--}}
-        <div class="flex flex-col justify-center items-center gap-4 md:w-[50%] mx-10 w-full mb-3">
+        <div class="flex flex-col justify-center items-center gap-4 md:w-[50%] mx-10 w-full mb-3" id="result-right">
             <div class="flex flex-col gap-4 w-full">
                 {{--タイトル--}}
-                <div class="font-bold flex flex-col md:items-start items-center gap-2 md:ml-4">
-                    <p class="text-center">あなたにおすすめなのは商品名:</p>
+                <div class="font-bold flex flex-col items-center gap-2 md:ml-4">
+                    <p class="text-center text-main-brown">\あなたに合うおすすめ商品は/</p>
                     <div class="relative">
                         <aside class="flex justify-center items-center md:items-end gap-2">
                             <h2 class="text-2xl md:text-4xl text-main-brown"><span id="result_p_name"></span></h2>
-                            <p>です！</p>
                         </aside>
                         <div id="recommend-wrapper" class="absolute top-0 left-0 w-full h-full bg-main-bg opacity-0">
 
@@ -37,7 +36,7 @@
                 </div>
 
                 {{--ボタン--}}
-                <aside class="flex justify-center gap-4 mx-6 md:mx-0">
+                <aside class="flex justify-center gap-4 mx-6 mt-8 md:mt-0 md:mx-0">
                     <button id="back-start-btn" class="back-start-btn border hover:bg-gray-700 hover:text-white hover:border-white text-nowrap" onclick="location.href='{{ route('Index') }}'">初めからやり直す</button>
 
                     {{--modal open button--}}
