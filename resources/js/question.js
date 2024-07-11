@@ -88,6 +88,14 @@ function ShowQuestion(choiceId) {
     // 画像コンテナをフェードイン
     fadeIn(QUESTION_IMG_CONTAINER, 2);
 
+    let time =0;
+    console.log(currentQuestionIdx)
+    if(currentQuestionIdx === 0 && flag === true){
+        time = 500;
+    }else{
+        time=1050;
+    }
+
     // フェードインが終わった後に次の処理を行う
     setTimeout(() => {
         // transitionスタイルをリセット
@@ -105,7 +113,7 @@ function ShowQuestion(choiceId) {
         } else if (currentQuestionIdx === 0 && flag === false) {
             ShowMaxImg();
         }
-    }, 500);
+    }, time);
 
 }
 
@@ -341,7 +349,7 @@ function CreateAnswers(){
 
         QUESTION_ANSWERS_CONTAINER.appendChild(ANSWER_BTN)
 
-        if (currentQuestionIdx === 0) {
+        if (currentQuestionIdx === 0 &&flag === true) {
             setTimeout(() => {
                 setTimeout(() => {
                     ANSWER_BTN.style.opacity = '1';
@@ -473,10 +481,23 @@ function OnBackBtn() {
 
 //[DELETE] 現在表示している回答を全て削除
 function DeleteQuestionAnswers() {
-    while (QUESTION_ANSWERS_CONTAINER.firstChild) {
-        QUESTION_ANSWERS_CONTAINER.removeChild(QUESTION_ANSWERS_CONTAINER.firstChild)
-    }
+    QUESTION_ANSWERS_CONTAINER.style.opacity = '1';
+    QUESTION_ANSWERS_CONTAINER.style.transition = 'opacity 1s ease'; // 2秒でフェードアウト
+
+    // 少し遅らせてopacityを0にする
+    setTimeout(() => {
+        QUESTION_ANSWERS_CONTAINER.style.opacity = '0';
+    }, 50);
+
+    // フェードアウトが完了する2秒後に要素を削除
+    setTimeout(() => {
+        while (QUESTION_ANSWERS_CONTAINER.firstChild) {
+            QUESTION_ANSWERS_CONTAINER.removeChild(QUESTION_ANSWERS_CONTAINER.firstChild);
+        }
+        QUESTION_ANSWERS_CONTAINER.style.opacity = '1';
+    }, 1050); // フェードアウトの時間（2秒）に少し余裕を持たせて実行
 }
+
 
 //[DELETE] 質問横の画像削除
 function DeleteQuestionImage(){
