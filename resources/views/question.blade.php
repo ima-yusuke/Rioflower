@@ -21,8 +21,8 @@
         <x-result-component></x-result-component>
 
         {{-- カーテン要素 --}}
-        <div id="curtain-left" class="curtain absolute top-0 left-0 md:w-0 w-full md:h-full h-0 z-50"></div>
-        <div id="curtain-right" class="curtain absolute md:top-0 bottom-0 right-0 md:w-0 w-full md:h-full h-0 z-50"></div>
+        <div id="curtain-left" class="curtain fixed md:absolute top-0 left-0 md:w-0 w-full md:h-full h-0 z-50"></div>
+        <div id="curtain-right" class="curtain fixed md:absolute md:top-0 bottom-0 right-0 md:w-0 w-full md:h-full h-0 z-50"></div>
     </div>
     @vite('resources/js/question.js')
     <script>

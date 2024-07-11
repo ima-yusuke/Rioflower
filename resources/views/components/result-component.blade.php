@@ -5,7 +5,7 @@
     {{--1位画像--}}
     <img id="result_img" class="result-img left-[50%] top-6 md:left-[10%] md:top-[50%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] shadow-back-btn-shadow" draggable="false">
 
-    <div class="flex flex-col md:flex-row justify-between items-center h-full md:w-full w-full">
+    <div class="flex flex-col md:flex-row justify-center items-center h-full md:w-full w-full">
         {{--左側詳細--}}
         <div class="w-full md:w-[50%] md:relative">
             {{--茶色ボール--}}
@@ -13,7 +13,7 @@
         </div>
 
         {{--右側詳細--}}
-        <div class="flex flex-col justify-center items-center gap-4 md:w-[50%] mx-10 w-full mb-3" id="result-right">
+        <div class="flex flex-col justify-center items-center gap-4 md:w-[50%] mx-10 w-full max-w-[600px] mb-3" id="result-right">
             <div class="flex flex-col gap-4 w-full">
                 {{--タイトル--}}
                 <div class="font-bold flex flex-col items-center gap-2 md:ml-4">
@@ -29,10 +29,14 @@
                 </div>
 
                 {{--Quill表示エリア--}}
-                <div class="relative md:h-[450px] h-[400px] mx-4 md:mx-0" id="quill_view_container">
-                    <p class=""></p>
+                <div class="relative md:h-[450px] h-[400px] mx-10 md:mx-0" id="quill_view_container">
                     <div id="viewer" class="quill-bg"></div>
                     <div id="viewer-wrapper" class="absolute top-0 left-0 h-full w-full opacity-0 -z-10" style="background-color: rgb(237,230,215)"></div>
+                    <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col" style="line-height: 0; color: rgba(100, 100, 100, 0.8)">
+                        <div id="quill-scroll">
+                            <p>scroll</p>
+                        </div>
+                    </div>
                 </div>
 
                 {{--ボタン--}}

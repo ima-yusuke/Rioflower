@@ -49,9 +49,14 @@ if (sessionStorage.getItem('scoreData') == null) {
     document.addEventListener("DOMContentLoaded", function() {
         const LOADING = document.getElementById('loading');
         const QUESTION_CONTENT = document.getElementById('question-content');
+        QUESTION_CONTENT.classList.remove('hide'); // 質問画面を表示
+        setTimeout(() => {
+            LOADING.classList.add('fade-out'); // ローディング画面をフェードアウト
+            QUESTION_CONTENT.add('fade-in'); // 質問画面をフェードイン
+        }, 1000);
+
         setTimeout(() => {
             LOADING.classList.add('hide'); // ローディング画面を非表示
-            QUESTION_CONTENT.classList.remove('hide'); // 質問画面を表示
         }, 1500);
     });
 } else {
@@ -355,7 +360,7 @@ function CreateAnswers(){
                     ANSWER_BTN.style.opacity = '1';
                     ANSWER_BTN.style.transform = 'translateY(0)';
                 }, idx * 300);
-            }, 1500);
+            }, 1000);
         } else {
             setTimeout(() => {
                 ANSWER_BTN.style.opacity = '1';
@@ -694,6 +699,9 @@ function ShowQuill(productId){
 
     //Quillデータをエディター内に表示
     quill.setContents(setData)
+    setTimeout(() => {
+        initializeQuillEditor();
+    }, 0);
 }
 
 // [ON] 画像入れ替え
@@ -719,6 +727,7 @@ function OnSwapImg(scoreArray) {
             // フェードアウト
             RESULT_IMG.classList.add('fade-out');
             VIEWER.classList.remove('-z-10');
+            VIEWER.classList.add('z-10');
             VIEWER.classList.add('fade-in');
             RECOMMEND.classList.add('fade-in');
 
@@ -750,6 +759,7 @@ function OnSwapImg(scoreArray) {
                 RESULT_IMG.addEventListener('transitionend', function onTransitionEnd2() {
                     RESULT_IMG.removeEventListener('transitionend', onTransitionEnd2);
                     RESULT_IMG.classList.remove('fade-in');
+                    VIEWER.classList.remove('z-10');
                     VIEWER.classList.add('-z-10');
                     VIEWER.classList.remove('fade-out');
                     RECOMMEND.classList.remove('fade-out');
@@ -776,6 +786,33 @@ OPEN_MODAL_BTN.addEventListener("click", function () {
 //[DELETE] Quill削除
 function DeleteQuill(){
     quill.setContents([]);
+}
+
+// quill内のscrollアイコンの表示・非表示処理
+function initializeQuillEditor() {
+    let viewerContainer = document.getElementById('viewer');
+    let viewerElement = document.querySelector('.ql-editor');
+    const quillScrollElement = document.getElementById('quill-scroll');
+
+    function updateScrollVisibility() {
+        if (viewerElement.scrollHeight > viewerContainer.clientHeight) {
+            quillScrollElement.style.display = 'block';
+        } else {
+            quillScrollElement.style.display = 'none';
+        }
+    }
+
+    if (viewerElement) {
+        viewerElement.addEventListener('scroll', function () {
+            if (viewerElement.scrollTop === 0) {
+                quillScrollElement.style.display = 'block';
+            } else {
+                quillScrollElement.style.display = 'none';
+            }
+        });
+    }
+
+    updateScrollVisibility();
 }
 
 // ----------------------------------------[スコア計算]----------------------------------------

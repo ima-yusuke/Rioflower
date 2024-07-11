@@ -361,6 +361,44 @@ html{
     }
 }
 
+/*[scroll]*/
+/* スクロールダウンの位置 */
+#quill-scroll {
+    position: relative;
+    text-align: center;
+}
+/* 矢印のアニメーション部分 */
+#quill-scroll::before {
+    animation: scroll 2s infinite;
+    border-bottom: 1px solid rgba(100, 100, 100, 0.8);
+    border-left: 1px solid rgba(100, 100, 100, 0.8);
+    content: "";
+    height: 20px;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 20px;
+}
+/* 矢印のアニメーション */
+@keyframes scroll {
+    0% {
+        opacity: 0;
+        transform: rotate(-45deg) translate(0, 0);
+    }
+    40% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 0;
+        transform: rotate(-45deg) translate(-10px, 10px);
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 /*初めからやり直すボタン*/
 .back-start-btn {
     background-color:white;

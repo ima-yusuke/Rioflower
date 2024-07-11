@@ -1,14 +1,14 @@
 <div id="nav-menu" class="flex flex-col gap-2 bg-main-bg fixed left-0 top-0 w-80 h-full p-0 border-r justify-start duration-500 z-50 non-active rounded-r-xl">
 {{--    "top-0"を消して"h-full"→"h-4/5"にするとヘッダー・フッターに被らないようになる--}}
     <div class="w-full h-full m-0 p-2 flex gap-2 justify-center items-center relative">
-        <button id="navToggleButton" class="absolute top-16 md:top-1/3 md:-right-8 md:w-8 md:h-28 -right-6 w-6 h-24 rounded-r-xl bg-top-button-pink text-white border-t border-r border-b flex items-center justify-center">
+        <button id="navToggleButton" class="absolute top-16 md:top-28 md:-right-8 md:w-8 md:h-28 -right-6 w-6 h-24 rounded-r-xl bg-top-button-pink text-white border-t border-r border-b flex items-center justify-center">
             <div id="toggleHide" class="hidden">
                 <i class="bi bi-chevron-double-left"></i>
                 <span class="nav-text">
                     close
                 </span>
             </div>
-            <div id="toggleShow" class="pt-1 md:pt-3">
+            <div id="toggleShow" class="pt-1 md:pt-3 rounded-r-xl">
                 <i class="bi bi-chevron-double-right"></i>
                 <span class="nav-text">
                     show
