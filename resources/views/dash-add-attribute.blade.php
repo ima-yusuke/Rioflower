@@ -15,7 +15,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button id="addBtn" class="addBtn border border-solid border-black p-2">追加</button>
+                        <button id="addBtn" class="addBtn btn-border px-3 py-2">追加</button>
                     </div>
                 </div>
             </div>
@@ -41,13 +41,13 @@
                         @if($cat['id'] === $att['category_id'])
                             <div class="w-full flex">
                                 <p type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full sm:w-2/3 md:w-1/3 p-2.5">{{ $att['name'] }}</p>
-                                <button class="att-deleteBtn ms-5 border border-solid border-black px-2 py-2 text-nowrap" data-id="{{ $att['id'] }}">削除</button>
+                                <button class="att-deleteBtn ms-5 border border-solid bg-red-600 text-white px-3 py-2 text-nowrap" data-id="{{ $att['id'] }}">削除</button>
                             </div>
                         @endif
                     @endforeach
                     <div class="w-full flex">
                         <input type="text" class="attAdd bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full sm:w-2/3 md:w-1/3 p-2.5">
-                        <button class="att-addBtn ms-5 border border-solid border-black px-2 py-2 text-nowrap">追加</button>
+                        <button class="att-addBtn ms-5 btn-border px-3 py-2 text-nowrap">追加</button>
                     </div>
                 </div>
             </div>

@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="pt-10 flex items-center sm:ps-10">
-                    <button id="addBtn" class="addBtn border border-solid border-black px-2 py-2">追加</button>
+                    <button id="addBtn" class="addBtn btn-border px-3 py-2">追加</button>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@
                         </div>
                     </div>
                     <div class="flex items-center sm:ps-10 text-nowrap">
-                        <button class="updateBtn border border-solid border-black px-2 py-2" data-id="{{ $value['id'] }}">更新</button>
+                        <button class="updateBtn btn-border px-3 py-2" data-id="{{ $value['id'] }}">更新</button>
                     </div>
                 </div>
             </div>

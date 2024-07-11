@@ -33,13 +33,13 @@
                             @foreach($value->choices as $key=>$choice)
                                 <aside  data-answer-id="{{ $choice['id'] }}" id="{{$key}}" class="flex justify-between items-center w-full md:w-[60%] h-[35px] md:h-[45px]">
                                     <p class="select-btn flex-1 flex items-center py-1 pl-2 mr-2 rounded-lg h-full">{{$key+1}}.{{$choice["text"]}}</p>
-                                    <button data-product-id="{{$choice["id"]}}" class="delete-answer h-full border border-solid border-black text-center px-2 py-1 rounded-lg">削除</button>
+                                    <button data-product-id="{{$choice["id"]}}" class="delete-answer h-full bg-red-600 text-white text-center px-3 py-1">削除</button>
                                 </aside>
                             @endforeach
                         </div>
                         <aside class="w-full md:w-[60%] flex">
                             <input type="text" placeholder="新しい回答" class="add-answer h-[35px] md:h-full flex-grow p-2 border-2 border-gray-400 mr-2 flex-1 rounded-lg">
-                            <button data-product-id="{{$value["id"]}}" class="add-answer-btn border border-solid border-black text-center px-2 py-1 rounded-lg">追加</button>
+                            <button data-product-id="{{$value["id"]}}" class="add-answer-btn btn-border text-center px-3 py-1">追加</button>
                         </aside>
                     </div>
                 </li>
