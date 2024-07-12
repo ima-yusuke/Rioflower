@@ -13,14 +13,9 @@
 
             {{--右側コンテンツ（質問＆選択肢）--}}
             <div class="flex items-center rounded-3xl" id="question">
-                <div id="bg" class="relative flex flex-col justify-center gap-6 py-4 md:py-8 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-main-brown rounded-3xl shadow-custom-dark">
-                    <p class="text-center text-2xl text-top-white" id="test">Question</p>
-                    <div class="flex justify-center text-center">
-                        <p class="border-t border-top-white w-[50px] mb-2 md:mb-4"></p>
-                    </div>
-
+                <div id="bg" class="relative flex flex-col justify-center gap-6 md:gap-12 md:py-8 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-main-brown rounded-3xl shadow-custom-dark">
                     {{--質問文--}}
-                    <div id="question_text" class="font-bold text-top-white md:text-xl text-center"></div>
+                    <div id="question_text" class="font-bold text-top-white md:text-xl text-center mx-4 md:mx-8"></div>
                     {{--選択肢--}}
                     <div id="question_answers_container" class="flex flex-col items-center overflow-y-auto gap-4 md:gap-6 mx-4 md:mx-8 h-full"></div>
                 </div>
