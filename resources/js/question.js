@@ -927,6 +927,12 @@ SEND_BTN.addEventListener('click', function(event) {
         return;
     }
 
+    window.onsubmit = function() {
+        if (sessionStorage.hasOwnProperty("sent")) {
+            sessionStorage.removeItem("sent");
+        }
+    }
+
     // フォームデータを取得
     let formData = new FormData(document.getElementById('form-id'));
 
@@ -952,6 +958,7 @@ SEND_BTN.addEventListener('click', function(event) {
 
 BACK_START_BTN.addEventListener("click",function(){
     sessionStorage.removeItem('scoreData');
+    sessionStorage.removeItem('sent');
 });
 
 //[SHOW] 結果画面再表示

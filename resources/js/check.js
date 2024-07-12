@@ -16,12 +16,15 @@ SEND_BTN.addEventListener("click",function(){
     const ID = document.getElementById("product-id").textContent;
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+    sessionStorage.removeItem('sent');
+
     document.querySelectorAll('.show').forEach((element) => {
         element.classList.add('hidden');
     });
     document.querySelectorAll('.mail').forEach((element) => {
         element.classList.remove('hidden');
     });
+    document.getElementById('sent').classList.add('hidden');
 
     // Quillの内容を取得
     initializeQuillViewer('#detail', details);
@@ -58,7 +61,8 @@ SEND_BTN.addEventListener("click",function(){
                     window.alert('顧客情報を追加しました');
                 } else if (data.message) {
                     alert(data.message);
-                    window.location.href = '/question';
+                    sessionStorage.setItem('sent', 'true');
+                    window.location.href = '/check';
                 }
             })
             .catch(error => {
@@ -120,6 +124,10 @@ function DisplayQuill(){
 // ページ読み込み時に実行
 window.onload = function(){
     DisplayQuill(PRODUCT_ID);
+    if(sessionStorage.getItem('sent') === 'true') {
+        document.getElementById('sent').classList.remove('hidden');
+        document.getElementById('check-text').classList.add('hidden');
+    }
 }
 
 // セッションクリア

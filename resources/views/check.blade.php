@@ -11,10 +11,14 @@
     <title>購入情報確認</title>
     @vite(['resources/css/app.css'])
 </head>
-<body>
+<body class="pb-1">
     <div class="flex flex-col w-11/12 md:w-1/2 md:mx-auto mx-3 my-10 rounded-xl justify-center bg-main-bg">
         <div class="m-5">
-            <p class="show text-2xl md:text-3xl font-bold my-3 mx-auto text-center">入力情報をご確認ください</p>
+            <div id="sent" class="sent hidden">
+                <p class="text-xl md:text-2xl font-bold my-3 mx-auto text-center">メールを送信しました</p>
+                <p class="my-3 mx-auto text-center md:text-lg text-red-600">※まだ商品の購入は確定していません。<br>送信されたメールのリンクから購入手続きを進めてください。</p>
+            </div>
+            <p id="check-text" class="show text-2xl md:text-3xl font-bold my-3 mx-auto text-center">入力情報をご確認ください</p>
             <p class="mail hidden text-2xl font-bold my-3">{{ $name }}様</p>
             <p class="mail hidden mt-5 mb-10 ms-2">{!! nl2br(e($word['top'])) !!}</p>
             <div class="flex w-full mt-8 mb-3">
