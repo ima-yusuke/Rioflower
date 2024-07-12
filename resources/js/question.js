@@ -13,7 +13,7 @@ const QUESTION_ANSWERS_CONTAINER = document.getElementById('question_answers_con
 const BACK_BTN = document.getElementById("back_btn");
 let currentQuestionIdx = 0;// 現在の質問番目
 let oldSrcArray = [QUESTION_IMG_CONTAINER.querySelector('img.back').src];
-let flag = true;
+let flag = true;//戻るボタンクリックするとfalseになる
 let screenCenterX = window.innerWidth / 2; // 画面全体の中心のx座標
 let questionBoxCenterX = 0;//質問コンテナのx座標を保存
 let screenCenterY = window.innerHeight / 2; // 画面全体の中心のY座標
@@ -37,6 +37,12 @@ const BACK_START_BTN = document.getElementById("back-start-btn");
 const OTHER_IMG_CONTAINER = document.getElementById("other_images_container");
 let quill = null;// Quillインスタンスを保持する変数
 let purchaseProductId = null;
+
+// タイム
+let fadeinAnswerTime = 300; //1つの回答選択肢に対するfadein
+let fadeoutTime = 700; //全ての回答選択肢のfadeout・質問→確認時にimgのfadeout・質問コンテナのfadeout
+let fadeinTime = 700; //初回の質問画面fadein(上記fadeoutTime終了後に実行のためのtime)・確認コンテナのfadein
+let moveTime = 1000; //コンテナの移動時間(質問・確認）
 
 // 選択した回答のindexを保存
 let selectedAnswersArray = [];
@@ -80,7 +86,7 @@ StartQuiz()
 function ShowCurrentQstNum(){
     let questionLength = questions.length;
     let currentQuestionNum = document.getElementById("question_num");
-    currentQuestionNum.innerText =  Number(currentQuestionIdx+1)+"問目/"+questionLength+"問中";
+    currentQuestionNum.innerText =  Number(currentQuestionIdx+1)+"/"+questionLength;
 }
 // -------------------------------------[③質問&回答作成]-------------------------------------
 function ShowQuestion(choiceId) {
@@ -88,43 +94,34 @@ function ShowQuestion(choiceId) {
     // 質問作成
     QUESTION_TEXT.innerText = questions[currentQuestionIdx]["text"]
 
-    // 質問コンテナをフェードイン
-    fadeIn(QUESTION_BOX, 2);
-    // 画像コンテナをフェードイン
-    fadeIn(QUESTION_IMG_CONTAINER, 2);
-
-    let time =0;
-    console.log(currentQuestionIdx)
-    if(currentQuestionIdx === 0 && flag === true){
-        time = 500;
+    // 確認画面から来た場合
+    if(questions.length === selectedAnswersArray.length){
+        setTimeout(() => {
+            ShowReQuestion(); //確認画面から来た場合
+        },50);
     }else{
-        time=1050;
+        //２問目以降は前回の回答のフェードアウトが終わった後に次の処理を行う
+        setTimeout(() => {
+            // transitionスタイルをリセット
+            QUESTION_BOX.style.transition = '';
+            QUESTION_IMG_CONTAINER.style.transition = '';
+
+            //診断開始の1問目以外でいずれか実行され画像表示させる
+            if (currentQuestionIdx > 0 && choiceId != null) { //回答選択時
+                ShowMaxImg(choiceId);
+            } else if (flag===false) { //戻るボタンクリックし1問目以外に戻る場合
+                ShowMaxImg();
+            }
+
+            // 回答選択肢作成
+            CreateAnswers();
+        },fadeinTime+50);
     }
-
-    // フェードインが終わった後に次の処理を行う
-    setTimeout(() => {
-        // transitionスタイルをリセット
-        QUESTION_BOX.style.transition = '';
-        QUESTION_IMG_CONTAINER.style.transition = '';
-
-        // 回答選択肢作成
-        CreateAnswers();
-
-        // 最適な画像を表示
-        if (currentQuestionIdx > 0 && choiceId != null) {
-            ShowMaxImg(choiceId);
-        } else if (currentQuestionIdx > 0) {
-            ShowMaxImg();
-        } else if (currentQuestionIdx === 0 && flag === false) {
-            ShowMaxImg();
-        }
-    }, time);
-
 }
 
 function fadeIn(element, duration) {
     element.style.opacity = '0';
-    element.style.transition = `opacity ${duration}s ease`;
+    element.style.transition = `opacity ${duration}ms ease`;
     setTimeout(() => {
         element.style.opacity = '1';
     }, 50);
@@ -172,7 +169,7 @@ function ShowConfirm(){
 
     //①画像のフェードアウト
     QUESTION_IMG_CONTAINER.style.opacity = '0';
-    QUESTION_IMG_CONTAINER.style.transition = 'opacity 2s ease'; // 2秒でフェードアウト
+    QUESTION_IMG_CONTAINER.style.transition = `opacity ${fadeoutTime}ms ease`;
     BACK_BTN.style.opacity = '0';
     QUESTION_INDEX.style.opacity = '0';
 
@@ -193,15 +190,15 @@ function ShowConfirm(){
         }
 
         //③質問コンテナを中心に移動
-        QUESTION_BOX.style.transition = 'transform 1.5s ease, opacity 2s ease'; // 移動に1.5秒かけて中心に移動、フェードアウトに2秒
+        QUESTION_BOX.style.transition = `transform ${moveTime}ms ease, opacity ${fadeoutTime}ms ease`;
 
-        //④質問コンテナが中心に移動するのを待つ(1.5ｓ）
+        //④質問コンテナが中心に移動するのを待つ(moveTime)
         setTimeout(() => {
 
-            //⑤フェードアウト開始（2s/初期値opacity1）
+            //⑤フェードアウト開始
             QUESTION_BOX.style.opacity = "0"//
 
-            //⑥フェードアウト処理を待つ(1.6sかけて）
+            //⑥フェードアウト処理を待つ
             setTimeout(() => {
 
                 //初期値にリセット
@@ -216,7 +213,7 @@ function ShowConfirm(){
                 // 確認画面表示アニメーション準備
                 CONFIRM_CONTAINER.classList.remove("hide");
                 CONFIRM_CONTAINER.style.opacity = "0";
-                CONFIRM_CONTAINER.style.transition = 'opacity 2s ease'; // 2秒でフェードイン
+                CONFIRM_CONTAINER.style.transition = `opacity ${fadeinTime}ms ease`;
 
                 screenCenterY = window.innerHeight / 2; // 画面全体の中心のY座標更新
 
@@ -245,11 +242,11 @@ function ShowConfirm(){
 
                 },50)
 
-            }, 1600); //QUESTION_BOXフェードアウトと同時に CONFIRM_CONTAINERフェードイン
+            }, fadeoutTime); //QUESTION_BOXフェードアウトと同時に CONFIRM_CONTAINERフェードイン
 
-        }, 1500);
+        }, moveTime);
 
-    }, 2000);
+    }, fadeoutTime);
 }
 
 // クリックを無効化するための関数
@@ -354,18 +351,18 @@ function CreateAnswers(){
 
         QUESTION_ANSWERS_CONTAINER.appendChild(ANSWER_BTN)
 
-        if (currentQuestionIdx === 0 &&flag === true) {
+        if (currentQuestionIdx === 0 &&flag === true && questions.length !== selectedAnswersArray.length) {
             setTimeout(() => {
                 setTimeout(() => {
                     ANSWER_BTN.style.opacity = '1';
                     ANSWER_BTN.style.transform = 'translateY(0)';
-                }, idx * 300);
-            }, 1000);
+                }, idx * fadeinAnswerTime);
+            }, fadeinTime);
         } else {
             setTimeout(() => {
                 ANSWER_BTN.style.opacity = '1';
                 ANSWER_BTN.style.transform = 'translateY(0)';
-            }, idx * 300);
+            }, idx * fadeinAnswerTime);
         }
 
         // 選択肢をクリックをする
@@ -487,12 +484,8 @@ function OnBackBtn() {
 //[DELETE] 現在表示している回答を全て削除
 function DeleteQuestionAnswers() {
     QUESTION_ANSWERS_CONTAINER.style.opacity = '1';
-    QUESTION_ANSWERS_CONTAINER.style.transition = 'opacity 1s ease'; // 2秒でフェードアウト
-
-    // 少し遅らせてopacityを0にする
-    setTimeout(() => {
-        QUESTION_ANSWERS_CONTAINER.style.opacity = '0';
-    }, 50);
+    QUESTION_ANSWERS_CONTAINER.style.transition = `opacity ${fadeoutTime}ms ease`;
+    QUESTION_ANSWERS_CONTAINER.style.opacity = '0';
 
     // フェードアウトが完了する2秒後に要素を削除
     setTimeout(() => {
@@ -500,9 +493,8 @@ function DeleteQuestionAnswers() {
             QUESTION_ANSWERS_CONTAINER.removeChild(QUESTION_ANSWERS_CONTAINER.firstChild);
         }
         QUESTION_ANSWERS_CONTAINER.style.opacity = '1';
-    }, 1050); // フェードアウトの時間（2秒）に少し余裕を持たせて実行
+    }, fadeoutTime+50);
 }
-
 
 //[DELETE] 質問横の画像削除
 function DeleteQuestionImage(){
@@ -553,6 +545,25 @@ function CreateConfirmContainer(){
     }
 }
 
+//[SHOW] 質問画面表示（確認画面→質問画面の遷移後用）
+function ShowReQuestion() {
+    // 画像セット
+    const CONFIRM_IMG = document.querySelector("#question_img img");
+    CONFIRM_IMG.src = oldSrcArray[currentQuestionIdx];
+
+    // 質問コンテナをフェードイン
+    fadeIn(QUESTION_BOX, fadeinTime);
+
+    // 画像コンテナをフェードイン
+    fadeIn(QUESTION_IMG_CONTAINER, fadeinTime);
+
+    // 上記fadeinが終了したら実行
+    setTimeout(()=>{
+        // 回答選択肢作成
+        CreateAnswers();
+    },fadeinTime)
+}
+
 //[ON] 確認画面→質問画面へ戻るアニメーション&&機能
 function OnBackToQuestion() {
     // スクロールを無効化
@@ -562,14 +573,13 @@ function OnBackToQuestion() {
     SHOW_RESULT_BTN.style.display = 'none';
 
     // 既存の transform をリセット
-    // CONFIRM_BOX.style.transform = "";
     CONFIRM_BOX.style.transition = 'none';
 
     // 強制的にリフローを行う（ブラウザの再描画を強制）
     CONFIRM_BOX.offsetHeight;
 
     // トランジションを再度有効化
-    CONFIRM_BOX.style.transition = 'transform 1.5s ease, opacity 2s ease';
+    CONFIRM_BOX.style.transition = `transform ${moveTime}ms ease, opacity ${fadeoutTime}ms ease`;
 
     // 新しい transform を適用
     setTimeout(() => {
@@ -587,7 +597,7 @@ function OnBackToQuestion() {
         setTimeout(() => {
             CONFIRM_CONTAINER.style.opacity = "0";
 
-            // 再度1.6秒後に次の処理を実行するためのタイマーを設定
+            // 再度1000後に次の処理を実行するためのタイマーを設定
             setTimeout(() => {
                 // 位置と透明度のリセット
                 CONFIRM_BOX.style.transform = '';
@@ -597,6 +607,8 @@ function OnBackToQuestion() {
 
                 CONFIRM_CONTAINER.classList.add("hide");
                 QUESTION_CONTAINER.classList.remove('hide');
+                QUESTION_BOX.style.opacity ="0";
+                QUESTION_IMG_CONTAINER.style.opacity="0";
                 DeleteQuestionAnswers();
                 ShowCurrentQstNum();
                 ShowQuestion();
@@ -606,11 +618,10 @@ function OnBackToQuestion() {
                 EnableScroll();
                 EnableClicks();
 
-            }, 1600);
-        }, 1500);
+            }, fadeoutTime);
+        }, moveTime);
     }, 50); // 少し待ってから適用することでリセット後の新しいtransformを適用
 }
-
 
 //[DELETE] 現在表示している質問＆回答を全て削除（回答修正に対応するため）
 function DeleteConfirmContainer(){
