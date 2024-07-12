@@ -414,38 +414,6 @@ html{
     width: 250px;
 }
 
-@media (max-width: 767px) {
-    #result-right {
-        transform:translateY(-5em);
-    }
-}
-
-.big-ball{
-    position: relative;
-    transform: translateX(-15em) translateY(5em);
-    z-index: 1;
-}
-
-@media (max-width: 767px) {
-    .big-ball {
-        transform: translateX(-10em) translateY(-10em);
-    }
-}
-
-.result-img{
-    border-radius: 50%;
-    object-fit: cover;
-    z-index: 10;
-    position: absolute;
-    transform: translateX(0) translateY(-50%);
-}
-
-@media (max-width: 767px) {
-    .result-img {
-        transform: translateX(-50%) translateY(0);
-    }
-}
-
 .link-display {
     @media (max-width: 767px) {
         flex-direction: column;

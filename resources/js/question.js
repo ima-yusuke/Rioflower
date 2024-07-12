@@ -1028,3 +1028,20 @@ document.addEventListener('click', (event) => {
         MENU_OVERLAY.classList.add('hidden');
     }
 });
+
+// スクロール時のアイコン表示切り替え
+function handlePageScroll() {
+    const navScrollElement = document.getElementById('nav-scroll');
+
+    if (window.scrollY === 0) {
+        navScrollElement.style.display = 'block';
+    } else {
+        navScrollElement.style.display = 'none';
+    }
+}
+
+// スクロールイベントリスナーを追加
+window.addEventListener('scroll', handlePageScroll);
+
+// 初回ロード時のスクロール位置をチェック
+handlePageScroll();

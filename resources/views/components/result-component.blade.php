@@ -2,18 +2,18 @@
 
     <x-nav-menu />
 
-    {{--1位画像--}}
-    <img id="result_img" class="result-img left-[50%] top-6 md:left-[10%] md:top-[50%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] shadow-back-btn-shadow" draggable="false">
-
     <div class="flex flex-col md:flex-row justify-center items-center h-full md:w-full w-full">
         {{--左側詳細--}}
-        <div class="w-full md:w-[50%] md:relative">
-            {{--茶色ボール--}}
-            <div id="big_ball" class="big-ball md:relative w-[450px] md:w-[95vh] h-[450px] md:h-[95vh] bg-main-brown rounded-full"></div>
+        <div class="w-full md:w-[50%] md:h-full h-[55dvh]">
+            {{--茶色ボール&1位写真--}}
+            <div class="w-full h-full relative">
+                <img id="result_img" class="absolute md:top-1/2 top-2/3 md:-translate-y-1/2 -translate-y-2/3 left-1/2 -translate-x-1/2 w-[60%] h-auto aspect-square object-cover z-20 rounded-full" draggable="false">
+                <div id="big_ball" class="absolute md:top-1/3 -top-1/2 -left-1/3 z-10 bg-main-brown rounded-full w-full aspect-square"></div>
+            </div>
         </div>
 
         {{--右側詳細--}}
-        <div class="flex flex-col justify-center items-center gap-4 md:w-[50%] mx-10 w-full max-w-[600px] mb-3" id="result-right">
+        <div class="flex flex-col justify-center items-center gap-4 md:w-[50%] mx-10 w-full max-w-[600px] mb-3">
             <div class="flex flex-col gap-4 w-full">
                 {{--タイトル--}}
                 <div class="font-bold flex flex-col items-center gap-2 md:ml-4">
