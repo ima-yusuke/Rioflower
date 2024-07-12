@@ -145,17 +145,7 @@ function SelectAnswer(idx,choiceId) {
         ShowQuestion(choiceId)
     } else {
         OnCalScore(choiceId);
-
-        // デバイスによりアニメーションを変更
-        if(window.innerWidth < 768){
-            ShowConfirm()
-            // CONFIRM_CONTAINER.classList.add("min-h-screen")
-        }else{
-            if (CONFIRM_CONTAINER.classList.contains("min-h-screen")) {
-                // CONFIRM_CONTAINER.classList.remove("min-h-screen")
-            }
-            ShowConfirm()
-        }
+        ShowConfirm()
     }
 }
 // -------------------------------------[⑤確認画面の表示]-------------------------------------
@@ -170,6 +160,10 @@ function ShowConfirm(){
     //①画像のフェードアウト
     QUESTION_IMG_CONTAINER.style.opacity = '0';
     QUESTION_IMG_CONTAINER.style.transition = `opacity ${fadeoutTime}ms ease`;
+    QUESTION_TEXT.style.opacity = '0';
+    QUESTION_TEXT.style.transition = `opacity ${fadeoutTime}ms ease`;
+    QUESTION_ANSWERS_CONTAINER.style.opacity = '0';
+    QUESTION_ANSWERS_CONTAINER.style.transition = `opacity ${fadeoutTime}ms ease`;
     BACK_BTN.style.opacity = '0';
     QUESTION_INDEX.style.opacity = '0';
 
@@ -205,6 +199,8 @@ function ShowConfirm(){
                 BACK_BTN.style.opacity = '1';
                 QUESTION_INDEX.style.opacity = '1';
                 QUESTION_IMG_CONTAINER.style.opacity = "";
+                QUESTION_TEXT.style.opacity = "";
+                QUESTION_ANSWERS_CONTAINER.style.opacity = "";
                 QUESTION_BOX.style.opacity = "";
                 QUESTION_BOX.style.transform = "";
 
@@ -524,7 +520,7 @@ function CreateConfirmContainer(){
         const CONFIRM_ANSWER_TEXT = document.createElement('span')
         const CONFIRM_ARROW_TEXT = document.createElement("span");
         CONFIRM_ANSWER_TEXT.innerText = questions[i].choices[selectedAnswersArray[i]]["text"];
-        CONFIRM_ARROW_TEXT.innerHTML = "<i class=\"fa-solid fa-arrow-rotate-left\"></i>"
+        CONFIRM_ARROW_TEXT.innerHTML = "修正"
         CONFIRM_ANSWER_BTN.classList.add("confirm-answer");
         CONFIRM_ANSWER_BTN.appendChild(CONFIRM_ANSWER_TEXT)
         CONFIRM_ANSWER_BTN.appendChild(CONFIRM_ARROW_TEXT);
@@ -581,6 +577,9 @@ function OnBackToQuestion() {
     // トランジションを再度有効化
     CONFIRM_BOX.style.transition = `transform ${moveTime}ms ease, opacity ${fadeoutTime}ms ease`;
 
+    CONFIRM_ANSWERS_CONTAINER.style.opacity = '0';
+    CONFIRM_ANSWERS_CONTAINER.style.transition = `opacity ${fadeoutTime}ms ease`;
+
     // 新しい transform を適用
     setTimeout(() => {
         let currentRect = CONFIRM_BOX.getBoundingClientRect();
@@ -602,6 +601,7 @@ function OnBackToQuestion() {
                 // 位置と透明度のリセット
                 CONFIRM_BOX.style.transform = '';
                 CONFIRM_BOX.style.transition = ''; // トランジションもリセット
+                CONFIRM_ANSWERS_CONTAINER.style.opacity = '';
                 CONFIRM_CONTAINER.style.opacity = '';
                 SHOW_RESULT_BTN.style.display = 'block';
 
@@ -620,7 +620,7 @@ function OnBackToQuestion() {
 
             }, fadeoutTime);
         }, moveTime);
-    }, 50); // 少し待ってから適用することでリセット後の新しいtransformを適用
+    }, fadeinTime); // 少し待ってから適用することでリセット後の新しいtransformを適用
 }
 
 //[DELETE] 現在表示している質問＆回答を全て削除（回答修正に対応するため）

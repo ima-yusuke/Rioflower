@@ -259,8 +259,8 @@ html{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    row-gap: 15px;
-    width: 100%;
+    row-gap: 8px;
+    width: 90%;
 }
 
 /*各回答（span)*/
