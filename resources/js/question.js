@@ -22,6 +22,7 @@ let testY = 0;
 
 // 確認画面
 const CONFIRM_CONTAINER = document.getElementById("confirm_container");
+const CONFIRM_TITLE = document.getElementById("confirm_title");
 const CONFIRM_BOX = document.getElementById("confirm");
 const CONFIRM_ANSWERS_CONTAINER = document.getElementById("confirm_box");
 const SHOW_RESULT_BTN = document.getElementById("show_result_btn");
@@ -577,8 +578,11 @@ function OnBackToQuestion() {
     // トランジションを再度有効化
     CONFIRM_BOX.style.transition = `transform ${moveTime}ms ease, opacity ${fadeoutTime}ms ease`;
 
+    // 質問回答とタイトルをフェードアウト
     CONFIRM_ANSWERS_CONTAINER.style.opacity = '0';
     CONFIRM_ANSWERS_CONTAINER.style.transition = `opacity ${fadeoutTime}ms ease`;
+    CONFIRM_TITLE.style.opacity = '0';
+    CONFIRM_TITLE.style.transition = `opacity ${fadeoutTime}ms ease`;
 
     // 新しい transform を適用
     setTimeout(() => {
@@ -603,6 +607,7 @@ function OnBackToQuestion() {
                 CONFIRM_BOX.style.transition = ''; // トランジションもリセット
                 CONFIRM_ANSWERS_CONTAINER.style.opacity = '';
                 CONFIRM_CONTAINER.style.opacity = '';
+                CONFIRM_TITLE.style.opacity = '';
                 SHOW_RESULT_BTN.style.display = 'block';
 
                 CONFIRM_CONTAINER.classList.add("hide");
