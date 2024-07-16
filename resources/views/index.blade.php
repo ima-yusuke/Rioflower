@@ -19,7 +19,19 @@
                 <p class="text-[#DA9F9F] bg-white p-2">Find Your Perfect Dry Flower</p>
             </div>
         </div>
-        <button type="button" onclick="location.href='{{ route('ShowQuestionPage') }}'" class="pink-btn block text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center absolute bottom-16 left-1/2 -translate-x-1/2">花診断を始める</button>
+        <button type="button" onclick="location.href='{{ route('ShowQuestionPage') }}'" id="te" class="pink-btn block text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center absolute bottom-16 left-1/2 -translate-x-1/2">花診断を始める</button>
     </div>
     @vite('resources/js/index.js')
 </x-template>
+
+<script>
+    // Cookieのリセット
+    document.addEventListener('DOMContentLoaded', function() {
+        // XSRF-TOKEN クッキーを削除する
+        document.cookie = 'XSRF-TOKEN=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure';
+
+        // laravel_session クッキーを削除する
+        document.cookie = 'laravel_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure';
+    });
+
+</script>

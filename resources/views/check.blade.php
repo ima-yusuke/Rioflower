@@ -73,6 +73,15 @@
     let details = @json($details);
     window.Laravel = {};
     window.Laravel.csrfToken = "{{ csrf_token() }}";
+
+    // Cookieのリセット
+    document.getElementById("back-btn").addEventListener("click",function (){
+        // XSRF-TOKEN クッキーを削除する
+        document.cookie = 'XSRF-TOKEN=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure';
+
+        // laravel_session クッキーを削除する
+        document.cookie = 'laravel_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure';
+    })
 </script>
 @vite('resources/js/check.js')
 </html>
