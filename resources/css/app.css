@@ -295,7 +295,11 @@ html{
         color: white;
         border: 1px solid white;
     }
+}
 
+.confirm-question{
+    width: 90%;
+    text-align: center;
 }
 
 /*[画面遷移]*/

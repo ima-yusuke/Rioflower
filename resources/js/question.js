@@ -11,14 +11,12 @@ const QUESTION_IMG_CONTAINER = document.getElementById("question_img");
 const QUESTION_TEXT = document.getElementById('question_text');
 const QUESTION_ANSWERS_CONTAINER = document.getElementById('question_answers_container');
 const BACK_BTN = document.getElementById("back_btn");
-let currentQuestionIdx = 0;// 現在の質問番目
-let oldSrcArray = [QUESTION_IMG_CONTAINER.querySelector('img.back').src];
-let flag = true;//戻るボタンクリックするとfalseになる
+// 座標
 let screenCenterX = window.innerWidth / 2; // 画面全体の中心のx座標
 let questionBoxCenterX = 0;//質問コンテナのx座標を保存
 let screenCenterY = window.innerHeight / 2; // 画面全体の中心のY座標
 let questionBoxCenterY = 0//質問コンテナの中心のY座標
-let testY = 0;
+let tmpY = 0;
 
 // 確認画面
 const CONFIRM_CONTAINER = document.getElementById("confirm_container");
@@ -45,11 +43,16 @@ let fadeoutTime = 700; //全ての回答選択肢のfadeout・質問→確認時
 let fadeinTime = 700; //初回の質問画面fadein(上記fadeoutTime終了後に実行のためのtime)・確認コンテナのfadein
 let moveTime = 1000; //コンテナの移動時間(質問・確認）
 
-// 選択した回答のindexを保存
-let selectedAnswersArray = [];
+// 配列
+let oldSrcArray = [QUESTION_IMG_CONTAINER.querySelector('img.back').src];// 質問画面で画像のsrcを保存する配列
+let selectedAnswersArray = [];// 選択した回答のindexを保存する配列
+let scoreArray =[];// スコアを保存する配列
 
-// スコア
-let scoreArray =[];
+// 現在の質問番目
+let currentQuestionIdx = 0;
+
+//戻るボタンクリックするとfalseになる
+let flag = true;
 
 // --------------------------------------[⓪ロード画面]--------------------------------------
 if (sessionStorage.getItem('scoreData') == null) {
@@ -119,15 +122,6 @@ function ShowQuestion(choiceId) {
         },fadeinTime+50);
     }
 }
-
-function fadeIn(element, duration) {
-    element.style.opacity = '0';
-    element.style.transition = `opacity ${duration}ms ease`;
-    setTimeout(() => {
-        element.style.opacity = '1';
-    }, 50);
-}
-
 // ---------------------------------------[④回答選択]---------------------------------------
 function SelectAnswer(idx,choiceId) {
 
@@ -225,13 +219,13 @@ function ShowConfirm(){
                         let confirmCenterY = CONFIRM_BOX.getBoundingClientRect().top + CONFIRM_BOX.offsetHeight / 2; // 確認画面の中心のY座標取得
                         let translateY = screenCenterY - confirmCenterY; // 中心に移動するための差分を計算
                         CONFIRM_BOX.style.transform = `translateY(${translateY}px)`;
-                        testY = translateY;
+                        tmpY = translateY;
                     }else{
                         let confirmCenterX = CONFIRM_BOX.getBoundingClientRect().left + CONFIRM_BOX.offsetWidth / 2; // 確認画面の中心のX座標取得
                         let translateX = screenCenterX - confirmCenterX; // 中心に移動するための差分を計算
                         CONFIRM_BOX.style.transform = `translateX(${translateX}px)`;
                     }
-                    // クリックを有効化
+                    // // クリックを有効化
                     EnableClicks();
 
                     // スクロールを有効化
@@ -244,26 +238,6 @@ function ShowConfirm(){
         }, moveTime);
 
     }, fadeoutTime);
-}
-
-// クリックを無効化するための関数
-function DisableClicks() {
-    document.body.style.pointerEvents = 'none';
-}
-
-// クリックを有効化するための関数
-function EnableClicks() {
-    document.body.style.pointerEvents = 'auto';
-}
-
-// スクロールを無効化
-function DisableScroll() {
-    document.body.classList.add('no-scroll');
-}
-
-// スクロールを有効化
-function EnableScroll() {
-    document.body.classList.remove('no-scroll');
 }
 // ---------------------------------------[⑥結果の表示]---------------------------------------
 const CURTAIN_LEFT = document.getElementById('curtain-left');
@@ -324,7 +298,6 @@ function ShowResult() {
         }, 1000);
     }, 1000);
 }
-
 // --------------------------------------[質問画面/機能]--------------------------------------
 //[CREATE] 回答作成
 function CreateAnswers(){
@@ -332,6 +305,10 @@ function CreateAnswers(){
     ShowBackBtn();
 
     let choicesArray = questions[currentQuestionIdx].choices;
+
+    if (questions.length === selectedAnswersArray.length){
+        DisableClicks();
+    }
 
     choicesArray.forEach((choice,idx) => {
 
@@ -364,9 +341,21 @@ function CreateAnswers(){
 
         // 選択肢をクリックをする
         ANSWER_BTN.addEventListener('click', ()=>{
+            DisableClicks(); // クリックイベント無効化
             SelectAnswer(idx,choice["id"]);
         })
     })
+
+    // 全ての回答選択肢のアニメーションが完了した後にクリックイベントを有効化
+    if(questions.length !== selectedAnswersArray.length) {
+        setTimeout(() => {
+            EnableClicks();
+        }, (choicesArray.length - 1) * fadeinAnswerTime + 50);
+    }else{
+        setTimeout(() => {
+            EnableClicks();
+        }, (choicesArray.length - 1) * fadeinAnswerTime +fadeinTime +50);
+    }
 }
 
 //[CREATE] 画像作成 & flipアニメーション（回答選択時）
@@ -466,13 +455,14 @@ function ShowBackBtn(){
 
 //[ON] 戻るボタンクリック時の処理
 function OnBackBtn() {
+
     flag = false;
     currentQuestionIdx--;
     selectedAnswersArray.pop(); // 配列の末尾を削除
     for (let i = 0; i < scoreArray.length; i++) {
         scoreArray[i].score.pop(); // スコア配列の末尾を削除
     }
-
+    DisableClicks();
     DeleteQuestionAnswers();
     ShowCurrentQstNum();
     ShowQuestion();
@@ -515,6 +505,7 @@ function CreateConfirmContainer(){
             CONFIRM_QUESTION_TEXT.innerText = (i+1)+"."+ questions[i]["text"];
         }
         CONFIRM_QUESTION_TEXT.style.color = "white";
+        CONFIRM_QUESTION_TEXT.classList.add("confirm-question");
 
         // 回答
         const CONFIRM_ANSWER_BTN = document.createElement('button')
@@ -563,7 +554,7 @@ function ShowReQuestion() {
 
 //[ON] 確認画面→質問画面へ戻るアニメーション&&機能
 function OnBackToQuestion() {
-    // スクロールを無効化
+    //クリックを無効化
     DisableScroll();
     DisableClicks();
 
@@ -589,7 +580,7 @@ function OnBackToQuestion() {
         let currentRect = CONFIRM_BOX.getBoundingClientRect();
 
         if (window.innerWidth < 768) {
-            let moveY = (questionBoxCenterY - (currentRect.top + currentRect.height / 2) )+ testY
+            let moveY = (questionBoxCenterY - (currentRect.top + currentRect.height / 2) )+ tmpY
             CONFIRM_BOX.style.transform = `translateY(${moveY}px)`;
         } else {
             let moveX = questionBoxCenterX - (currentRect.left + currentRect.width / 2);
@@ -621,7 +612,6 @@ function OnBackToQuestion() {
                 BACK_BTN.classList.add("hide");
 
                 EnableScroll();
-                EnableClicks();
 
             }, fadeoutTime);
         }, moveTime);
@@ -976,6 +966,36 @@ BACK_START_BTN.addEventListener("click",function(){
     sessionStorage.removeItem('scoreData');
     sessionStorage.removeItem('sent');
 });
+
+// / ----------------------------------------[その他機能]----------------------------------------
+// クリックを無効化するための関数
+function DisableClicks() {
+    document.body.style.pointerEvents = 'none';
+}
+
+// クリックを有効化するための関数
+function EnableClicks() {
+    document.body.style.pointerEvents = 'auto';
+}
+
+// スクロールを無効化
+function DisableScroll() {
+    document.body.classList.add('no-scroll');
+}
+
+// スクロールを有効化
+function EnableScroll() {
+    document.body.classList.remove('no-scroll');
+}
+
+// フェードイン関数
+function fadeIn(element, duration) {
+    element.style.opacity = '0';
+    element.style.transition = `opacity ${duration}ms ease`;
+    setTimeout(() => {
+        element.style.opacity = '1';
+    }, 50);
+}
 
 //[SHOW] 結果画面再表示
 function ReShowResult(scoreData) {
