@@ -63,7 +63,7 @@
             </div>
             <p class="mail hidden mt-14 mb-8 ms-2">{!! nl2br(e($word['bottom'])) !!}</p>
             <div id="mail-area" class="show flex justify-center mt-24">
-                <a href="{{ route('ShowQuestionPage') }}" class="check-back-btn mx-3 text-center">やり直す</a>
+                <a href="{{ route('ShowQuestionPage') }}" id="back-btn" class="check-back-btn mx-3 text-center">やり直す</a>
                 <button data-id="" type="button" id="mail-btn" class="mail-btn check-btn mx-3 text-center hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100">メール送信</button>
             </div>
         </div>

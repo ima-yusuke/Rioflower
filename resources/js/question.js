@@ -246,6 +246,14 @@ const CURTAIN_RIGHT = document.getElementById('curtain-right');
 SHOW_RESULT_BTN.addEventListener("click",ShowResult);
 
 function ShowResult() {
+    // Cookieのリセット
+    document.addEventListener('DOMContentLoaded', function() {
+        // XSRF-TOKEN クッキーを削除する
+        document.cookie = 'XSRF-TOKEN=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure';
+
+        // laravel_session クッキーを削除する
+        document.cookie = 'laravel_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure';
+    });
     if (sessionStorage.getItem('scoreData') !== null) {
         let scoreArray = sessionStorage.getItem('scoreData');
         sessionStorage.setItem('scoreData', scoreArray);
@@ -999,6 +1007,15 @@ function fadeIn(element, duration) {
 
 //[SHOW] 結果画面再表示
 function ReShowResult(scoreData) {
+    // Cookieのリセット
+    document.addEventListener('DOMContentLoaded', function() {
+        // XSRF-TOKEN クッキーを削除する
+        document.cookie = 'XSRF-TOKEN=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure';
+
+        // laravel_session クッキーを削除する
+        document.cookie = 'laravel_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure';
+    });
+
     let scoreArray = scoreData;
 
     QUESTION_CONTAINER.classList.add('hide');
@@ -1011,26 +1028,6 @@ function ReShowResult(scoreData) {
 }
 
 window.ReShowResult = ReShowResult;
-
-window.addEventListener('unload', function() {
-    fetch('/clear-session', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        }
-    })
-        .then(response => {
-            if (response.ok) {
-                console.log('セッションをクリアしました');
-            } else {
-                console.error('セッションのクリアに失敗しました');
-            }
-        })
-        .catch(error => {
-            console.error('エラー:', error);
-        });
-});
 
 // [結果画面]ナビゲーションバー
 const NAV_TOGGLE_BUTTON = document.getElementById('navToggleButton');

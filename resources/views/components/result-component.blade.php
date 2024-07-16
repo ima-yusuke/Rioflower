@@ -72,11 +72,11 @@
                         必要事項を入力して『確認画面へ』ボタンを押してください。<br>
                     </p>
                     <p class="text-sm font-semibold text-gray-900 dark:text-white">氏名</p>
-                    <input type="text" name="customer-name" id="customer-name" placeholder="氏名" value="{{ session()->has('name') ? session('name') : '' }}" class="w-full rounded-md">
+                    <input type="text" name="customer-name" id="customer-name" placeholder="氏名" value="{{ old("customer-name") }}" class="w-full rounded-md">
                     <p class="text-sm font-semibold text-gray-900 dark:text-white">住所</p>
-                    <input type="text" name="customer-address" id="customer-address" placeholder="住所" value="{{ session()->has('address') ? session('address') : '' }}" class="w-full rounded-md">
+                    <input type="text" name="customer-address" id="customer-address" placeholder="住所" value="{{ old("customer-address") }}" class="w-full rounded-md">
                     <p class="text-sm font-semibold text-gray-900 dark:text-white">メールアドレス</p>
-                    <input type="email" name="customer-mail" id="customer-mail" placeholder="example@example.com" value="{{ session()->has('email') ? session('email') : '' }}" class="w-full rounded-md">
+                    <input type="email" name="customer-mail" id="customer-mail" placeholder="example@example.com" value="{{ old("customer-mail") }}" class="w-full rounded-md">
                     <input type="hidden" name="product_id" id="product-id" value="">
                 </div>
                 <!-- Modal footer -->
