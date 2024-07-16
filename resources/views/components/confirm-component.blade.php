@@ -10,7 +10,7 @@
 
     {{--確認コンテナ--}}
     <div class="flex items-center rounded-3xl relative" id="confirm">
-        <div id="confirm_answers_container" class="relative flex flex-col justify-center items-center gap-6 py-4 md:py-8 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-main-brown rounded-3xl shadow-custom-dark">
+        <div id="confirm_answers_container" class="relative flex flex-col justify-center items-center gap-6 py-4 md:py-8 w-[300px] h-[300px] md:w-[500px] md:h-[450px] bg-main-brown rounded-3xl shadow-custom-dark">
             <div class="flex flex-col items-center overflow-y-auto py-4 md:py-0 gap-6 mx-8 md:mx-8 h-full w-full" id="confirm_box"></div>
         </div>
     </div>
@@ -25,7 +25,7 @@
         background-position: center;
         background-repeat: no-repeat;
         position: relative;
-        height: 500px;
+        height: 450px;
         width: 500px;
         z-index: 1;
     }

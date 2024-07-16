@@ -1,12 +1,10 @@
-<div id="result_container" class="relative flex flex-col justify-center items-center hide gap-8 w-full">
-
+<div id="result_container" class="relative flex flex-col justify-center items-center hide gap-8 w-full h-full">
     <x-nav-menu />
-
     <div class="flex flex-col md:flex-row justify-center items-center h-full md:w-full w-full">
         {{--左側詳細--}}
         <div class="w-full md:w-[50%] md:h-full h-[55dvh]">
             {{--茶色ボール&1位写真--}}
-            <div class="w-full h-full relative">
+            <div class="w-full h-full relative md:overflow-hidden">
                 <img id="result_img" class="absolute md:top-1/2 top-2/3 md:-translate-y-1/2 -translate-y-2/3 left-1/2 -translate-x-1/2 w-[60%] h-auto aspect-square object-cover z-20 rounded-full" draggable="false">
                 <div id="big_ball" class="absolute md:top-1/3 -top-1/2 -left-1/3 z-10 bg-main-brown rounded-full w-full aspect-square"></div>
             </div>
@@ -29,7 +27,7 @@
                 </div>
 
                 {{--Quill表示エリア--}}
-                <div class="relative md:h-[450px] h-[400px] mx-10 md:mx-0" id="quill_view_container">
+                <div class="relative md:h-[55dvh] h-[400px] mx-10 md:mx-0" id="quill_view_container">
                     <div id="viewer" class="quill-bg"></div>
                     <div id="viewer-wrapper" class="absolute top-0 left-0 h-full w-full opacity-0 -z-10" style="background-color: rgb(237,230,215)"></div>
                     <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col" style="line-height: 0; color: rgba(100, 100, 100, 0.8)">
