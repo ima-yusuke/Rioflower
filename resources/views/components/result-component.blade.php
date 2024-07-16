@@ -41,8 +41,7 @@
 
                 {{--ボタン--}}
                 <aside class="flex justify-center gap-4 mx-6 mt-8 md:mt-0 md:mx-0">
-                    <button id="back-start-btn" class="back-start-btn border hover:bg-gray-700 hover:text-white hover:border-white text-nowrap" onclick="location.href='{{ route('Index') }}'">初めからやり直す</button>
-
+                    <a href="{{ route('Index') }}" id="back-start-btn" class="back-start-btn border hover:bg-gray-700 hover:text-white hover:border-white text-nowrap">初めからやり直す</a>
                     {{--modal open button--}}
                     <button data-modal-target="default-modal1" data-modal-toggle="default-modal1" id="open_modal_btn" class="open-modal pink-btn block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
                         購入

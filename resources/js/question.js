@@ -62,7 +62,7 @@ if (sessionStorage.getItem('scoreData') == null) {
         QUESTION_CONTENT.classList.remove('hide'); // 質問画面を表示
         setTimeout(() => {
             LOADING.classList.add('fade-out'); // ローディング画面をフェードアウト
-            QUESTION_CONTENT.add('fade-in'); // 質問画面をフェードイン
+            QUESTION_CONTENT.classList.add('fade-in'); // 質問画面をフェードイン
         }, 1000);
 
         setTimeout(() => {
