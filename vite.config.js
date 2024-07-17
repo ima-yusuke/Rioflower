@@ -32,6 +32,7 @@ export default defineConfig({
                 app: 'resources/js/app.js',
                 appStyles: 'resources/css/app.css',
                 index: 'resources/js/index.js',
+                main: 'resources/js/question.js',
                 check: 'resources/js/check.js',
                 dashProduct: 'resources/js/admin/dash-product.js',
                 dashLink: 'resources/js/admin/dash-link.js',
