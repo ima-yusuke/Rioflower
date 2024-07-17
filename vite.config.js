@@ -26,7 +26,7 @@ export default defineConfig({
         }
     },
     build: {
-        manifest: true,
+        manifest: 'manifest.json',
         rollupOptions: {
             input: {
                 app: 'resources/js/app.js',
