@@ -39,7 +39,7 @@ export default defineConfig({
                 dashAddAttribute: 'resources/js/admin/dash-add-attribute.js',
                 dashQuestionAttribute: 'resources/js/admin/dash-question-attribute.js',
                 dashProductAttribute: 'resources/js/admin/dash-product-attribute.js',
-                dashMessage: 'resources/js/admin/dash-message.js',
+                dashMessage: 'resources/js/admin/dash-word.js',
             }
         }
     }
