@@ -35,7 +35,7 @@ export default defineConfig({
                 check: 'resources/js/check.js',
                 dashProduct: 'resources/js/admin/dash-product.js',
                 dashLink: 'resources/js/admin/dash-link.js',
-                question: 'resources/js/dash-question.js',
+                question: 'resources/js/admin/dash-question.js',
                 dashAddAttribute: 'resources/js/admin/dash-add-attribute.js',
                 dashQuestionAttribute: 'resources/js/admin/dash-question-attribute.js',
                 dashProductAttribute: 'resources/js/admin/dash-product-attribute.js',
