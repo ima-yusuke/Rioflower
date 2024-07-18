@@ -49,6 +49,15 @@ class AdminController extends Controller
             $product->is_enabled = 1;
             $product->save();
 
+            // 画像を保存するディレクトリのパスを生成
+            $directoryPath = storage_path('app/public/img/' . $product->id);
+
+            // ディレクトリが存在しない場合は作成し、パーミッションを設定
+            if (!file_exists($directoryPath)) {
+                mkdir($directoryPath, 0755, true);
+                chmod($directoryPath, 0755);
+            }
+
             // storageに画像ファイル保存
             $request->file('img')->storeAs('public/img/' . $product->id, $fileName);
 
@@ -101,6 +110,13 @@ class AdminController extends Controller
 
             // 以前の画像を削除
             Storage::disk('public')->deleteDirectory('img/' . $product->id);
+
+            // 新しいディレクトリを作成し、パーミッションを設定
+            $directoryPath = storage_path('app/public/img/' . $product->id);
+            if (!file_exists($directoryPath)) {
+                mkdir($directoryPath, 0755, true);
+                chmod($directoryPath, 0755);
+            }
 
             // 新しい画像を保存
             $request->file('img')->storeAs($newImgPath, $fileName);
