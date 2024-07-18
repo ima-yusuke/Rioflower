@@ -20,7 +20,7 @@
             <a href="{{ route('ShowLink') }}" class="w-full h-full hover:bg-black hover:text-white p-3">
                 <div class="flex flex-col gap-2">
                     <p><i class="fa-solid fa-link text-4xl"></i></p>
-                    <p class="font-bold text-sm md:text-base">リンク設定</p>
+                    <p class="font-bold text-sm md:text-base">リンク(価格帯)設定</p>
                 </div>
             </a>
         </div>
