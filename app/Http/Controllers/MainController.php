@@ -93,7 +93,7 @@ class MainController extends Controller
             Mail::send('emails.customer_registered', ['html' => $request->html], function ($message) use ($request) {
                 $message->to($request->email);
                 $message->subject('購入リンクのお知らせ');
-                $message->from('test@test');
+                $message->from('nozaki@mie-projectm.com');
             });
 
             return ['message' => 'メールを送信しました。', 'result' => $request->all()];
