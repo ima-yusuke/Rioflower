@@ -109,6 +109,13 @@ html{
     left:15%;
 }
 
+/*TOP*/
+#index-wrapper {
+    @media max-width: 767px {
+        max-height: calc(100dvh - 90px);
+    }
+}
+
 /*[診断画面共通]*/
 .question-container button,
 .result-container button,

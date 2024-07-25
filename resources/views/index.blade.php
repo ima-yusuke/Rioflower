@@ -1,5 +1,5 @@
 <x-template title="Rio flower" css="app.css">
-    <div class="flex p-4 h-full relative">
+    <div id="index-wrapper" class="flex p-4 h-full relative max-h-[calc(100dvh-90px)]">
         <div class="relative">
             <img src="{{ asset('/img/top1.png') }}" alt="flower" class="rounded-3xl md:rounded-r-none object-cover h-full" draggable="false">
             <div class="md:hidden absolute left-1/2 -translate-x-1/2 top-1/4 text-xl text-nowrap">
