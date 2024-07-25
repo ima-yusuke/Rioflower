@@ -112,7 +112,7 @@ html{
 /*TOP*/
 #index-wrapper {
     @media max-width: 767px {
-        max-height: calc(100dvh - 90px);
+        max-height: calc(100dvh - 90px - 2rem);
     }
 }
 
