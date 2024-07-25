@@ -11,7 +11,7 @@
     <title>購入情報確認</title>
     @vite(['resources/css/app.css'])
 </head>
-<body class="pb-1">
+<body class="pb-1 bg-white">
     <div class="flex flex-col w-11/12 md:w-1/2 md:mx-auto mx-3 my-10 rounded-xl justify-center bg-main-bg">
         <div class="m-5">
             <div id="sent" class="sent hidden">
