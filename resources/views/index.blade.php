@@ -1,6 +1,6 @@
 <x-template title="Rio flower" css="app.css">
     <div id="index-wrapper" class="flex p-4 h-full relative">
-        <div class="relative">
+        <div class="relative md:w-1/2 max-h-[100dvh]">
             <img src="{{ asset('/img/top1.png') }}" alt="flower" class="rounded-3xl md:rounded-r-none object-cover h-full" draggable="false">
             <div class="md:hidden absolute left-1/2 -translate-x-1/2 top-1/4 text-xl text-nowrap">
                 <p class="text-white">Step by Step Bloom by Bloom</p>
@@ -12,7 +12,7 @@
                 見つけよう
             </div>
         </div>
-        <div class="relative hidden md:inline-block">
+        <div class="relative hidden md:inline-block md:w-1/2 max-h-[100dvh]">
             <img src="{{ asset('/img/top2.png') }}" alt="flower" class="rounded-r-3xl object-cover h-full" draggable="false">
             <div class="absolute left-10 top-64 text-xl">
                 <p class="text-white">Step by Step Bloom by Bloom</p>
