@@ -653,32 +653,60 @@ function CreateResult(scoreArray){
 //[CREATE] 2位以下の画像作成
 function CreateOtherImages(scoreArray) {
     const ranks = ['第1位', '第2位', '第3位', '第4位'];
+    if (scoreArray.length < 4) {
+        for (let i=0; i<scoreArray.length; i++) {
 
-    for (let i=0; i<4; i++) {
+            const div = document.createElement('div');
 
-        const div = document.createElement('div');
+            if(i===0){
+                div.classList.add('hidden');
+            }else{
+                div.classList.add('other-img-container');
+            }
+            div.setAttribute('data-id', '');
 
-        if(i===0){
-            div.classList.add('hidden');
-        }else{
-            div.classList.add('other-img-container');
+            // img 要素を作成
+            const img = document.createElement('img');
+            img.classList.add('otherImg', 'object-cover', 'rounded-full');
+
+            // p 要素を作成
+            const p = document.createElement('p');
+            p.textContent = `【${ranks[i]}】`;
+
+            // div に img と p を追加
+            div.appendChild(img);
+            div.appendChild(p);
+
+            // コンテナに div を追加
+            OTHER_IMG_CONTAINER.appendChild(div);
         }
-        div.setAttribute('data-id', '');
+    } else {
+        for (let i=0; i<4; i++) {
 
-        // img 要素を作成
-        const img = document.createElement('img');
-        img.classList.add('otherImg', 'object-cover', 'rounded-full');
+            const div = document.createElement('div');
 
-        // p 要素を作成
-        const p = document.createElement('p');
-        p.textContent = `【${ranks[i]}】`;
+            if(i===0){
+                div.classList.add('hidden');
+            }else{
+                div.classList.add('other-img-container');
+            }
+            div.setAttribute('data-id', '');
 
-        // div に img と p を追加
-        div.appendChild(img);
-        div.appendChild(p);
+            // img 要素を作成
+            const img = document.createElement('img');
+            img.classList.add('otherImg', 'object-cover', 'rounded-full');
 
-        // コンテナに div を追加
-        OTHER_IMG_CONTAINER.appendChild(div);
+            // p 要素を作成
+            const p = document.createElement('p');
+            p.textContent = `【${ranks[i]}】`;
+
+            // div に img と p を追加
+            div.appendChild(img);
+            div.appendChild(p);
+
+            // コンテナに div を追加
+            OTHER_IMG_CONTAINER.appendChild(div);
+        }
     }
 }
 
@@ -726,69 +754,136 @@ function OnSwapImg(scoreArray) {
     let VIEWER = document.getElementById("viewer-wrapper");
     let RECOMMEND = document.getElementById("recommend-wrapper");
 
-    for (let i = 0; i < 4; i++) {
+    if (scoreArray.length < 4) {
+        for (let i=0; i<scoreArray.length; i++) {
 
-        // スコア高い順に下の画像にsrcを付与
-        let otherProduct = products.filter(product => product.id === scoreArray[i]["product_id"]);
-        otherImages[i].src = otherProduct[0]["img"];
+            // スコア高い順に下の画像にsrcを付与
+            let otherProduct = products.filter(product => product.id === scoreArray[i]["product_id"]);
+            otherImages[i].src = otherProduct[0]["img"];
 
-        // 表示商品の入れ替え
-        otherImages[i].parentNode.addEventListener("click", function () {
-            let clickedImg = otherImages[i];
+            // 表示商品の入れ替え
+            otherImages[i].parentNode.addEventListener("click", function () {
+                let clickedImg = otherImages[i];
 
-            let hiddenElement = Array.from(otherImages).filter(image => image.parentNode.classList.contains('hidden'))[0];
+                let hiddenElement = Array.from(otherImages).filter(image => image.parentNode.classList.contains('hidden'))[0];
 
-            // フェードアウト
-            RESULT_IMG.classList.add('fade-out');
-            VIEWER.classList.remove('-z-10');
-            VIEWER.classList.add('z-10');
-            VIEWER.classList.add('fade-in');
-            RECOMMEND.classList.add('fade-in');
+                // フェードアウト
+                RESULT_IMG.classList.add('fade-out');
+                VIEWER.classList.remove('-z-10');
+                VIEWER.classList.add('z-10');
+                VIEWER.classList.add('fade-in');
+                RECOMMEND.classList.add('fade-in');
 
-            // フェードアウト完了後に画像を変更
-            RESULT_IMG.addEventListener('transitionend', function onTransitionEnd1() {
-                RESULT_IMG.removeEventListener('transitionend', onTransitionEnd1);
+                // フェードアウト完了後に画像を変更
+                RESULT_IMG.addEventListener('transitionend', function onTransitionEnd1() {
+                    RESULT_IMG.removeEventListener('transitionend', onTransitionEnd1);
 
-                hiddenElement.parentNode.classList.remove("hidden");
-                hiddenElement.parentNode.classList.add("other-img-container");
+                    hiddenElement.parentNode.classList.remove("hidden");
+                    hiddenElement.parentNode.classList.add("other-img-container");
 
-                clickedImg.parentNode.classList.add("hidden");
-                clickedImg.parentNode.classList.remove("other-img-container");
+                    clickedImg.parentNode.classList.add("hidden");
+                    clickedImg.parentNode.classList.remove("other-img-container");
 
-                DeleteQuill();
-                ShowQuill(otherProduct[0]["id"]);
+                    DeleteQuill();
+                    ShowQuill(otherProduct[0]["id"]);
 
-                RESULT_P_NAME.innerText = otherProduct[0]["name"];
-                RESULT_IMG.src = otherProduct[0]["img"];
+                    RESULT_P_NAME.innerText = otherProduct[0]["name"];
+                    RESULT_IMG.src = otherProduct[0]["img"];
 
-                // フェードイン
-                RESULT_IMG.classList.remove('fade-out');
-                RESULT_IMG.classList.add('fade-in');
-                VIEWER.classList.remove('fade-in');
-                VIEWER.classList.add('fade-out');
-                RECOMMEND.classList.remove('fade-in');
-                RECOMMEND.classList.add('fade-out');
+                    // フェードイン
+                    RESULT_IMG.classList.remove('fade-out');
+                    RESULT_IMG.classList.add('fade-in');
+                    VIEWER.classList.remove('fade-in');
+                    VIEWER.classList.add('fade-out');
+                    RECOMMEND.classList.remove('fade-in');
+                    RECOMMEND.classList.add('fade-out');
 
-                // フェードイン完了後にクラスを削除
-                RESULT_IMG.addEventListener('transitionend', function onTransitionEnd2() {
-                    RESULT_IMG.removeEventListener('transitionend', onTransitionEnd2);
-                    RESULT_IMG.classList.remove('fade-in');
-                    VIEWER.classList.remove('z-10');
-                    VIEWER.classList.add('-z-10');
-                    VIEWER.classList.remove('fade-out');
-                    RECOMMEND.classList.remove('fade-out');
+                    // フェードイン完了後にクラスを削除
+                    RESULT_IMG.addEventListener('transitionend', function onTransitionEnd2() {
+                        RESULT_IMG.removeEventListener('transitionend', onTransitionEnd2);
+                        RESULT_IMG.classList.remove('fade-in');
+                        VIEWER.classList.remove('z-10');
+                        VIEWER.classList.add('-z-10');
+                        VIEWER.classList.remove('fade-out');
+                        RECOMMEND.classList.remove('fade-out');
+                    });
                 });
+
+                // 購入商品のidを更新
+                purchaseProductId = otherProduct[0]["id"];
+
+                // メニューを閉じる
+                NAV_MENU.classList.add('non-active');
+                TOGGLE_HIDE.classList.add('hidden');
+                TOGGLE_SHOW.classList.remove('hidden');
+                MENU_OVERLAY.classList.add('hidden');
             });
+        }
+    } else {
+        for (let i=0; i<4; i++) {
 
-            // 購入商品のidを更新
-            purchaseProductId = otherProduct[0]["id"];
+            // スコア高い順に下の画像にsrcを付与
+            let otherProduct = products.filter(product => product.id === scoreArray[i]["product_id"]);
+            otherImages[i].src = otherProduct[0]["img"];
 
-            // メニューを閉じる
-            NAV_MENU.classList.add('non-active');
-            TOGGLE_HIDE.classList.add('hidden');
-            TOGGLE_SHOW.classList.remove('hidden');
-            MENU_OVERLAY.classList.add('hidden');
-        });
+            // 表示商品の入れ替え
+            otherImages[i].parentNode.addEventListener("click", function () {
+                let clickedImg = otherImages[i];
+
+                let hiddenElement = Array.from(otherImages).filter(image => image.parentNode.classList.contains('hidden'))[0];
+
+                // フェードアウト
+                RESULT_IMG.classList.add('fade-out');
+                VIEWER.classList.remove('-z-10');
+                VIEWER.classList.add('z-10');
+                VIEWER.classList.add('fade-in');
+                RECOMMEND.classList.add('fade-in');
+
+                // フェードアウト完了後に画像を変更
+                RESULT_IMG.addEventListener('transitionend', function onTransitionEnd1() {
+                    RESULT_IMG.removeEventListener('transitionend', onTransitionEnd1);
+
+                    hiddenElement.parentNode.classList.remove("hidden");
+                    hiddenElement.parentNode.classList.add("other-img-container");
+
+                    clickedImg.parentNode.classList.add("hidden");
+                    clickedImg.parentNode.classList.remove("other-img-container");
+
+                    DeleteQuill();
+                    ShowQuill(otherProduct[0]["id"]);
+
+                    RESULT_P_NAME.innerText = otherProduct[0]["name"];
+                    RESULT_IMG.src = otherProduct[0]["img"];
+
+                    // フェードイン
+                    RESULT_IMG.classList.remove('fade-out');
+                    RESULT_IMG.classList.add('fade-in');
+                    VIEWER.classList.remove('fade-in');
+                    VIEWER.classList.add('fade-out');
+                    RECOMMEND.classList.remove('fade-in');
+                    RECOMMEND.classList.add('fade-out');
+
+                    // フェードイン完了後にクラスを削除
+                    RESULT_IMG.addEventListener('transitionend', function onTransitionEnd2() {
+                        RESULT_IMG.removeEventListener('transitionend', onTransitionEnd2);
+                        RESULT_IMG.classList.remove('fade-in');
+                        VIEWER.classList.remove('z-10');
+                        VIEWER.classList.add('-z-10');
+                        VIEWER.classList.remove('fade-out');
+                        RECOMMEND.classList.remove('fade-out');
+                    });
+                });
+
+                // 購入商品のidを更新
+                purchaseProductId = otherProduct[0]["id"];
+
+                // メニューを閉じる
+                NAV_MENU.classList.add('non-active');
+                TOGGLE_HIDE.classList.add('hidden');
+                TOGGLE_SHOW.classList.remove('hidden');
+                MENU_OVERLAY.classList.add('hidden');
+            });
+        }
     }
 }
 
