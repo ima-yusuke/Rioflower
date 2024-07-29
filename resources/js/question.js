@@ -654,7 +654,7 @@ function CreateResult(scoreArray){
 function CreateOtherImages(scoreArray) {
     const ranks = ['第1位', '第2位', '第3位', '第4位'];
 
-    for (let i=0; i<scoreArray.length; i++) {
+    for (let i=0; i<4; i++) {
 
         const div = document.createElement('div');
 
@@ -726,7 +726,7 @@ function OnSwapImg(scoreArray) {
     let VIEWER = document.getElementById("viewer-wrapper");
     let RECOMMEND = document.getElementById("recommend-wrapper");
 
-    for (let i = 0; i < scoreArray.length; i++) {
+    for (let i = 0; i < 4; i++) {
 
         // スコア高い順に下の画像にsrcを付与
         let otherProduct = products.filter(product => product.id === scoreArray[i]["product_id"]);
