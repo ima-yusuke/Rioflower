@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Choice;
+use App\Models\Forward;
 use App\Models\Word;
 use App\Models\Product_attributes;
 use App\Models\Question;
@@ -858,6 +859,62 @@ class AdminController extends Controller
             DB::rollback();
             Log::error('メール設定の更新に失敗しました' . $e->getMessage());
             return response()->json(['message' => 'メール設定の更新に失敗しました'], 500);
+        }
+    }
+
+    public function ShowMailForward() {
+        $forwards = Forward::all();
+        return view("dash-mail-forward", compact("forwards"));
+    }
+
+    public function UpdateForward(Request $request)
+    {
+        // バリデーション
+        $validator = Validator::make($request->all(), [
+            'email1' => ['email', 'nullable'],
+            'email2' => ['email', 'nullable'],
+            'email3' => ['email', 'nullable'],
+        ], [
+            'email1.email' => '1つ目のメールアドレスを正しい形式で入力してください。',
+            'email2.email' => '2つ目のメールアドレスを正しい形式で入力してください。',
+            'email3.email' => '3つ目のメールアドレスを正しい形式で入力してください。',
+        ]);
+
+        // バリデーションエラーが発生した場合の処理
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => '入力エラーがあります。',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // トランザクションの開始
+        DB::beginTransaction();
+        try {
+            // データベースの更新
+            $updates = [
+                ['id' => $request->id1, 'email' => $request->email1],
+                ['id' => $request->id2, 'email' => $request->email2],
+                ['id' => $request->id3, 'email' => $request->email3],
+            ];
+
+            foreach ($updates as $update) {
+                $forward = Forward::find($update['id']);
+                if ($forward) {
+                    $forward->email = $update['email'];
+                    $forward->save();
+                }
+            }
+
+            // トランザクションのコミット
+            DB::commit();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            // エラーが発生した場合はロールバック
+            DB::rollBack();
+            Log::error('メール転送設定の更新に失敗しました: ' . $e->getMessage());
+            return response()->json(['success' => false, 'error' => '更新に失敗しました。'], 500);
         }
     }
 }

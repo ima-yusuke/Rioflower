@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Choice_attribute;
 use App\Models\Customer;
+use App\Models\Forward;
 use App\Models\Product;
 use App\Models\Detail;
 use App\Models\Word;
@@ -77,7 +78,6 @@ class MainController extends Controller
 
     // 顧客データ・メール送信
     public function AddCustomer(Request $request) {
-
         // トランザクションを開始
         DB::beginTransaction();
         try {
@@ -88,12 +88,16 @@ class MainController extends Controller
             $customer->product_id = $request->product_id;
             $customer->save();
 
+            // BCCメールアドレスを取得
+            $bccEmails = Forward::whereNotNull('email')->pluck('email')->toArray();
+
             DB::commit();
 
-            Mail::send('emails.customer_registered', ['html' => $request->html], function ($message) use ($request) {
+            Mail::send('emails.customer_registered', ['html' => $request->html], function ($message) use ($request, $bccEmails) {
                 $message->to($request->email);
                 $message->subject('購入リンクのお知らせ');
                 $message->from('nozaki@mie-projectm.com');
+                $message->bcc($bccEmails); // BCCに追加
             });
 
             return ['message' => 'メールを送信しました。', 'result' => $request->all()];

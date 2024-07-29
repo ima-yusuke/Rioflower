@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ChoicesTableSeeder::class,
             CategoriesTableSeeder::class,
             AttributesTableSeeder::class,
+            ForwardsTableSeeder::class,
         ]);
     }
 }

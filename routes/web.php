@@ -74,7 +74,11 @@ Route::middleware('auth')->group(function () {
 
     //メール
     Route::get("/dashboard/word",[AdminController::class,"ShowWord"])->name("ShowWord");
-    Route::PATCH("/dashboard/word/{id}",[AdminController::class,"UpdateWord"])->name("UpdateWord");
+    Route::patch("/dashboard/word/{id}",[AdminController::class,"UpdateWord"])->name("UpdateWord");
+
+    //転送先アドレス設定
+    Route::get("/dashboard/forward", [AdminController::class, "ShowMailForward"])->name("ShowMailForward");
+    Route::patch('/dashboard/forward', [AdminController::class, 'UpdateForward'])->name('UpdateForward');
 });
 
 require __DIR__.'/auth.php';
