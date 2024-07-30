@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Choice_attribute;
 use App\Models\Customer;
 use App\Models\Forward;
+use App\Models\Image;
 use App\Models\Product;
 use App\Models\Detail;
 use App\Models\Word;
@@ -19,7 +20,9 @@ class MainController extends Controller
 {
     // トップページ
     public function Index() {
-        return view('index');
+        $leftImage = Image::find(1);
+        $rightImage = Image::find(2);
+        return view('index', compact('leftImage', 'rightImage'));
     }
 
     // 質問ページ

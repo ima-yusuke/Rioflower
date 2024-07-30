@@ -1,7 +1,7 @@
 <x-template title="Rio flower" css="app.css">
     <div id="index-wrapper" class="flex p-4 h-full relative">
         <div class="relative md:w-1/2 max-h-[100dvh]">
-            <img src="{{ asset('/storage/img/top1.png') }}" alt="flower" class="rounded-3xl md:rounded-r-none object-cover h-full" draggable="false">
+            <img src="{{ asset($leftImage->img) }}" alt="flower" class="rounded-3xl md:rounded-r-none object-cover w-full h-[42vw]" draggable="false">
             <div class="md:hidden absolute left-1/2 -translate-x-1/2 top-1/4 text-xl text-nowrap">
                 <p class="text-white">Step by Step Bloom by Bloom</p>
                 <p class="text-[#DA9F9F] bg-white p-2">Find Your Perfect Dry Flower</p>
@@ -12,8 +12,8 @@
                 見つけよう
             </div>
         </div>
-        <div class="relative hidden md:inline-block md:w-1/2 max-h-[100dvh]">
-            <img src="{{ asset('/storage/img/top2.png') }}" alt="flower" class="rounded-r-3xl object-cover h-full" draggable="false">
+        <div class="relative hidden md:inline-block md:w-1/2 max-h-[100vh]">
+            <img src="{{ asset($rightImage->img) }}" alt="flower" class="rounded-r-3xl object-cover w-full h-[42vw]" draggable="false">
             <div class="absolute left-10 top-64 text-xl">
                 <p class="text-white">Step by Step Bloom by Bloom</p>
                 <p class="text-[#DA9F9F] bg-white p-2">Find Your Perfect Dry Flower</p>
