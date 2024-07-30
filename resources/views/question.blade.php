@@ -1,14 +1,17 @@
 <x-template title="診断ページ" css="app.css">
     <div id="loading" class="fixed flex justify-center items-center text-2xl z-30 w-full md:h-[calc(100dvh-1rem-110px)] h-full bg-main-brown">
-        <div class="loading-wrapper">
-            <div class="loading-circle"></div>
-            <div class="loading-circle"></div>
-            <div class="loading-circle"></div>
-            <div class="loading-shadow"></div>
-            <div class="loading-shadow"></div>
-            <div class="loading-shadow"></div>
-            <span>Loading</span>
+        <div class="loading-wrapper w-[100dvh] h-full">
+            <section class="w-[200px] loading-test">
+                <div class="loading-circle"></div>
+                <div class="loading-circle"></div>
+                <div class="loading-circle"></div>
+                <div class="loading-shadow"></div>
+                <div class="loading-shadow"></div>
+                <div class="loading-shadow"></div>
+            </section>
+            <span id="loading_text" class="absolute left-1/2 -translate-x-1/2 bottom-48 w-[95%] md:w-[80%] text-center text-sm md:text-base">Loading</span>
         </div>
+
     </div>
     <div id="question-content" class="bg-main-bg flex flex-col justify-start md:justify-center items-center w-full h-full md:mb-4 relative hide">
         {{--質問画面--}}

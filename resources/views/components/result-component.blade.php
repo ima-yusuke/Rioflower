@@ -15,7 +15,7 @@
             <div class="flex flex-col gap-4 w-full">
                 {{--タイトル--}}
                 <div class="font-bold flex flex-col items-center gap-2 md:ml-4">
-                    <p class="text-center text-main-brown">\あなたに合うおすすめ商品は/</p>
+                    <p class="text-center text-main-brown" id="nickname_title"></p>
                     <div class="relative">
                         <aside class="flex justify-center items-center md:items-end gap-2">
                             <h2 class="text-2xl md:text-4xl text-main-brown"><span id="result_p_name"></span></h2>

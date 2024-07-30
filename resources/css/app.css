@@ -20,7 +20,7 @@ html{
 }
 
 /*[Loading]*/
-.loading-wrapper{
+.loading-test{
     width:200px;
     height:60px;
     position: absolute;
@@ -100,13 +100,9 @@ html{
     right:15%;
     animation-delay: .3s;
 }
-.loading-wrapper span{
-    position: absolute;
-    top:75px;
-    font-size: 20px;
+#loading_text{
     letter-spacing: 12px;
     color: #fff;
-    left:15%;
 }
 
 /*TOP*/
@@ -312,7 +308,7 @@ html{
 /*[画面遷移]*/
 .curtain {
     background: rgb(191,158,116);
-    z-index: 1000;
+    z-index: 25;
     @media (min-width: 768px) {
         transition: width 1s ease;
     }

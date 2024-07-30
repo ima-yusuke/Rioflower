@@ -7,6 +7,10 @@ use App\Http\Controllers\AdminController;
 
 //TOPページ
 Route::get('/', [MainController::class, 'Index'])->name('Index');
+//ニックネームページ
+Route::get('/nickname',function (){
+   return view('setNickname');
+});
 //質問ページ
 Route::get('/question', [MainController::class, 'ShowQuestionPage'])->name('ShowQuestionPage');
 //購入確認ページ

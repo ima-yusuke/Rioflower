@@ -273,6 +273,29 @@ function ShowResult() {
         CURTAIN_RIGHT.classList.add('md:w-1/2');
     }
 
+    // ローディング画面を表示
+    setTimeout(() => {
+        let LOADING = document.getElementById('loading');
+        let QUESTION_CONTENT = document.getElementById('question-content');
+        let LOADING_TEXT = document.getElementById('loading_text');
+
+        QUESTION_CONTENT.classList.remove('hide'); // 質問画面を表示
+        LOADING.classList.remove('hide'); // ローディング画面を表示
+        LOADING.classList.remove('fade-out'); // ローディング画面のフェードアウトをリセット
+        QUESTION_CONTENT.classList.remove('fade-in'); // 質問画面のフェードインをリセット
+        LOADING_TEXT.innerText = sessionStorage.getItem('nickname') + 'さんのおすすめ商品を探しています...';
+
+        setTimeout(() => {
+            LOADING.classList.add('fade-out'); // ローディング画面をフェードアウト
+            QUESTION_CONTENT.classList.add('fade-in'); // 質問画面をフェードイン
+        }, 2000);
+
+        setTimeout(() => {
+            LOADING.classList.add('hide'); // ローディング画面を非表示
+        }, 2500);
+    },1000);
+
+
     // カーテンが閉じた後に画面を切り替え
     setTimeout(() => {
         CONFIRM_CONTAINER.classList.add('hide');
@@ -304,7 +327,7 @@ function ShowResult() {
                 CURTAIN_LEFT.classList.add('md:w-0');
             }
         }, 1000);
-    }, 1000);
+    }, 3500);
 }
 // --------------------------------------[質問画面/機能]--------------------------------------
 //[CREATE] 回答作成
@@ -648,6 +671,11 @@ function CreateResult(scoreArray){
 
     // 画像入れ替え
     OnSwapImg(scoreArray);
+
+    // ニックネームを表示
+    let nickname = sessionStorage.getItem('nickname');
+    let nicknameTitle = document.getElementById('nickname_title');
+    nicknameTitle.innerText = `\\${nickname}さんに合うおすすめ商品は/`;
 }
 
 //[CREATE] 2位以下の画像作成
@@ -1068,6 +1096,7 @@ SEND_BTN.addEventListener('click', function(event) {
 BACK_START_BTN.addEventListener("click",function(){
     sessionStorage.removeItem('scoreData');
     sessionStorage.removeItem('sent');
+    sessionStorage.removeItem('nickname');
 });
 
 // / ----------------------------------------[その他機能]----------------------------------------
