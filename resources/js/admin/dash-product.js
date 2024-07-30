@@ -122,11 +122,6 @@ function CreateQuill(idx){
         theme: 'snow', // or 'bubble'
         bounds: document.body
     });
-
-    // toolbarのimageをクリックしたときに下記selectLocalImage()が実行される
-    // quill.getModule('toolbar').addHandler('image', () => {
-    //     SelectLocalImage();
-    // });
 }
 
 // [Quill表示]
@@ -389,86 +384,3 @@ for (let i=0;i<priceSelectBoxes.length;i++){
         productTitle[i].appendChild(newAlertElement);
     }
 }
-
-// [Quillのimgアイコンクリック時の処理]
-// function SelectLocalImage() {
-//
-//     const IMG_INPUT = document.createElement('input');
-//     IMG_INPUT.setAttribute('type', 'file');
-//     IMG_INPUT.setAttribute("accept", "image/*");
-//     IMG_INPUT.click();
-//
-//     IMG_INPUT.onchange = () => {
-//         const UPLOAD_IMG = IMG_INPUT.files[0];
-//
-//         // FileReader インスタンスを作成
-//         const READER = new FileReader();
-//
-//         // 読み込みが完了したときの処理
-//         READER.onload = () => {
-//
-//             //アップロードした画像を文字にしたデータを保存
-//             const newImgString64 = READER.result;
-//
-//             if (newImgString64 !== null) {
-//                 let index = GetCurrentIndex();
-//                 // 現在のカーソル位置に画像データを追加
-//                 quill.insertEmbed(index, 'image', newImgString64);
-//             }
-//
-//             SaveCurrentQuillContent();
-//             ShowData();
-//         };
-//
-//         // ここで読み込みが完了したときに onload イベントが発生し、上記コールバック関数が呼び出される。
-//         READER.readAsDataURL(UPLOAD_IMG);
-//     };
-// }
-//
-// //[現在のカーソル位置取得]
-// function GetCurrentIndex() {
-//     // 現在のカーソル位置を取得
-//     let selection = quill.getSelection();
-//
-//     if(selection) {
-//         return selection.index;
-//     } else {
-//         return 0; // カーソル位置がない場合は0を返す
-//     }
-// }
-
-
-// 商品更新
-// for (let i = 0; i < SUBMIT_BUTTONS.length; i++) {
-//     SUBMIT_BUTTONS[i].addEventListener('click', function () {
-//         const FORM_ELEMENTS = document.getElementsByClassName('productForm');
-//         const formData = new FormData(FORM_ELEMENTS[i]);
-//         const id = SUBMIT_BUTTONS[i].getAttribute('data-product-id');
-//         fetch(`/dashboard/product/${id}`, {
-//             method: 'PATCH',
-//             headers: {
-//                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // CSRFトークン
-//             },
-//             body: formData
-//         })
-//             .then(response => {
-//                 if (!response.ok) {
-//                     throw new Error('Network response was not ok');
-//                 }
-//                 return response.json();
-//             })
-//             .then(data => {
-//                 if (data.redirect) {
-//                     alert(data.message);
-//                     window.location.href = data.redirect;
-//                 } else if (data.message) {
-//                     alert(data.message);
-//                 }
-//             })
-//             .catch(error => {
-//                 console.error('Error:', error);
-//                 alert('商品更新に失敗しました');
-//             });
-//     });
-// }
-

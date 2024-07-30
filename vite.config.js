@@ -17,6 +17,7 @@ export default defineConfig({
                 'resources/js/admin/dash-product-attribute.js',
                 'resources/js/admin/dash-word.js',
                 'resources/js/admin/dash-mail-forward.js',
+                'resources/js/admin/dash-image.js',
             ],
             refresh: true,
         }),
@@ -43,6 +44,7 @@ export default defineConfig({
                 dashProductAttribute: 'resources/js/admin/dash-product-attribute.js',
                 dashMessage: 'resources/js/admin/dash-word.js',
                 dashMailForward: 'resources/js/admin/dash-mail-forward.js',
+                dashImage: 'resources/js/admin/dash-image.js',
             }
         }
     }

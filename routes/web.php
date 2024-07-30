@@ -79,6 +79,10 @@ Route::middleware('auth')->group(function () {
     //転送先アドレス設定
     Route::get("/dashboard/forward", [AdminController::class, "ShowMailForward"])->name("ShowMailForward");
     Route::patch('/dashboard/forward', [AdminController::class, 'UpdateForward'])->name('UpdateForward');
+
+    //TOP画像設定
+    Route::get("/dashboard/image", [AdminController::class, "ShowTopImage"])->name("ShowTopImage");
+    Route::post('/dashboard/image', [AdminController::class, 'UpdateTopImage'])->name('UpdateTopImage');
 });
 
 require __DIR__.'/auth.php';

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Choice;
 use App\Models\Forward;
+use App\Models\Image;
 use App\Models\Word;
 use App\Models\Product_attributes;
 use App\Models\Question;
@@ -914,6 +915,89 @@ class AdminController extends Controller
             // エラーが発生した場合はロールバック
             DB::rollBack();
             Log::error('メール転送設定の更新に失敗しました: ' . $e->getMessage());
+            return response()->json(['success' => false, 'error' => '更新に失敗しました。'], 500);
+        }
+    }
+
+    public function ShowTopImage() {
+        $leftImage = Image::find(1);
+        $rightImage = Image::find(2);
+        $images = Image::all();
+        return view("dash-image", compact("leftImage", "rightImage", "images"));
+    }
+
+    public function UpdateTopImage(Request $request) {
+        // バリデーション
+        $validator = Validator::make($request->all(), [
+            'left_img' => ['nullable', 'image', 'mimes:jpeg,png,jpg'],
+            'right_img' => ['nullable', 'image', 'mimes:jpeg,png,jpg'],
+        ], [
+            'left_img.image' => '左側の画像ファイルを選択してください。',
+            'right_img.image' => '右側の画像ファイルを選択してください。',
+            'left_img.mimes' => '左側の画像ファイルはjpeg,png,jpg形式のみアップロード可能です。',
+            'right_img.mimes' => '右側の画像ファイルはjpeg,png,jpg形式のみアップロード可能です。',
+        ]);
+
+        // バリデーションエラーが発生した場合の処理
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => '入力エラーがあります。',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // トランザクションの開始
+        DB::beginTransaction();
+        try {
+            // 左側の画像の更新
+            if ($request->hasFile('left_img')) {
+                $leftImgFile = $request->file('left_img');
+                $leftFileName = $leftImgFile->getClientOriginalName();
+                $leftImgPath = 'public/img';
+
+                // 以前の画像を削除
+                $previousLeftImg = Image::find(1);
+                $deleteLeftImg = str_replace('storage/', '', $previousLeftImg->img);
+                if ($previousLeftImg && Storage::disk('public')->exists($deleteLeftImg)) {
+                    Storage::disk('public')->delete($deleteLeftImg);
+                }
+
+                // 新しい画像を保存
+                $leftImgFile->storeAs($leftImgPath, $leftFileName);
+                Image::updateOrCreate(
+                    ['id' => 1],
+                    ['img' => 'storage/img/' . $leftFileName]
+                );
+            }
+
+            // 右側の画像の更新
+            if ($request->hasFile('right_img')) {
+                $rightImgFile = $request->file('right_img');
+                $rightFileName = $rightImgFile->getClientOriginalName();
+                $rightImgPath = 'public/img';
+
+                // 以前の画像を削除
+                $previousRightImg = Image::find(2);
+                $deleteRightImg = str_replace('storage/', '', $previousRightImg->img);
+                if ($previousRightImg && Storage::disk('public')->exists($deleteRightImg)) {
+                    Storage::disk('public')->delete($deleteRightImg);
+                }
+
+                // 新しい画像を保存
+                $rightImgFile->storeAs($rightImgPath, $rightFileName);
+                Image::updateOrCreate(
+                    ['id' => 2],
+                    ['img' => 'storage/img/' . $rightFileName]
+                );
+            }
+
+            // トランザクションのコミット
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            // エラーが発生した場合はロールバック
+            DB::rollBack();
+            Log::error('トップ画像の更新に失敗しました: ' . $e->getMessage());
             return response()->json(['success' => false, 'error' => '更新に失敗しました。'], 500);
         }
     }
