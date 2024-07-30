@@ -1,7 +1,7 @@
 <x-template title="Rio flower" css="app.css">
     <div id="index-wrapper" class="flex p-4 h-full relative">
         <div class="relative md:w-1/2 max-h-[100dvh]">
-            <img src="{{ asset($leftImage->img) }}" alt="flower" class="rounded-3xl md:rounded-r-none object-cover w-full h-[42vw]" draggable="false">
+            <img src="{{ asset($leftImage->img) }}" alt="flower" class="rounded-3xl md:rounded-r-none object-cover w-full md:h-[42vw] h-full" draggable="false">
             <div class="md:hidden absolute left-1/2 -translate-x-1/2 top-1/4 text-xl text-nowrap">
                 <p class="text-white">Step by Step Bloom by Bloom</p>
                 <p class="text-[#DA9F9F] bg-white p-2">Find Your Perfect Dry Flower</p>
