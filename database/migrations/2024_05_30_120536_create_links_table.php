@@ -14,11 +14,11 @@ return new class extends Migration
 //        リンクテーブル
         Schema::create('links', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('course')->comment('コース名');
             $table->integer('price')->comment('料金');
             $table->text('pickup_link')->nullable()->comment('受取リンク');
             $table->text('delivery_link')->nullable()->comment('配送リンク');
+            $table->timestamps();
         });
     }
 

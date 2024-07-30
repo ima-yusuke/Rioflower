@@ -14,8 +14,8 @@ return new class extends Migration
 //        属性カテゴリーテーブル
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string("name")->comment("カテゴリー名");
+            $table->timestamps();
         });
     }
 

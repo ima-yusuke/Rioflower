@@ -14,10 +14,10 @@ return new class extends Migration
 //        商品詳細テーブル
         Schema::create('details', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->bigInteger("product_id")->unsigned()->comment("商品ID");
             $table->longText("insert")->default(null)->nullable()->comment("挿入文");
             $table->text("attributes")->default(null)->nullable()->comment("css属性");
+            $table->timestamps();
 
             $table->foreign('product_id')
                 ->references('id')

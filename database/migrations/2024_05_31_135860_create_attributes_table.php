@@ -14,10 +14,10 @@ return new class extends Migration
 //        属性テーブル
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->bigInteger("category_id")->unsigned()->comment("カテゴリID");
             $table->string("name")->comment("属性名");
             $table->tinyInteger("is_enabled")->default(1)->comment("表示フラグ");
+            $table->timestamps();
 
             $table->foreign('category_id')
                 ->references('id')
