@@ -103,7 +103,15 @@ html{
 #loading_text{
     letter-spacing: 12px;
     color: #fff;
+    font-size: 20px;
+
+    @media(max-width: 767px) {
+        font-size: 15px;
+    }
 }
+
+
+
 
 /*TOP*/
 #index-wrapper {

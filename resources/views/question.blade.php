@@ -9,7 +9,7 @@
                 <div class="loading-shadow"></div>
                 <div class="loading-shadow"></div>
             </section>
-            <span id="loading_text" class="absolute left-1/2 -translate-x-1/2 bottom-48 w-[95%] md:w-[80%] text-center text-sm md:text-base">Loading</span>
+            <span id="loading_text" class="absolute left-1/2 -translate-x-1/2 bottom-48 w-[95%] md:w-[80%] text-center">Loading</span>
         </div>
 
     </div>

@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                             <div class="flex flex-col md:flex-row md:items-center gap-4 border-y border-solid border-gray-200 py-4">
-                                <p class="md:w-[250px] text-xs md:text-base">4.プライオリティ</p>
+                                <p class="md:w-[250px] text-xs md:text-base">4.優先度</p>
                                 <div class="flex-1">
                                     <select name="priority" class="w-full h-[35px] md:h-full text-xs md:text-base border border-solid border-gray-400 rounded-md">
                                         <option value="0" @if($value["priority"]==0) selected @endif>優先度：低</option>
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                         <div class="flex flex-col md:flex-row md:items-center gap-4 border-y border-solid border-gray-200 py-4">
-                            <p class="md:w-[250px] text-xs md:text-base">4.プライオリティ</p>
+                            <p class="md:w-[250px] text-xs md:text-base">4.優先度</p>
                             <div class="flex-1">
                                 <select name="priority" class="w-full h-[35px] md:h-full text-xs md:text-base border border-solid border-gray-400 rounded-md">
                                     <option value="0">優先度：低</option>
