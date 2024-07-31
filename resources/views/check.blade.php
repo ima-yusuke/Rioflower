@@ -16,14 +16,14 @@
         <div class="m-5">
             <div id="sent" class="sent hidden">
                 <p class="text-xl md:text-2xl font-bold my-3 mx-auto text-center">メールを送信しました</p>
-                <p class="my-3 mx-auto text-center md:text-lg text-red-600">※まだ商品の購入は確定していません。<br>送信されたメールのリンクから購入手続きを進めてください。</p>
+                <p class="my-3 mx-auto text-center md:text-2xl text-red-600">※まだ商品の購入は確定していません。<br>送信されたメールのリンクから購入手続きを進めてください。</p>
                 <div id="flow-chart" class="flex my-10 py-5 rounded-xl">
                     <div class="md:flex justify-center w-full mx-auto">
                         <div class="md:w-[30%] w-11/12 text-center mx-auto">
                             <div class="text-center mx-auto mb-2"><i class="bi bi-1-circle text-2xl"></i></div>
                             <p class="text-xl mb-4">確認メール</p>
                             <i class="bi bi-envelope text-4xl"></i>
-                            <p class="mt-4">届いたメールにて<br>店舗での受取をご希望の方は<br>店舗受取はこちらを<br>ご自宅への郵送をご希望の方は<br>郵送受取はこちらを<br>押してください</p>
+                            <p class="mt-4">届いたメールにて店舗受取ボタンを押してください</p>
                             <br>
                             <p class="text-sm">※届いていない場合は迷惑メールをご確認ください</p>
                         </div>
@@ -35,9 +35,9 @@
                         </div>
                         <div class="md:w-[30%] w-11/12 text-center mx-auto">
                             <div class="text-center mx-auto mb-2"><i class="bi bi-3-circle text-2xl"></i></div>
-                            <p class="text-xl mb-4">商品の受取/郵送</p>
+                            <p class="text-xl mb-4">商品の受取</p>
                             <i class="bi bi-shop text-4xl"></i>
-                            <p class="mt-4">店舗受取を選択された方は店舗へ、<br>郵送受取を選択された方は商品の到着をお待ちください<br>その他のよくある質問は<a href="https://rioflower.net/type6.aspx" class="text-blue-500">こちら</a>をご覧ください</p>
+                            <p class="mt-4">受取のために店舗へお越しください<br>その他のよくある質問は<a href="https://rioflower.net/type6.aspx" class="text-blue-500 underline">こちら</a>をご覧ください</p>
                         </div>
                     </div>
                 </div>
@@ -81,8 +81,8 @@
                     </div>
                 </div>
                 <div class="link-display flex justify-center items-center py-1">
-                    <a class="link-btn mx-3" href="{{ $link->pickup_link }}">店舗受取は<br>こちら</a>
-                    <a class="link-btn mx-3" href="{{ $link->delivery_link }}">郵送受取は<br>こちら</a>
+                    <a class="link-btn mx-3" href="{{ $link->pickup_link }}">購入はこちら</a>
+{{--                    <a class="link-btn mx-3" href="{{ $link->delivery_link }}">郵送受取はこちら</a>--}}
                 </div>
             </div>
             <p class="mail hidden mt-14 mb-8 ms-2">{!! nl2br(e($word['bottom'])) !!}</p>
