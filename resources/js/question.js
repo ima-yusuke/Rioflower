@@ -497,6 +497,7 @@ function OnBackBtn() {
     DeleteQuestionAnswers();
     ShowCurrentQstNum();
     ShowQuestion();
+    console.log(scoreArray)
 }
 
 //[DELETE] 現在表示している回答を全て削除
@@ -956,6 +957,11 @@ function initializeQuillEditor() {
 //[ON] スコア計算（プライオリティなし/質問画面でのみ使用/最適な商品のproduct_idをreturn）
 function OnCalScore(choiceId){
 
+    // 戻るボタンクリック時
+    if (flag===false){
+        return scoreArray[0].product_id;
+    }
+
     // 選択した選択肢の属性を取得
     let selectedChoiceAttributes = choiceAttributes.filter(choice => choice.choice_id === choiceId);
 
@@ -997,7 +1003,7 @@ function OnCalScore(choiceId){
     }
 
     OnSortScore(scoreArray);
-    // console.log(productAttributes)
+    console.log(scoreArray)
     return scoreArray[0].product_id;
 }
 
@@ -1038,6 +1044,7 @@ function OnSortScore(scoreArray,priorityFlag) {
         // 合計値で降順ソート
         return sumB - sumA;
     });
+    console.log(scoreArray)
     return scoreArray;
 }
 
