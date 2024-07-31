@@ -48,8 +48,8 @@
                                     </div>
                                 </div>
                                 <div class="link-display flex justify-center items-center py-1">
-                                    <p class="link-btn mx-3">店舗受取は<br>こちら</p>
-                                    <p class="link-btn mx-3">郵送受取は<br>こちら</p>
+                                    <p class="link-btn mx-3">購入はこちら</p>
+{{--                                    <p class="link-btn mx-3">郵送受取は<br>こちら</p>--}}
                                 </div>
                             </div>
                             <p class="mail-description mt-10">※メール文章を入力してください</p>
