@@ -46,7 +46,7 @@ class AdminController extends Controller
             $product = new Product();
             $product->name = $request->name;
             $product->img = 'storage/img/' . $fileName;
-            $product->priority = $request->priority ?? 0;
+            $product->priority = $request->priority;
             $product->price = $request->price;
             $product->is_enabled = 1;
             $product->save();

@@ -1004,18 +1004,18 @@ function OnCalScore(choiceId){
 //[ON] スコア計算（プライオリティ込/結果画面でのみ使用）
 function OnCalPriority(scoreArray) {
 
-    // スコア配列にpriorityを追加
-    for (let i = 0; i < products.length; i++) {
-        let existingScoreObj = scoreArray.find(scoreObj => scoreObj.product_id === products[i]["id"]);
-        existingScoreObj.score.push(products[i]["priority"]);
-    }
+    // // スコア配列にpriorityを追加
+    // for (let i = 0; i < products.length; i++) {
+    //     let existingScoreObj = scoreArray.find(scoreObj => scoreObj.product_id === products[i]["id"]);
+    //     existingScoreObj.score.push(products[i]["priority"]);
+    // }
 
     // 再度合計計算し並び替え
-    OnSortScore(scoreArray);
+    OnSortScore(scoreArray,true);
 }
 
 //[ON] scoreArrayをスコア高い順に並び替え
-function OnSortScore(scoreArray) {
+function OnSortScore(scoreArray,priorityFlag) {
     scoreArray.sort((a, b) => {
 
         let sumA = 0
@@ -1027,12 +1027,19 @@ function OnSortScore(scoreArray) {
             sumB = sumB + num;
         });
 
+        // プライオリティ込/結果画面でのみ使用
+        if(priorityFlag){
+            let productA =products.find(product => product["id"] === a["product_id"]);
+            let productB =products.find(product => product["id"] === b["product_id"]);
+            sumA = sumA * productA["priority"];
+            sumB = sumB * productB["priority"];
+        }
+
         // 合計値で降順ソート
         return sumB - sumA;
     });
     return scoreArray;
 }
-
 
 SEND_BTN.addEventListener('click', function(event) {
     // バリデーションチェック
