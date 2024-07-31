@@ -12,11 +12,35 @@
     @vite(['resources/css/app.css'])
 </head>
 <body class="pb-1 bg-white">
-    <div class="flex flex-col w-11/12 md:w-1/2 md:mx-auto mx-3 my-10 rounded-xl justify-center bg-main-bg">
+    <div class="flex flex-col w-11/12 md:w-2/3 md:mx-auto mx-3 my-10 rounded-xl justify-center bg-main-bg">
         <div class="m-5">
             <div id="sent" class="sent hidden">
                 <p class="text-xl md:text-2xl font-bold my-3 mx-auto text-center">メールを送信しました</p>
                 <p class="my-3 mx-auto text-center md:text-lg text-red-600">※まだ商品の購入は確定していません。<br>送信されたメールのリンクから購入手続きを進めてください。</p>
+                <div id="flow-chart" class="flex my-10 py-5 rounded-xl">
+                    <div class="md:flex justify-center w-full mx-auto">
+                        <div class="md:w-[30%] w-11/12 text-center mx-auto">
+                            <div class="text-center mx-auto mb-2"><i class="bi bi-1-circle text-2xl"></i></div>
+                            <p class="text-xl mb-4">確認メール</p>
+                            <i class="bi bi-envelope text-4xl"></i>
+                            <p class="mt-4">届いたメールにて<br>店舗での受取をご希望の方は<br>店舗受取はこちらを<br>ご自宅への郵送をご希望の方は<br>郵送受取はこちらを<br>押してください</p>
+                            <br>
+                            <p class="text-sm">※届いていない場合は迷惑メールをご確認ください</p>
+                        </div>
+                        <div class="md:w-[30%] w-11/12 text-center mx-auto my-10 md:my-0">
+                            <div class="text-center mx-auto mb-2"><i class="bi bi-2-circle text-2xl"></i></div>
+                            <p class="text-xl mb-4">ストアページ</p>
+                            <i class="bi bi-cart3 text-4xl"></i>
+                            <p class="mt-4">メールで選択したリンク先のページで対象の商品をカートに入れ、購入手続きを完了してください</p>
+                        </div>
+                        <div class="md:w-[30%] w-11/12 text-center mx-auto">
+                            <div class="text-center mx-auto mb-2"><i class="bi bi-3-circle text-2xl"></i></div>
+                            <p class="text-xl mb-4">商品の受取/郵送</p>
+                            <i class="bi bi-shop text-4xl"></i>
+                            <p class="mt-4">店舗受取を選択された方は店舗へ、<br>郵送受取を選択された方は商品の到着をお待ちください<br>その他のよくある質問は<a href="https://rioflower.net/type6.aspx" class="text-blue-500">こちら</a>をご覧ください</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <p id="check-text" class="show text-2xl md:text-3xl font-bold my-3 mx-auto text-center">入力情報をご確認ください</p>
             <p class="mail hidden text-2xl font-bold my-3">{{ $name }}様</p>

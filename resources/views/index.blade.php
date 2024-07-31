@@ -1,4 +1,4 @@
-<x-template title="Rio flower" css="app.css">
+<x-template title="flaver" css="app.css">
     <div class="flex items-center p-4 w-full h-full">
         <div id="index-wrapper" class="flex items-center h-full relative">
             <div class="relative md:w-1/2 max-h-[100dvh]">

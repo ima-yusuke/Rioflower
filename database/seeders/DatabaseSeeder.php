@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Image;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,7 +21,8 @@ class DatabaseSeeder extends Seeder
             ChoicesTableSeeder::class,
             CategoriesTableSeeder::class,
             AttributesTableSeeder::class,
-            ForwardsTableSeeder::class,
+            ForwardsTableSeeder::class, // 転送アドレス初期データ
+            ImagesTableSeeder::class, // TOP画像初期データ
         ]);
     }
 }

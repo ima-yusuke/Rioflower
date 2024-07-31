@@ -99,7 +99,7 @@ class MainController extends Controller
             Mail::send('emails.customer_registered', ['html' => $request->html], function ($message) use ($request, $bccEmails) {
                 $message->to($request->email);
                 $message->subject('購入リンクのお知らせ');
-                $message->from('nozaki@mie-projectm.com');
+                $message->from('info@flaver-rio.com');
                 $message->bcc($bccEmails); // BCCに追加
             });
 
