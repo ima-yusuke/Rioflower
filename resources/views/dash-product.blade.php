@@ -68,9 +68,9 @@
                                 <p class="md:w-[250px] text-xs md:text-base">4.優先度</p>
                                 <div class="flex-1">
                                     <select name="priority" class="w-full h-[35px] md:h-full text-xs md:text-base border border-solid border-gray-400 rounded-md">
-                                        <option value="0" @if($value["priority"]==0) selected @endif>優先度：低</option>
-                                        <option value="3" @if($value["priority"]==3) selected @endif>優先度：中</option>
-                                        <option value="5" @if($value["priority"]==5) selected @endif>優先度：高</option>
+                                        <option value="0.8" @if($value["priority"]==0.8) selected @endif>優先度：低</option>
+                                        <option value="1" @if($value["priority"]==1) selected @endif>優先度：中</option>
+                                        <option value="1.2" @if($value["priority"]==1.2) selected @endif>優先度：高</option>
                                     </select>
                                 </div>
                             </div>
@@ -136,9 +136,9 @@
                             <p class="md:w-[250px] text-xs md:text-base">4.優先度</p>
                             <div class="flex-1">
                                 <select name="priority" class="w-full h-[35px] md:h-full text-xs md:text-base border border-solid border-gray-400 rounded-md">
-                                    <option value="0">優先度：低</option>
-                                    <option value="3">優先度：中</option>
-                                    <option value="5">優先度：高</option>
+                                    <option value="0.8">優先度：低</option>
+                                    <option value="1">優先度：中</option>
+                                    <option value="1.2">優先度：高</option>
                                 </select>
                             </div>
                         </div>
