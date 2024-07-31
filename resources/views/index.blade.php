@@ -7,10 +7,10 @@
                     <p class="text-white">Step by Step Bloom by Bloom</p>
                     <p class="text-[#DA9F9F] bg-white p-2">Find Your Perfect Dry Flower</p>
                 </div>
-                <div class="absolute left-1/2 -translate-x-1/2 top-1/2 text-2xl md:left-32 md:-translate-x-0 md:top-64 lg:text-3xl xl:text-5xl text-nowrap text-white font-bold">
-                    簡単な質問に答えて<br>
-                    あなたにピッタリな花を<br>
-                    見つけよう
+                <div class="absolute left-1/2 -translate-x-1/2 top-1/2 text-2xl md:left-8 md:-translate-x-0 md:top-64 lg:text-3xl xl:text-5xl text-nowrap text-white font-bold">
+                    質問に答えて<br>
+                    大切な人に贈る作品をご提案！<br>
+                    （所要時間2.3分）
                 </div>
             </div>
             <div class="relative hidden md:inline-block md:w-1/2 max-h-[100vh]">
