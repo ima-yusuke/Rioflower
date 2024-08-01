@@ -145,11 +145,6 @@ function SelectAnswer(idx,choiceId) {
     // まだ残りの質問があるかチェック（あれば新たな質問作成、なければ確認画面へ）
     if (questions.length !== selectedAnswersArray.length ) {
 
-        if(questionCount===currentQuestionIdx){
-            questionCount++;
-            analyticsFlag = true;
-        }
-        currentQuestionIdx++
         DeleteQuestionAnswers()
         ShowCurrentQstNum()
         ShowQuestion(choiceId)
@@ -388,7 +383,12 @@ function CreateAnswers(){
         // 選択肢をクリックをする
         ANSWER_BTN.addEventListener('click', ()=>{
 
-            SelectAnswer(idx,choice["id"]);
+            if(questionCount===currentQuestionIdx){
+                questionCount++;
+                analyticsFlag = true;
+            }
+            currentQuestionIdx++
+
             if(analyticsFlag === true){
                 gtag('event', questions[currentQuestionIdx]["text"], {
                     'event_category': 'question' + currentQuestionIdx,
@@ -396,6 +396,9 @@ function CreateAnswers(){
                     'value': 1
                 });
             }
+
+
+            SelectAnswer(idx,choice["id"]);
             DisableClicks(); // クリックイベント無効化
         })
     })
