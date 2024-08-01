@@ -354,7 +354,6 @@ function CreateAnswers(){
         ANSWER_BTN.appendChild(ANSWER_TEXT)
         ANSWER_BTN.appendChild(ARROW_TEXT);
         ANSWER_BTN.classList.add("answer-btn")
-        ANSWER_BTN.classList.add("answer-btn-"+idx)
 
         QUESTION_ANSWERS_CONTAINER.appendChild(ANSWER_BTN)
 
@@ -374,13 +373,13 @@ function CreateAnswers(){
 
         // 選択肢をクリックをする
         ANSWER_BTN.addEventListener('click', ()=>{
-            DisableClicks(); // クリックイベント無効化
-            SelectAnswer(idx,choice["id"]);
-            gtag('event', 'question'+currentQuestionIdx, {
-                'event_category': 'choice_button',
-                'event_label': 'click',
+            gtag('event','click', {
+                'event_category': 'question'+currentQuestionIdx,
+                'event_label': 'choice_button'+idx,
                 'value': 1
             });
+            DisableClicks(); // クリックイベント無効化
+            SelectAnswer(idx,choice["id"]);
         })
     })
 
