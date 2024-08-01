@@ -20,6 +20,7 @@
                         <aside class="flex justify-center items-center md:items-end gap-2">
                             <h2 class="text-2xl md:text-4xl text-main-brown"><span id="result_p_name"></span></h2>
                         </aside>
+                        <p class="text-main-brown text-center py-4" id="result_p_price"></p>
                         <div id="recommend-wrapper" class="absolute top-0 left-0 w-full h-full bg-main-bg opacity-0">
 
                         </div>

@@ -28,6 +28,7 @@ const SHOW_RESULT_BTN = document.getElementById("show_result_btn");
 // 結果画面
 const RESULT_CONTAINER = document.getElementById('result_container')
 const RESULT_P_NAME = document.getElementById("result_p_name");
+const RESULT_P_PRICE = document.getElementById("result_p_price");
 const RESULT_IMG = document.getElementById("result_img");
 const OPEN_MODAL_BTN = document.getElementById("open_modal_btn");
 let PRODUCT_NUM = document.getElementById("product-id");
@@ -743,6 +744,7 @@ function CreateOtherImages(scoreArray) {
 function ShowTopProduct(scoreArray){
     let maxProduct = products.filter(product => product.id === scoreArray[0]["product_id"]);
     RESULT_P_NAME.innerText = maxProduct[0]["name"];
+    RESULT_P_PRICE.innerText = `価格：${maxProduct[0].link["price"]}円`;
     RESULT_IMG.src = maxProduct[0]["img"];
     purchaseProductId = maxProduct[0]["id"];
 }
@@ -817,6 +819,7 @@ function OnSwapImg(scoreArray) {
                     ShowQuill(otherProduct[0]["id"]);
 
                     RESULT_P_NAME.innerText = otherProduct[0]["name"];
+                    RESULT_P_PRICE.innerText = `価格：${otherProduct[0].link["price"]}円`;
                     RESULT_IMG.src = otherProduct[0]["img"];
 
                     // フェードイン
@@ -882,6 +885,7 @@ function OnSwapImg(scoreArray) {
                     ShowQuill(otherProduct[0]["id"]);
 
                     RESULT_P_NAME.innerText = otherProduct[0]["name"];
+                    RESULT_P_PRICE.innerText = `価格：${otherProduct[0].link["price"]}円`;
                     RESULT_IMG.src = otherProduct[0]["img"];
 
                     // フェードイン
