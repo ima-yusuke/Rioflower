@@ -144,7 +144,7 @@ function SelectAnswer(idx,choiceId) {
 
     // まだ残りの質問があるかチェック（あれば新たな質問作成、なければ確認画面へ）
     if (questions.length !== selectedAnswersArray.length ) {
-
+        currentQuestionIdx++
         DeleteQuestionAnswers()
         ShowCurrentQstNum()
         ShowQuestion(choiceId)
@@ -398,7 +398,7 @@ function CreateAnswers(){
                     'value': 1
                 });
             }
-            currentQuestionIdx++
+
 
             SelectAnswer(idx,choice["id"]);
             DisableClicks(); // クリックイベント無効化
