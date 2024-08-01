@@ -376,6 +376,7 @@ function CreateAnswers(){
 
         // 選択肢をクリックをする
         ANSWER_BTN.addEventListener('click', ()=>{
+            questionCount++;
             if(questionCount===currentQuestionIdx) {
                 gtag('event', questions[currentQuestionIdx]["text"], {
                     'event_category': 'question' + currentQuestionIdx,
@@ -383,7 +384,6 @@ function CreateAnswers(){
                     'value': 10
                 });
             }
-            questionCount++;
             DisableClicks(); // クリックイベント無効化
             SelectAnswer(idx,choice["id"]);
         })
