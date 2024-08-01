@@ -373,11 +373,13 @@ function CreateAnswers(){
 
         // 選択肢をクリックをする
         ANSWER_BTN.addEventListener('click', ()=>{
-            gtag('event',questions[currentQuestionIdx]["text"], {
-                'event_category': 'question'+currentQuestionIdx,
-                'event_label': 'choice_button'+idx,
-                'value': 10
-            });
+            if(flag=== true) {
+                gtag('event', questions[currentQuestionIdx]["text"], {
+                    'event_category': 'question' + currentQuestionIdx,
+                    'event_label': 'choice_button' + idx,
+                    'value': 10
+                });
+            }
             DisableClicks(); // クリックイベント無効化
             SelectAnswer(idx,choice["id"]);
         })
