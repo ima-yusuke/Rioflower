@@ -156,6 +156,9 @@ function SelectAnswer(idx,choiceId) {
 // -------------------------------------[⑤確認画面の表示]-------------------------------------
 function ShowConfirm(){
 
+    // Googleに追加出来なくする
+    analyticsFlag = false;
+
     // スクロールを無効化
     DisableScroll();
 
@@ -387,7 +390,6 @@ function CreateAnswers(){
                 questionCount++;
                 analyticsFlag = true;
             }
-
 
             if(analyticsFlag === true){
                 gtag('event', questions[currentQuestionIdx]["text"], {
