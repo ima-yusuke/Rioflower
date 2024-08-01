@@ -11,6 +11,7 @@ const QUESTION_IMG_CONTAINER = document.getElementById("question_img");
 const QUESTION_TEXT = document.getElementById('question_text');
 const QUESTION_ANSWERS_CONTAINER = document.getElementById('question_answers_container');
 const BACK_BTN = document.getElementById("back_btn");
+let analyticsFlag = true;
 // 座標
 let screenCenterX = window.innerWidth / 2; // 画面全体の中心のx座標
 let questionBoxCenterX = 0;//質問コンテナのx座標を保存
@@ -102,6 +103,8 @@ function ShowQuestion(choiceId) {
     // 質問作成
     QUESTION_TEXT.innerText = questions[currentQuestionIdx]["text"]
 
+
+
     // 確認画面から来た場合
     if(questions.length === selectedAnswersArray.length){
         setTimeout(() => {
@@ -125,6 +128,9 @@ function ShowQuestion(choiceId) {
             CreateAnswers();
         },fadeinTime+50);
     }
+
+    console.log(currentQuestionIdx)
+    console.log(questionCount)
 }
 // ---------------------------------------[④回答選択]---------------------------------------
 function SelectAnswer(idx,choiceId) {
@@ -138,8 +144,12 @@ function SelectAnswer(idx,choiceId) {
 
     // まだ残りの質問があるかチェック（あれば新たな質問作成、なければ確認画面へ）
     if (questions.length !== selectedAnswersArray.length ) {
+
+        if(questionCount===currentQuestionIdx){
+            questionCount++;
+            analyticsFlag = true;
+        }
         currentQuestionIdx++
-        questionCount++;
         DeleteQuestionAnswers()
         ShowCurrentQstNum()
         ShowQuestion(choiceId)
@@ -377,7 +387,7 @@ function CreateAnswers(){
 
         // 選択肢をクリックをする
         ANSWER_BTN.addEventListener('click', ()=>{
-            if(questionCount===currentQuestionIdx) {
+            if(analyticsFlag === true){
                 gtag('event', questions[currentQuestionIdx]["text"], {
                     'event_category': 'question' + currentQuestionIdx,
                     'event_label': 'choice_button' + idx,
@@ -498,7 +508,7 @@ function ShowBackBtn(){
 
 //[ON] 戻るボタンクリック時の処理
 function OnBackBtn() {
-
+    analyticsFlag = false;
     flag = false;
     currentQuestionIdx--;
     selectedAnswersArray.pop(); // 配列の末尾を削除
