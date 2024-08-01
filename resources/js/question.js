@@ -52,6 +52,9 @@ let scoreArray =[];// スコアを保存する配列
 // 現在の質問番目
 let currentQuestionIdx = 0;
 
+// 何問目まで回答したか
+let questionCount = 0;
+
 //戻るボタンクリックするとfalseになる
 let flag = true;
 
@@ -373,13 +376,14 @@ function CreateAnswers(){
 
         // 選択肢をクリックをする
         ANSWER_BTN.addEventListener('click', ()=>{
-            if(flag=== true) {
+            if(questionCount===currentQuestionIdx) {
                 gtag('event', questions[currentQuestionIdx]["text"], {
                     'event_category': 'question' + currentQuestionIdx,
                     'event_label': 'choice_button' + idx,
                     'value': 10
                 });
             }
+            questionCount++;
             DisableClicks(); // クリックイベント無効化
             SelectAnswer(idx,choice["id"]);
         })
@@ -505,7 +509,6 @@ function OnBackBtn() {
     DeleteQuestionAnswers();
     ShowCurrentQstNum();
     ShowQuestion();
-    console.log(scoreArray)
 }
 
 //[DELETE] 現在表示している回答を全て削除
