@@ -387,7 +387,7 @@ function CreateAnswers(){
                 questionCount++;
                 analyticsFlag = true;
             }
-            currentQuestionIdx++
+
 
             if(analyticsFlag === true){
                 gtag('event', questions[currentQuestionIdx]["text"], {
@@ -396,7 +396,7 @@ function CreateAnswers(){
                     'value': 1
                 });
             }
-
+            currentQuestionIdx++
 
             SelectAnswer(idx,choice["id"]);
             DisableClicks(); // クリックイベント無効化
