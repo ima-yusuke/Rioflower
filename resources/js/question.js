@@ -378,7 +378,7 @@ function CreateAnswers(){
                 'event_label': 'choice_button'+idx,
                 'value': 1
             });
-            // DisableClicks(); // クリックイベント無効化
+            DisableClicks(); // クリックイベント無効化
             SelectAnswer(idx,choice["id"]);
         })
     })
