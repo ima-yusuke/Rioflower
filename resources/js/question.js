@@ -387,15 +387,16 @@ function CreateAnswers(){
 
         // 選択肢をクリックをする
         ANSWER_BTN.addEventListener('click', ()=>{
-            DisableClicks(); // クリックイベント無効化
+
             SelectAnswer(idx,choice["id"]);
             if(analyticsFlag === true){
                 gtag('event', questions[currentQuestionIdx]["text"], {
                     'event_category': 'question' + currentQuestionIdx,
                     'event_label': 'choice_button' + idx,
-                    'value': 10
+                    'value': 1
                 });
             }
+            DisableClicks(); // クリックイベント無効化
         })
     })
 
