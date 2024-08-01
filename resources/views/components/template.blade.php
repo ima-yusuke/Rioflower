@@ -23,6 +23,10 @@
 <button id="my-button" class="absolute bottom-20 z-50">Click me</button>
 <x-footer></x-footer>
 </body>
+<!-- Google Tag Manager (noscript) -->
+{{--<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ8JH69L"--}}
+{{--                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>--}}
+<!-- End Google Tag Manager (noscript) -->
 <script>
     document.getElementById('my-button').addEventListener('click', function() {
         gtag('event', 'button_click', {
