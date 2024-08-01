@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
 //            ChoicesTableSeeder::class,
 //            CategoriesTableSeeder::class,
 //            AttributesTableSeeder::class,
-//            ForwardsTableSeeder::class, // 転送アドレス初期データ
+            ForwardsTableSeeder::class, // 転送アドレス初期データ
             ImagesTableSeeder::class, // TOP画像初期データ
         ]);
     }
