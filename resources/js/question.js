@@ -373,6 +373,11 @@ function CreateAnswers(){
 
         // 選択肢をクリックをする
         ANSWER_BTN.addEventListener('click', ()=>{
+            gtag('event','click', {
+                'event_category': 'question'+currentQuestionIdx,
+                'event_label': 'choice_button'+idx,
+                'value': 1
+            });
             DisableClicks(); // クリックイベント無効化
             SelectAnswer(idx,choice["id"]);
         })
