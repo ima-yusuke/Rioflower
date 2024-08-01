@@ -1,6 +1,7 @@
 @import "bootstrap-icons/font/bootstrap-icons.css";
 @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,6 +12,11 @@ html{
 
 #test{
     font-family: 'Caveat', cursive;
+}
+
+
+#top_text{
+    font-family: 'Amatic SC', cursive;
 }
 
 * {

@@ -22,7 +22,8 @@ export default {
                 "main-brown":"rgb(191,158,116)",
                 "answers-container-border":"rgb(217,217,217)",
                 "detail-bg":"rgb(255,248,248)",
-                "main-gray":"rgb(209,209,209)"
+                "main-gray":"rgb(209,209,209)",
+                "top-bg":"rgba(50,50,50,0.5)",
             },
             boxShadow: {
                 'back-btn-shadow': '0 3px 5px rgba(0, 0, 0, 0.3)',
