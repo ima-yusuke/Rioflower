@@ -15,4 +15,14 @@
     </section>
     @vite('resources/js/nickname.js')
 </x-template>
+<script>
+    // nicknameページでのクリックイベント設定
+    const SHOW_QUESTION_BTN = document.getElementById('nickname_button');
+
+    if (SHOW_QUESTION_BTN != null) {
+        SHOW_QUESTION_BTN.addEventListener('click', function(event) {
+            sessionStorage.setItem('flag', 'true'); // セッションストレージにフラグを設定
+        });
+    }
+</script>
 
