@@ -9,7 +9,7 @@ if (window.location.href.startsWith("https://test.flaver-rio.com/question")) {
         }
 
         // ページ離脱イベントを記録
-        gtag('event', "離脱数", {
+        gtag('event', "ページ離脱カウント", {
             'event_category': 'ページ離脱',
             'event_label': 'ページ離脱',
             'value': 1
@@ -26,6 +26,20 @@ if (window.location.href.startsWith("https://test.flaver-rio.com/question")) {
     // ボタンクリックイベントを監視（question→topに遷移時）
     const BACK_START_BTN = document.getElementById(' back-start-btn');
     BACK_START_BTN.addEventListener('click', function(event) {
+        // ボタンクリックによる遷移では記録をスキップ
+        preventUnloadTracking = true;
+    });
+
+    // ボタンクリックイベントを監視（top→nicknameに遷移時）
+    const SHOW_NICKNAME_BTN = document.getElementById('start_question');
+    SHOW_NICKNAME_BTN.addEventListener('click', function(event) {
+        // ボタンクリックによる遷移では記録をスキップ
+        preventUnloadTracking = true;
+    });
+
+    // ボタンクリックイベントを監視（nickname→questionに遷移時）
+    const SHOW_QUESTION_BTN = document.getElementById('nickname_button');
+    SHOW_QUESTION_BTN.addEventListener('click', function(event) {
         // ボタンクリックによる遷移では記録をスキップ
         preventUnloadTracking = true;
     });
