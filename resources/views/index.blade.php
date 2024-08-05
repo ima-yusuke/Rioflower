@@ -49,4 +49,6 @@
         }
     })
 
+    sessionStorage.setItem('topFlag', 'true'); // セッションストレージにフラグを設定
+
 </script>

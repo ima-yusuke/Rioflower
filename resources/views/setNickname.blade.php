@@ -21,7 +21,7 @@
 
     if (SHOW_QUESTION_BTN != null) {
         SHOW_QUESTION_BTN.addEventListener('click', function(event) {
-            sessionStorage.setItem('flag', 'true'); // セッションストレージにフラグを設定
+            sessionStorage.setItem('nickNameFlag', 'true'); // セッションストレージにフラグを設定
         });
     }
 </script>

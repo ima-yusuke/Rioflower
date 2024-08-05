@@ -3,9 +3,14 @@
 let preventUnloadTracking =false;
 
 // セッションストレージからフラグを取得
-if(sessionStorage.getItem('flag')===true){
+if(sessionStorage.getItem('nickNameFlag')===true){
     preventUnloadTracking = true;
-    sessionStorage.removeItem('flag');
+    sessionStorage.removeItem('nickNameFlag');
+}
+
+if(sessionStorage.getItem('topFlag')===true) {
+    preventUnloadTracking = true;
+    sessionStorage.removeItem('topFlag');
 }
 
 // questionページでのbeforeunloadイベントの設定
@@ -29,14 +34,6 @@ if (window.location.href.startsWith("https://test.flaver-rio.com/question")) {
     const SEND_BTN = document.getElementById('send-btn');
     if (SEND_BTN != null) {
         SEND_BTN.addEventListener('click', function(event) {
-            sessionStorage.setItem('preventUnloadTracking', 'true'); // セッションストレージにフラグを設定
-        });
-    }
-
-    // ボタンクリックイベントを監視（question→topに遷移時）
-    const BACK_START_BTN = document.getElementById('back-start-btn');
-    if (BACK_START_BTN != null) {
-        BACK_START_BTN.addEventListener('click', function(event) {
             sessionStorage.setItem('preventUnloadTracking', 'true'); // セッションストレージにフラグを設定
         });
     }
