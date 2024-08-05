@@ -82,6 +82,16 @@ if (sessionStorage.getItem('scoreData') == null) {
     QUESTION_CONTENT.classList.remove('hide');
 }
 
+
+// ページがアンロードされる（離れる）直前にイベントを送信
+window.addEventListener('beforeunload', function (cu){
+    gtag('event', "ページ離脱"+"質問"+currentQuestionIdx, {
+        'event_category': 'ページ離脱',
+        'event_label': 'ページ離脱',
+        'value': 1
+    });
+});
+
 // --------------------------------------[①質問開始]--------------------------------------
 function StartQuiz() {
     RESULT_CONTAINER.classList.add('hide')
