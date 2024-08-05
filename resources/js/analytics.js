@@ -41,3 +41,5 @@ if (window.location.href.startsWith("https://test.flaver-rio.com/question")) {
         });
     }
 }
+
+preventUnloadTracking = false; // フラグをリセット
