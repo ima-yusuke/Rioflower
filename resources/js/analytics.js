@@ -2,10 +2,12 @@ let preventUnloadTracking = false;
 
 // ボタンクリックイベントを監視（nickname→questionに遷移時）
 const SHOW_QUESTION_BTN = document.getElementById('nickname_button');
-SHOW_QUESTION_BTN.addEventListener('click', function(event) {
-    // ボタンクリックによる遷移では記録をスキップ
-    preventUnloadTracking = true;
-});
+if (SHOW_QUESTION_BTN!=null){
+    SHOW_QUESTION_BTN.addEventListener('click', function(event) {
+        // ボタンクリックによる遷移では記録をスキップ
+        preventUnloadTracking = true;
+    });
+}
 
 // 現在のURLをチェックして、特定のURLでのみbeforeunloadイベントを設定
 if (window.location.href.startsWith("https://test.flaver-rio.com/question")) {
