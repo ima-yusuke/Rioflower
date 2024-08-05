@@ -82,16 +82,6 @@ if (sessionStorage.getItem('scoreData') == null) {
     QUESTION_CONTENT.classList.remove('hide');
 }
 
-
-// ページがアンロードされる（離れる）直前にイベントを送信
-window.addEventListener('beforeunload', function (cu){
-    gtag('event', "ページ離脱"+"質問"+currentQuestionIdx, {
-        'event_category': 'ページ離脱',
-        'event_label': 'ページ離脱',
-        'value': 1
-    });
-});
-
 // --------------------------------------[①質問開始]--------------------------------------
 function StartQuiz() {
     RESULT_CONTAINER.classList.add('hide')
@@ -403,7 +393,7 @@ function CreateAnswers(){
 
             if(analyticsFlag === true){
                 gtag('event', questions[currentQuestionIdx]["text"], {
-                    'event_category': 'question' + currentQuestionIdx,
+                    'event_category': 'question' + currentQuestionIdx+1,
                     'event_label': 'choice_button' + idx,
                     'value': 1
                 });
