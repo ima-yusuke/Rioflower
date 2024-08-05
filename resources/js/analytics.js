@@ -2,15 +2,15 @@
 // グローバルスコープで変数を定義
 let preventUnloadTracking =false;
 
+// セッションストレージからフラグを取得
+if(sessionStorage.getItem('flag')===true){
+    preventUnloadTracking = true;
+    sessionStorage.removeItem('flag');
+}
+
 // questionページでのbeforeunloadイベントの設定
 if (window.location.href.startsWith("https://test.flaver-rio.com/question")) {
     window.addEventListener('beforeunload', function(event) {
-
-        // セッションストレージからフラグを取得
-        if(sessionStorage.getItem('flag')!=null){
-            preventUnloadTracking = true;
-            sessionStorage.removeItem('flag');
-        }
 
         // preventUnloadTrackingがtrueなら記録をスキップ
         if (preventUnloadTracking) {
@@ -18,7 +18,7 @@ if (window.location.href.startsWith("https://test.flaver-rio.com/question")) {
         }
 
         // ページ離脱イベントを記録
-        gtag('event', "カウント離脱", {
+        gtag('event', "カウント離脱数", {
             'event_category': 'ページ離脱',
             'event_label': 'ページ離脱',
             'value': 1
