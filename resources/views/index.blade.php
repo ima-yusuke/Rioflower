@@ -1,4 +1,4 @@
-<x-template title="flaver" css="app.css">
+<x-template title="Flaver" css="app.css">
     {{--背景画像--}}
     <div class="flex items-center p-4 w-full h-full">
         <div id="index-wrapper" class="flex items-center h-full relative">
