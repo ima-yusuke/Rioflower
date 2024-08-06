@@ -29,7 +29,6 @@
     </button>
 
 </div>
-@vite('resources/js/analytics.js')
 <style>
     #question {
         background-image: url('{{asset("storage/img/confirm.jpg")}}'); /* ここに画像のパスを入力 */
