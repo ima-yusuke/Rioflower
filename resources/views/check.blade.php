@@ -11,6 +11,15 @@
     <title>購入情報確認</title>
     @vite(['resources/css/app.css'])
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1SS3MSY633"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-1SS3MSY633');
+</script>
 <body class="pb-1 bg-white">
     <div class="flex flex-col w-11/12 md:w-2/3 md:mx-auto mx-3 my-10 rounded-xl justify-center bg-main-bg">
         <div class="m-5">
