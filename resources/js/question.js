@@ -383,15 +383,6 @@ function CreateAnswers(){
             }, idx * fadeinAnswerTime);
         }
 
-        // 質問表示数
-        if(analyticsFlag === true){
-            gtag('event', questions[currentQuestionIdx]["text"] + "表示数", {
-                'event_category': 'question' + currentQuestionIdx+1,
-                'event_label': 'choice_button' + idx,
-                'value': 1
-            });
-        }
-
         // 選択肢をクリックをする
         ANSWER_BTN.addEventListener('click', ()=>{
 
@@ -412,6 +403,15 @@ function CreateAnswers(){
             DisableClicks(); // クリックイベント無効化
         })
     })
+
+    // 質問表示数
+    if(analyticsFlag === true){
+        gtag('event', questions[currentQuestionIdx]["text"] + "表示数", {
+            'event_category': 'question' + currentQuestionIdx+1,
+            'event_label': 'choice_button' + idx,
+            'value': 1
+        });
+    }
 
     // 全ての回答選択肢のアニメーションが完了した後にクリックイベントを有効化
     if(questions.length !== selectedAnswersArray.length) {
