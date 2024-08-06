@@ -1,4 +1,4 @@
-<x-template title="Rio flower" css="app.css">
+<x-template title="Flaver" css="app.css">
     <section class="flex flex-col justify-center items-center gap-24 h-full">
         <div class="flex flex-col items-center gap-6">
             <h1 class="text-4xl text-main-brown" id="test">START</h1>

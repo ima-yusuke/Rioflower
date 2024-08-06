@@ -30,10 +30,6 @@
 
 </div>
 @vite('resources/js/analytics.js')
-{{--<div id="confirm_container" class="confirm-container hide w-full flex flex-col items-center justify-center gap-4">--}}
-{{--    <div id="test2" class="flex flex-col items-center gap-6 bg-main-brown w-[50%] max-h-[60dvh] py-8 rounded-2xl overflow-y-auto"></div>--}}
-{{--    <button id="show_result_btn" class="pink-btn block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">診断結果を見る</button>--}}
-{{--</div>--}}
 <style>
     #question {
         background-image: url('{{asset("storage/img/confirm.jpg")}}'); /* ここに画像のパスを入力 */

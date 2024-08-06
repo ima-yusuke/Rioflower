@@ -457,8 +457,8 @@ class AdminController extends Controller
             'price.numeric' => '価格は数値で入力してください。',
             'price.integer' => '価格は整数で入力してください。',
             'price.min' => '価格は0以上で入力してください。',
-            'pickup_link.url' => '受取リンクは正しいURL形式で入力してください。',
-            'delivery_link.url' => '郵送リンクは正しいURL形式で入力してください。',
+            'pickup_link.url' => '店舗受取リンクは正しいURL形式で入力してください。',
+            'delivery_link.url' => '郵送受取リンクは正しいURL形式で入力してください。',
         ]);
 
         // バリデーションエラーが発生した場合の処理
@@ -503,12 +503,12 @@ class AdminController extends Controller
         // バリデーションルールを定義
         $validator = Validator::make($request->all(), [
             'pickup_link' => ['url', 'required'],
-            'delivery_link' => ['url', 'required'],
+//            'delivery_link' => ['url', 'required'],
         ], [
-            'pickup_link.url' => '受取リンクは正しいURL形式で入力してください。',
-            'pickup_link.required' => '受取リンクは必須です。',
-            'delivery_link.url' => '郵送リンクは正しいURL形式で入力してください。',
-            'delivery_link.required' => '郵送リンクは必須です。',
+            'pickup_link.url' => '店舗受取リンクは正しいURL形式で入力してください。',
+            'pickup_link.required' => '店舗受取リンクは必須です。',
+//            'delivery_link.url' => '郵送受取リンクは正しいURL形式で入力してください。',
+//            'delivery_link.required' => '郵送受取リンクは必須です。',
         ]);
 
         // バリデーションエラーが発生した場合の処理

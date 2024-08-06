@@ -25,12 +25,12 @@
                         </div>
                         <div class="flex flex-col md:ps-2 justify-center">
                             <div class="flex justify-center items-center py-2">
-                                <label for="category" class="pe-2 font-medium text-gray-900 text-nowrap">受取リンク：</label>
-                                <input type="text" name="pickup" id="pickup" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="受取リンク"/>
+                                <label for="category" class="pe-2 font-medium text-gray-900 text-nowrap">店舗受取リンク：</label>
+                                <input type="text" name="pickup" id="pickup" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="店舗受取リンク"/>
                             </div>
                             <div class="flex justify-center items-center py-2">
-                                <label for="category" class="pe-2 font-medium text-gray-900 text-nowrap">郵送リンク：</label>
-                                <input type="text" name="delivery" id="delivery" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="郵送リンク"/>
+                                <label for="category" class="pe-2 font-medium text-gray-900 text-nowrap">郵送受取リンク：</label>
+                                <input type="text" name="delivery" id="delivery" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="郵送受取リンク"/>
                             </div>
                         </div>
                     </div>
@@ -59,12 +59,12 @@
                 <div class="qa__body link-area flex justify-between gap-4">
                     <div class="flex flex-col gap-4 w-full">
                         <div class="w-full">
-                            <label id="get-mail" class="font-medium text-gray-900 text-nowrap w-full">受取リンク：
+                            <label id="get-mail" class="font-medium text-gray-900 text-nowrap w-full">店舗受取リンク：
                                 <input type="text" id="get-mail" class="pickup-link bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-1/2 p-2.5" value="{{ $value["pickup_link"] }}">
                             </label>
                         </div>
                         <div class="w-full">
-                            <label id="get-mail" class="font-medium text-gray-900 text-nowrap w-full">郵送リンク：
+                            <label id="get-mail" class="font-medium text-gray-900 text-nowrap w-full">郵送受取リンク：
                                 <input type="text" id="get-mail" class="delivery-link bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-1/2 p-2.5" value="{{ $value["delivery_link"] }}">
                             </label>
                         </div>

@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="/">
-                        <img src="{{ asset('/img/header-logo.jpg') }}" alt="Rio flower" class="h-[50px]" draggable="false">
+                        <img src="{{ asset('/img/header-logo.jpg') }}" alt="Flaver" class="h-[50px]" draggable="false">
                     </a>
                 </div>
 

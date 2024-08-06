@@ -23,7 +23,7 @@
                             <div class="text-center mx-auto mb-2"><i class="bi bi-1-circle text-2xl"></i></div>
                             <p class="text-xl mb-4">確認メール</p>
                             <i class="bi bi-envelope text-4xl"></i>
-                            <p class="mt-4">届いたメールにて店舗受取ボタンを押してください</p>
+                            <p class="mt-4">届いたメールにて購入リンクを押してください</p>
                             <br>
                             <p class="text-sm">※届いていない場合は迷惑メールをご確認ください</p>
                         </div>
@@ -37,7 +37,7 @@
                             <div class="text-center mx-auto mb-2"><i class="bi bi-3-circle text-2xl"></i></div>
                             <p class="text-xl mb-4">商品の受取</p>
                             <i class="bi bi-shop text-4xl"></i>
-                            <p class="mt-4">受取のために店舗へお越しください<br>その他のよくある質問は<a href="https://rioflower.net/type6.aspx" class="text-blue-500 underline">こちら</a>をご覧ください</p>
+                            <p class="mt-4">受取のために店舗へお越しください<br>その他のよくある質問は<a href="https://rioflower.net/type6.aspx" target="_blank" class="text-blue-500 underline">こちら</a>をご覧ください</p>
                         </div>
                     </div>
                 </div>

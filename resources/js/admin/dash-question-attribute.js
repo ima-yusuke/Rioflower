@@ -206,9 +206,9 @@ function ResetDropzone(){
 function DeleteAttribute(btn){
     btn.addEventListener("click", function() {
         let attributeId =  btn.getAttribute("data-product-id")
-        if (!confirm('属性を削除しますか？')) {
-            return;
-        }
+        // if (!confirm('属性を削除しますか？')) {
+        //     return;
+        // }
         fetch(`/dashboard/attribute/question/${attributeId}?choiceId=${choiceId}`, {
             method: 'DELETE',
             headers: {
@@ -228,7 +228,7 @@ function DeleteAttribute(btn){
             })
             .then(data => {
                 if (data.redirect) {
-                    window.alert(data.message);
+                    // window.alert(data.message);
                     localStorage.setItem('choiceId', data.choiceId);
                     localStorage.setItem('accordionId', data.accordionId);
                     window.location.href = data.redirect;
