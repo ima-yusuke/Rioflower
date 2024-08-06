@@ -408,7 +408,7 @@ function CreateAnswers(){
     if(analyticsFlag === true){
         gtag('event', questions[currentQuestionIdx]["text"] + "表示数", {
             'event_category': 'question' + currentQuestionIdx+1,
-            'event_label': 'choice_button' + idx,
+            'event_label': 'choice_button',
             'value': 1
         });
     }
