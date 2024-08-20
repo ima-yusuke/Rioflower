@@ -392,7 +392,7 @@ function CreateAnswers(){
             }
 
             if(analyticsFlag === true){
-                gtag('event',"質問：" + questions[currentQuestionIdx]["text"] + "回答数", {
+                gtag('event',"質問：" + questions[currentQuestionIdx]["text"] + "【回答数】", {
                     'event_category': 'question' + currentQuestionIdx+1,
                     'event_label': 'choice_button' + idx,
                     'value': 1
@@ -406,7 +406,7 @@ function CreateAnswers(){
 
     // 質問表示数
     if(analyticsFlag === true){
-        gtag('event',"質問：" + questions[currentQuestionIdx]["text"] + "表示数", {
+        gtag('event',"質問：" + questions[currentQuestionIdx]["text"] + "【表示数】", {
             'event_category': 'question' + currentQuestionIdx+1,
             'event_label': 'choice_button',
             'value': 1
