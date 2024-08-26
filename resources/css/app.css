@@ -181,9 +181,9 @@ html{
 }
 
 @media (max-width: 767px) {
-    .answer-btn {
+    #question_answers_container .answer-btn {
         width: 90%;
-        font-size: 0.3rem;
+        font-size: 12px;
         border: 1px solid white;
     }
 
@@ -301,9 +301,9 @@ html{
 }
 
 @media (max-width: 767px) {
-    .confirm-answer {
+    #confirm_box .confirm-answer {
         width: 90%;
-        font-size: 0.3rem;
+        font-size: 12px;
         border: 1px solid white;
     }
 
@@ -372,6 +372,8 @@ html{
     opacity: 1;
     transition: opacity 0.5s ease-in;
 }
+
+
 
 .otherImg {
     width: 110px;
