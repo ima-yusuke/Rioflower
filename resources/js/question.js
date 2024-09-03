@@ -129,8 +129,8 @@ function ShowQuestion(choiceId) {
         },fadeinTime+50);
     }
 
-    console.log(currentQuestionIdx)
-    console.log(questionCount)
+    // console.log(currentQuestionIdx)
+    // console.log(questionCount)
 }
 // ---------------------------------------[④回答選択]---------------------------------------
 function SelectAnswer(idx,choiceId) {
@@ -1041,7 +1041,7 @@ function OnCalScore(choiceId){
     }
 
     OnSortScore(scoreArray);
-    console.log(scoreArray)
+    // console.log(scoreArray)
     return scoreArray[0].product_id;
 }
 
@@ -1082,7 +1082,7 @@ function OnSortScore(scoreArray,priorityFlag) {
         // 合計値で降順ソート
         return sumB - sumA;
     });
-    console.log(scoreArray)
+    // console.log(scoreArray)
     return scoreArray;
 }
 

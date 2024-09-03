@@ -199,15 +199,15 @@ window.onload = (e)=>{
 }
 
 function onStartEvent(e){
-    console.log("onStart!!");
+    // console.log("onStart!!");
 }
 
 function onEndEvent(e){
-    console.log("onEnd!!");
+    // console.log("onEnd!!");
 }
 
 function onChangeEvent(e){
-    console.log("onChange!!");
+    // console.log("onChange!!");
 }
 
 // 【順番更新】質問

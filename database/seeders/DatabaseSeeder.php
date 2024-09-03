@@ -15,12 +15,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-//            LinksTableSeeder::class,
-//            ProductsTableSeeder::class,
-//            QuestionsTableSeeder::class,
-//            ChoicesTableSeeder::class,
-//            CategoriesTableSeeder::class,
-//            AttributesTableSeeder::class,
             ForwardsTableSeeder::class, // 転送アドレス初期データ
             ImagesTableSeeder::class, // TOP画像初期データ
         ]);
