@@ -4,5 +4,5 @@
             &copy; 2024 @if(date("Y")!=2024)-{{ date("Y") }} @endif flaver All Reserved.
         </p>
     </div>
-    <p class="text-white text-[8px] md:text-xs absolute right-2 top-1/2 transform -translate-y-1/2">第9回補助金対象</p>
+    <p class="text-white text-[8px] md:text-xs absolute right-2 top-1/2 transform -translate-y-1/2">［第九回］事業再構築補助金対象</p>
 </footer>
