@@ -1,6 +1,6 @@
-<footer class="w-full min-h-[25px] md:min-h-[30px] flex justify-center bg-gray-800 z-40 relative">
+<footer class="w-full min-h-[25px] md:min-h-[30px] flex justify-start md:justify-center bg-gray-800 z-40 relative">
     <div class="flex justify-center items-center">
-        <p class="text-white">
+        <p class="text-white text-[8px] md:text-xs pl-2">
             &copy; 2024 @if(date("Y")!=2024)-{{ date("Y") }} @endif flaver All Reserved.
         </p>
     </div>
