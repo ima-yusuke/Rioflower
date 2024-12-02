@@ -7,7 +7,7 @@
     @vite(['resources/css/'.$css])
 </x-head>
 <body class="bg-main-bg h-full flex flex-col">
-<x-header></x-header>
+{{--<x-header></x-header>--}}
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1SS3MSY633"></script>
 <script>
